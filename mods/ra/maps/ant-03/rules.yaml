@@ -1,0 +1,91 @@
+Player:
+	PlayerResources:
+		DefaultCash: 2500
+FireAnt:
+	Inherits: Ant
+	Tooltip:
+		Name: Giant Fire Ant
+		GenericName: Fire Ant
+	Mobile:
+		Speed: 80
+	Armament:
+		Weapon: Flamer
+	Health:
+		HP: 70000
+ScoutAnt:
+	Inherits: Ant
+	Tooltip:
+		Name: Giant Scout Ant
+		GenericName: Scout Ant
+	Mobile:
+		Speed: 99
+	Health:
+		HP: 50000
+	AutoTarget:
+		ScanRadius: 7
+Ant:
+	Tooltip:
+		GenericName: Warrior Ant
+	Mobile:
+		Speed: 50
+	Health:
+		HP: 80000
+	Armament:
+		Weapon: MandibleHeavy
+PoisonGas:
+	Inherits: FLARE
+	Tooltip:
+		GenericName: Poison Gas
+SCI:
+	Inherits: CHAN
+	Tooltip:
+		Name: Scientist
+		GenericName: Scientist
+	-ScaredyCat:
+	-Wanders:
+EXTRM:
+	Inherits: ^Soldier
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
+	Buildable:
+		Queue: Infantry
+		BuildAtProductionType: Soldier
+		BuildPaletteOrder: 500
+		Prerequisites: ~disabled
+		Description: A soldier armed with an experimental gas canister launcher
+	Selectable:
+		Class: EXTRM
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: Chem-Canister Trooper
+	Health:
+		HP: 5000
+	Mobile:
+		Speed: 45
+ 	RevealsShroud:
+		Range: 5c0
+	Armament@PRIMARY:
+		Weapon: ChemThrower
+		LocalOffset: 700,0,500
+	Armament@GARRISONED:
+		Name: garrisoned
+		Weapon: AutoChem
+		MuzzleSequence: garrison-muzzle
+	TakeCover:
+		ProneOffset: 160,0,-288
+	AttackFrontal:
+	WithInfantryBody:
+		DefaultAttackSequence: shoot
+		RequiresCondition: !parachute
+	WithInfantryBody@PARACHUTE:
+		StandSequences: parachute
+		RequiresCondition: parachute
+	ProducibleWithLevel:
+		Prerequisites: barracks
+	AutoTarget:
+		ScanRadius: 7
+World:
+	LuaScript:
+		Scripts: ant-03.lua
+	MissionData:
+		Briefing: The source of the ant's activity has been pinpointed in this area. We suspect that their nests are in this area -- they must be destroyed  \n\n A team of civilian specialists are en-route to your location. Use them to gas all the ant nests in the area. In addition, destroy all ants that you encounter.  \n\nBe careful -- these things can chew through anything. Good luck.
