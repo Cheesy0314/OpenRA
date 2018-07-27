@@ -1,0 +1,103 @@
+FireAnt:
+	Inherits: Ant
+	Tooltip:
+		Name: Giant Fire Ant
+		GenericName: Fire Ant
+	Mobile:
+		Speed: 80
+	Armament:
+		Weapon: Flamer
+	Health:
+		HP: 70000
+ScoutAnt:
+	Inherits: Ant
+	Tooltip:
+		Name: Giant Scout Ant
+		GenericName: Scout Ant
+	Mobile:
+		Speed: 99
+	Health:
+		HP: 50000
+	AutoTarget:
+		ScanRadius: 7
+Ant:
+	Tooltip:
+		GenericName: Warrior Ant
+	Mobile:
+		Speed: 50
+	Health:
+		HP: 80000
+MEDI:
+	Valued:
+		Cost: 500
+SPY:
+	Buildable:
+		Prerequisites: ~disabled
+SPY.England:
+	Buildable:
+		Prerequisites: ~disabled
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+APC:
+	Buildable:
+		Prerequisites: ~disabled
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+SPY:
+	Buildable:
+		Prerequisites: ~disabled
+SNIPER:
+	Buildable:
+		Prerequisites: ~tent
+	Valued:
+		Cost: 450
+MGG:
+	Buildable:
+		Prerequisites: ~disabled
+MNLY:
+	Buildable:
+		Prerequisites: ~techlevel.low
+1TNK:
+	Buildable:
+		Prerequisites: ~disabled
+2TNK:
+	Buildable:
+		Prerequisites: ~disabled
+E3:
+	Buildable:
+		Prerequisites: ~disabled
+E2:
+	Buildable:
+		Prerequisites: ~tent
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+World:
+	LuaScript:
+		Scripts: ant-01.lua
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+			tough: Nightmare
+		Default: easy
+	MissionData:
+		BackgroundVideo: antintro.vqa
+		Briefing: We've lost contact with one of our outposts. Before it went off-line, we recieved a brief communique about giant ants. We're unsure what to make of this report, so we want you to investigate.  Scout the area, bring the outpost back on-line, and report your findings. If there is a threat, reinforcements will be sent in to help you.  Keep the base functional and radio contact open -- we don't want to lose the outpost again.
