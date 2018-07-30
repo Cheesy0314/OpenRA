@@ -1,0 +1,10 @@
+Player:
+	PlayerResources:
+		DefaultCash: 5000
+
+World:
+	LuaScript:
+		Scripts: survival01.lua
+	MissionData:
+		Briefing: A unknown pathogen has been released by a separatist group, your task force has been dispatched to contain the situation until we can get all non-infected civilians out of the area.\n\n Rescue civilians from local villages and keep infected persons in quarantine zone.\n\nIt seems the infected have grown extremely hostile, exercies extreme caution around them.
+	
