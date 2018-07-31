@@ -1,25 +1,194 @@
 Player:
 	PlayerResources:
 		DefaultCash: 5000
-    	DefaultCashDropdownLocked: true
-	Shroud:    
-		ExploredMapCheckboxEnabled: true	
+	Shroud:
+		ExploredMapCheckboxEnabled: true
 		ExploredMapCheckboxLocked: true
 		FogCheckboxLocked: true
-		FogCheckboxEnabled: true
+		FogCheckboxEnabled: false
 
 World:
-
-	SpawnMPUnits:
-		DropdownLocked: true
-		StartingUnitsClass: none
 	MapBuildRadius:
 		AllyBuildRadiusCheckboxEnabled: true #can build in allies base
 		AllyBuildRadiusCheckboxLocked: true
 		BuildRadiusCheckboxEnabled: true #no build radius limitations
 		BuildRadiusCheckboxLocked: true
 	LuaScript:
-		Scripts: deadnight.lua
+		Scripts: zomboids.lua
 	MissionData:
-		Briefing: A unknown pathogen has been released by a separatist group, your task force has been dispatched to contain the situation until we can get all non-infected civilians out of the area.\n\n Rescue civilians from local villages and keep infected persons in quarantine zone.\n\nIt seems the infected have grown extremely hostile, exercies extreme caution around them.
-	
+		Briefing: --INCOMING SECURE TRANSMISSION--\n\nThe invasion starts today, it seems the enemy is in disarray for some unknown reason and we will use that to our advantage. \n\nYour first objective is to construct a base once you make land fall, after that you wil send forces inland to wipe out enemy strong holds.\n\nGood luck Commander, the free world is counting on you.\n\n--END TRANSMISSION--\n
+
+PROC:
+	Buildable:
+		Prerequisites: ~disabled
+WEAP:
+	Buildable:
+		Prerequisites: ~tent
+FIX:
+	Buildable:
+		Prerequisites: ~disabled
+SYRD:
+	Buildable:
+		Prerequisites: ~disabled
+DOME:
+	Buildable:
+		-Prerequisites:
+		Prerequisites: ~techlevel.low, ~tent
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+SPY:
+	Buildable:
+		Prerequisites: ~disabled
+SPY.England:
+	Buildable:
+		Prerequisites: ~disabled
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+APC:
+	Buildable:
+		Prerequisites: ~disabled
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+SPY:
+	Buildable:
+		Prerequisites: ~disabled
+SNIPER:
+	Buildable:
+		Prerequisites: ~disabled
+MGG:
+	Buildable:
+		Prerequisites: ~disabled
+1TNK:
+	Buildable:
+		Prerequisites: ~tent
+2TNK:
+	Buildable:
+		Prerequisites: ~disabled
+E3:
+	Buildable:
+		Prerequisites: ~tent
+E2:
+	Buildable:
+		Prerequisites: ~tent
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+OILNC:
+	Inherits: OILB
+	Huntable:
+	HitShape:
+		UseTargetableCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -512, -512
+			BottomRight: 512, 512
+	Health:
+		HP: 40000
+	Armor:
+		Type: Wood
+	Tooltip:
+		Name: Oil Derrick
+		GenericVisibility: None
+	FrozenUnderFog:
+	EditorTilesetFilter:
+		Categories: Tech building
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, 630,-300,0, 420,512,0, -420,-512,0, -630,300,0
+	Selectable:
+		Priority: 0
+		Bounds: 48,48
+	OwnerLostAction:
+		Action: ChangeOwner
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	Health:
+		HP: 80000
+	RevealsShroud:
+		Range: 4c0
+	ExternalCapturable:
+	ExternalCapturableBar:
+	EngineerRepairable:
+	CashTrickler:
+		Interval: 375
+		Amount: 100
+	Tooltip:
+		Name: Oil Derrick
+	TooltipDescription@ally:
+		Description: Provides additional funds.
+		ValidStances: Ally
+	TooltipDescription@other:
+		Description: Capture to receive additional funds.
+		ValidStances: Neutral, Enemy
+	Explodes:
+		Weapon: BarrelExplode
+	GpsDot:
+		String: Oil
+	GivesCashOnCapture:
+		Amount: 100
+	RenderSprites:
+		Image: v19
+	SpawnActorOnDeath:
+		Actor: V19.Husk
+BADR.napalm:
+	Inherits: BADR.Bomber
+	Aircraft:
+		Speed: 300
+	AttackPlane:
+		FacingTolerance: 20
+	Armament:
+		Weapon: AirstrikeNapalm
+		LocalOffset: 0,-640,0, 0,640,0
+		LocalYaw: -40, 24
+	SmokeTrailWhenDamaged:
+		Offset: -853,0,171
+		Interval: 2
+	Tooltip:
+		Name: Tornado
+	SpawnActorOnDeath:
+		Actor: MIG.Husk
+	Contrail@1:
+		Offset: -598,-683,0
+	Contrail@2:
+		Offset: -598,683,0
+	RenderSprites:
+		Image: mig
+	AmmoPool:
+		Ammo: 10
+
+powerproxy.napalmstrike:
+	AlwaysVisible:
+	AirstrikePower:
+		Icon: parabombs
+		Description: Parabombs (Single Use)
+		LongDesc: A Badger drops a load of parachuted bombs on your target.
+		OneShot: true
+		AllowMultiple: true
+		UnitType: badr.napalm
+		SelectTargetSpeechNotification: SelectTarget
+		QuantizedFacings: 8
+		DisplayBeacon: True
+		BeaconPoster: pbmbicon
+		CameraActor: camera
+		CameraRemoveDelay: 150
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles
