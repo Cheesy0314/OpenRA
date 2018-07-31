@@ -1,10 +1,25 @@
 Player:
 	PlayerResources:
 		DefaultCash: 5000
+    	DefaultCashDropdownLocked: true
+	Shroud:    
+		ExploredMapCheckboxEnabled: true	
+		ExploredMapCheckboxLocked: true
+		FogCheckboxLocked: true
+		FogCheckboxEnabled: true
 
 World:
+
+	SpawnMPUnits:
+		DropdownLocked: true
+		StartingUnitsClass: none
+	MapBuildRadius:
+		AllyBuildRadiusCheckboxEnabled: true #can build in allies base
+		AllyBuildRadiusCheckboxLocked: true
+		BuildRadiusCheckboxEnabled: true #no build radius limitations
+		BuildRadiusCheckboxLocked: true
 	LuaScript:
-		Scripts: survival01.lua
+		Scripts: deadnight.lua
 	MissionData:
 		Briefing: A unknown pathogen has been released by a separatist group, your task force has been dispatched to contain the situation until we can get all non-infected civilians out of the area.\n\n Rescue civilians from local villages and keep infected persons in quarantine zone.\n\nIt seems the infected have grown extremely hostile, exercies extreme caution around them.
 	
