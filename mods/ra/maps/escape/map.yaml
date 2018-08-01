@@ -1,0 +1,151 @@
+MapFormat: 11
+RequiresMod: ra
+Title: Escape!
+Author: Cheesy0314
+Tileset: INTERIOR
+MapSize: 66,34
+Bounds: 1,1,64,32
+Visibility: Lobby, MissionSelector
+Categories: Conquest
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: england
+	PlayerReference@Creeps:
+		Name: Creeps
+		Faction: soviet
+		LockTeam: True
+		Enemies: Creeps, Spain, Portugal, Multi0, Multi1
+	PlayerReference@Spain:
+		Name: Spain
+		AllowBots: False
+		Playable: True
+		Required: True
+		LockFaction: True
+		Faction: allies
+		LockColor: True
+		Color: F6D679
+		LockTeam: True
+		Allies: Portugal
+		Enemies: Creeps
+	PlayerReference@Portugal:
+		Name: Portugal
+		LockFaction: True
+		Faction: allies
+		LockColor: True
+		Color: A1EF8C
+		LockTeam: True
+		Allies: Spain
+		Enemies: Creeps
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+Actors:
+	Actor1: waypoint
+		Owner: Portugal
+		Location: 6,4
+	Actor3: waypoint
+		Owner: Spain
+		Location: 6,3
+	Actor4: mpspawn
+		Owner: Spain
+		Location: 4,3
+	Actor5: mpspawn
+		Owner: Portugal
+		Location: 4,4
+	Actor6: waypoint
+		Owner: Portugal
+		Location: 1,4
+	Actor7: waypoint
+		Owner: Spain
+		Location: 1,3
+	Actor8: zombie
+		Owner: Creeps
+		Location: 11,30
+		SubCell: 3
+		Facing: 92
+	Actor9: zombie
+		Owner: Creeps
+		Location: 14,28
+		SubCell: 3
+		Facing: 92
+	Actor10: zombie
+		Owner: Creeps
+		Location: 16,31
+		SubCell: 3
+		Facing: 92
+	Actor11: zombie
+		Owner: Creeps
+		Location: 14,30
+		SubCell: 3
+		Facing: 92
+	Actor12: waypoint
+		Owner: Creeps
+		Location: 13,32
+	Actor13: waypoint
+		Owner: Creeps
+		Location: 13,28
+	Actor14: zombie
+		Owner: Creeps
+		Location: 9,26
+		SubCell: 3
+		Facing: 92
+	Actor15: zombie
+		Owner: Creeps
+		Location: 8,29
+		SubCell: 3
+		Facing: 92
+	Actor16: zombie
+		Owner: Creeps
+		Location: 16,25
+		SubCell: 3
+		Facing: 92
+	Actor17: zombie
+		Owner: Creeps
+		Location: 12,24
+		SubCell: 3
+		Facing: 92
+	Actor18: zombie
+		Owner: Creeps
+		Location: 14,25
+		SubCell: 3
+		Facing: 92
+	Actor19: zombie
+		Owner: Creeps
+		Location: 11,27
+		SubCell: 3
+		Facing: 92
+	Actor20: waypoint
+		Owner: Neutral
+		Location: 64,20
+	Actor22: waypoint
+		Owner: Creeps
+		Location: 12,18
+	Actor23: waypoint
+		Owner: Creeps
+		Location: 22,18
+	Actor24: waypoint
+		Owner: Spain
+		Location: 12,14
+	Actor25: waypoint
+		Owner: Spain
+		Location: 13,22
+	Actor26: waypoint
+		Owner: Spain
+		Location: 20,19
+	Actor27: waypoint
+		Owner: Spain
+		Location: 27,30
+	Actor28: ftur
+		Owner: Portugal
+		Location: 23,18
+		TurretFacing: 92
