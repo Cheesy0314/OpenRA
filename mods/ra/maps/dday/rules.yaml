@@ -1,0 +1,18 @@
+World:
+	MapBuildRadius:
+		AllyBuildRadiusCheckboxEnabled: true #can build in allies base
+		AllyBuildRadiusCheckboxLocked: true
+		BuildRadiusCheckboxEnabled: true #no build radius limitations
+		BuildRadiusCheckboxLocked: true
+	LuaScript:
+		Scripts: dday.lua
+	MissionData:
+		Briefing: D Day, H Hour. You're embarking on a mission of grave importance. To rid the world of evil in it's most pure form.
+Player:
+	PlayerResources:
+		DefaultCash: 5000
+	Shroud:
+		ExploredMapCheckboxEnabled: true
+		ExploredMapCheckboxLocked: true
+		FogCheckboxLocked: true
+		FogCheckboxEnabled: true

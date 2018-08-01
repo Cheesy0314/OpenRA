@@ -1,7 +1,9 @@
 ticks = 1
 passengers = 0
 MissionStarted = false
-
+MissionCompleted = false
+HordeLight = {"zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie"}
+HordeHeavy = {"zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie"}
 BeginWaves = function()
 	Trigger.AfterDelay(DateTime.Minutes(1), function()
 		MissionStarted = true
@@ -51,54 +53,60 @@ end
 
 SendZombies = function()
 	if ticks < DateTime.Seconds(61) then
-		if ticks == DateTime.Seconds(32) then
-			Reinforcements.Reinforce(Zombies, {"zombie","zombie","zombie"}, { Actor156.Location, Actor205.Location},10, function(actor)
+		if ticks == DateTime.Seconds(30) or  ticks == DateTime.Seconds(60) then
+			Reinforcements.Reinforce(Zombies, {"e1r1","e1r1","e3r1","e3r1","e1r1"}, { Actor156.Location, Actor205.Location},15, function(actor)
+
 				actor.AttackMove(Actor208.Location)
 				Trigger.OnIdle(actor,function() actor.Hunt() end)
+				
 			end)
-			Trigger.AfterDelay(DateTime.Seconds(5), function()
-				local LST = Spain.GetActorsByType("lst")[1]
-				Reinforcements.Reinforce(Germany, {"e1","gnrl","e1","chan","e1r1"}, {Actor162.Location,Actor205.Location},15, function(actor) 
-					actor.EnterTransport(LST)
-				end)
-				Media.DisplayMessage("WHAT THE HELL WERE THOSE?", "Team Leader", Germany.Color)
-			end)
-		else 
-			if ticks == DateTime.Seconds(60) then
-				Reinforcements.Reinforce(Zombies, {"zombie","zombie","zombie"}, { Actor206.Location, Actor205.Location}, 10, function(actor)
-					actor.AttackMove(Actor208.Location)
-					Trigger.OnIdle(actor,function() actor.Hunt() end)
-				end)
-			end
 		end
 	elseif (ticks > DateTime.Seconds(60) and ticks < DateTime.Seconds(121)) then
 		if (ticks == DateTime.Seconds(90) or ticks == DateTime.Seconds(120)) then
-			Reinforcements.Reinforce(Zombies, {"zombie","zombie","zombie","zombie","zombie"}, { Actor196.Location - CVec.New(2,0), Actor205.Location}, 10, function(actor)
-				actor.AttackMove(Actor208.Location)
-				Trigger.OnIdle(actor,function() actor.Hunt() end)
-			end)
+				Reinforcements.Reinforce(Zombies, {"2tnk","jeep","1tnk","1tnk","jeep"}, { Actor196.Location, Actor205.Location}, 10, function(actor)
+					actor.AttackMove(Actor208.Location)
+					Trigger.OnIdle(actor,function() actor.Hunt() end)
+				end)
+			if ticks == DateTime.Seconds(120) then
+				Trigger.AfterDelay(DateTime.Seconds(12), function()
+				Reinforcements.Reinforce(Zombies, {"zombie","zombie","zombie","zombie","zombie"}, { Actor162.Location - CVec.New(2,0), Actor205.Location}, 10, function(actor)
+					actor.AttackMove(Actor208.Location)
+					Trigger.OnIdle(actor,function() actor.Hunt() end)
+				end)
+				end)
+				Trigger.AfterDelay(DateTime.Seconds(10), function()
+					local LST = Spain.GetActorsByType("lst")[1]
+					actors = Reinforcements.Reinforce(Germany, {"e1","gnrl","e1","chan","e1r1"}, {Actor162.Location,Actor205.Location},15, function(actor) 
+						actor.EnterTransport(LST)
+					end)
+					passengers = #actors
+					Media.DisplayMessage("WHAT THE HELL WERE THOSE?", "Team Leader", Germany.Color)
+					Media.PlaySoundNotification(Spain, "ChatLine")
+				end)
+			end
 		end
 	elseif (ticks > DateTime.Seconds(120) and ticks < DateTime.Seconds(241)) then
-		if (ticks == DateTime.Seconds(160)) then Media.DisplayMessage("German scientist believe the crazed troops are the result of some sort of infectous disease, be careful!", "Mission Command", Civilian.Color) end
+		if (ticks == DateTime.Seconds(160)) then Media.DisplayMessage("German scientist believe the crazed troops are the result of some sort of infectous disease, be careful!", "Mission Command", Civilian.Color) 
+				Media.PlaySoundNotification(Spain, "ChatLine") end
 		if (ticks == DateTime.Seconds(150) or ticks == DateTime.Seconds(180) or ticks == DateTime.Seconds(210) or ticks == DateTime.Seconds(240)) then
-			Reinforcements.Reinforce(Zombies, {"zombie","zombie","zombie","zombie","zombie"}, {  Actor196.Location - CVec.New(2,0), Actor205.Location}, 10, function(actor)
+			Reinforcements.Reinforce(Zombies, HordeLight, {  Actor196.Location - CVec.New(2,0), Actor205.Location}, 10, function(actor)
 				actor.AttackMove(Actor208.Location)
 				Trigger.OnIdle(actor,function() actor.Hunt() end)
 			end)
 
-			Reinforcements.Reinforce(Zombies, {"zombie","zombie","zombie"}, { Actor198.Location, Actor205.Location}, 10, function(actor)
+			Reinforcements.Reinforce(Zombies, HordeLight, { Actor198.Location, Actor205.Location}, 10, function(actor)
 				actor.AttackMove(Actor208.Location)
 				Trigger.OnIdle(actor,function() actor.Hunt() end)
 			end)
 		end
 	elseif (ticks > DateTime.Seconds(240) and ticks < DateTime.Seconds(361)) then
-		 if (ticks == DateTime.Seconds(150) or ticks == DateTime.Seconds(180) or ticks == DateTime.Seconds(210) or ticks == DateTime.Seconds(240)) then
-			Reinforcements.Reinforce(Zombies, {"zombie","zombie","zombie","zombie","zombie"}, {  Actor196.Location - CVec.New(2,0), Actor205.Location}, 10, function(actor)
+		 if (ticks == DateTime.Seconds(270) or ticks == DateTime.Seconds(300) or ticks == DateTime.Seconds(330) or ticks == DateTime.Seconds(360)) then
+			Reinforcements.Reinforce(Zombies, HordeHeavy, {  Actor196.Location - CVec.New(2,0), Actor205.Location}, 10, function(actor)
 				actor.AttackMove(Actor208.Location)
 				Trigger.OnIdle(actor,function() actor.Hunt() end)
 			end)
 
-			Reinforcements.Reinforce(Zombies, {"zombie","zombie","zombie","zombie","zombie"}, { Actor198.Location, Actor205.Location}, 10, function(actor)
+			Reinforcements.Reinforce(Zombies, HordeLight, { Actor198.Location, Actor205.Location}, 10, function(actor)
 				actor.AttackMove(Actor208.Location)
 				Trigger.OnIdle(actor,function() actor.Hunt() end)
 			end)
@@ -106,6 +114,8 @@ SendZombies = function()
 
 	elseif (ticks > DateTime.Seconds(360) and ticks < DateTime.Seconds(481)) then
 		if (ticks == DateTime.Seconds(362)) then
+		
+			Media.PlaySoundNotification(Spain, "ChatLine")
 			Media.DisplayMessage("!ATTENTION! We are airstriking local disease concentrations!","German Command",Germany.Color)
 			Trigger.AfterDelay(DateTime.Seconds(5), function()
 				Media.PlaySpeechNotification(Spain, "AlliedReinforcementsArrived")
@@ -117,16 +127,24 @@ SendZombies = function()
 				SendAirstrike(Actor160)
 				SendAirstrike(Actor161)
 				SendAirstrike(Actor162)
+
 			end)
 		end
+		if (ticks == DateTime.Seconds(400)) then GiveAirstrike() end
 		if (ticks == DateTime.Seconds(390) or ticks == DateTime.Seconds(420) or ticks == DateTime.Seconds(450) or ticks == DateTime.Seconds(480)) then
-			Reinforcements.Reinforce(Zombies, {"zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie"}, {  Actor196.Location - CVec.New(2,0), Actor205.Location}, 10, function(actor)
+			if (ticks == DateTime.Seconds(450)) then GiveAirstrike() end
+			Reinforcements.Reinforce(Zombies, HordeHeavy, {  Actor196.Location - CVec.New(2,0), Actor205.Location}, 10, function(actor)
+				actor.AttackMove(Actor208.Location)
+				Trigger.OnIdle(actor,function() actor.Hunt() end)
+			end)
+			Reinforcements.Reinforce(Zombies, HordeHeavy, {  Actor196.Location - CVec.New(2,0), Actor205.Location}, 10, function(actor)
 				actor.AttackMove(Actor208.Location)
 				Trigger.OnIdle(actor,function() actor.Hunt() end)
 			end)
 		end
 	elseif ticks > DateTime.Seconds(480) then
-		if (#Zombies.GetActorsByType("zombie")) == 0 then
+		if (#Zombies.GetActorsByType("zombie")) == 0 and not MissionCompleted then
+			MissionCompleted = true
 			Media.DisplayMessage("Good job holding the fort Commander, we're analyzing the tissue samples recovered now.","CiviliaeMission Command", Civilian.Color)
 			Trigger.AfterDelay(DateTime.Seconds(10), function()
 				Spain.MarkCompletedObjective(Survive)
@@ -139,11 +157,16 @@ SendAirstrike = function(actor)
 	local location = actor.Location
 	Trigger.AfterDelay(25, function()
 		local proxy = Actor.Create("powerproxy.napalmstrike", false, { Owner = Germany })
-	--	proxy.SendAirstrikeFrom(CPos.New(1,16) - CVec.New(0,3), actor.Location)
 		proxy.SendAirstrikeFrom(CPos.New(1,16), actor.Location)
-		--proxy.SendAirstrikeFrom(CPos.New(1,16) + CVec.New(0,3), actor.Location)
-		proxy.Destroy()
+		Trigger.AfterDelay(25, function()
+			proxy.SendAirstrikeFrom(CPos.New(1,16), actor.Location)
+			proxy.Destroy()
+		end)
 	end)
+end
+
+GiveAirstrike = function()
+	Strike = Actor.Create("powerproxy.napalmstrike", false, {Owner = Spain})
 end
 
 NextObj = function()
@@ -158,8 +181,8 @@ NextObj = function()
 	Trigger.AfterDelay(DateTime.Minutes(1), function() 
 		local reinf = Spain.GetActorsByType("lst")
 		Trigger.OnPassengerEntered(reinf[1], function(trans, actor)
-			passengers = passengers + 1
-			if passengers == 5 then
+			passengers = passengers - 1
+			if passengers == 0 then
 				reinf[1].Move(CPos.New(2,30)) Trigger.AfterDelay(DateTime.Seconds(5), function()
 					reinf[1].Destroy()
 				end)
@@ -216,6 +239,7 @@ WorldLoaded = function()
 						self.Owner = Spain  
 						if self.Type == "mcv" then
 							self.Move(Actor208.Location)
+							Civilian.GetActorsByType("flare")[1].Destroy()
 							Trigger.OnEnteredFootprint({Actor208.Location}, function(mcv, id)
 								mcv.Deploy()
 								Trigger.RemoveFootprintTrigger(id)

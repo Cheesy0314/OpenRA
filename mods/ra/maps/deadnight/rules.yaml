@@ -23,7 +23,7 @@ PROC:
 		Prerequisites: ~disabled
 WEAP:
 	Buildable:
-		Prerequisites: ~tent
+		Prerequisites: ~disabled
 FIX:
 	Buildable:
 		Prerequisites: ~disabled
@@ -91,6 +91,13 @@ ARTY:
 MCV:
 	Buildable:
 		Prerequisites: ~disabled
+HBOX:
+	Buildable:
+		Prerequisites: ~disabled
+PBOX:
+	Buildable:
+		Prerequisites: ~disabled
+
 OILNC:
 	Inherits: OILB
 	Huntable:
@@ -129,7 +136,7 @@ OILNC:
 	EngineerRepairable:
 	CashTrickler:
 		Interval: 375
-		Amount: 100
+		Amount: 300
 	Tooltip:
 		Name: Oil Derrick
 	TooltipDescription@ally:
@@ -162,7 +169,7 @@ BADR.napalm:
 		Offset: -853,0,171
 		Interval: 2
 	Tooltip:
-		Name: Tornado
+		Name: Phantom
 	SpawnActorOnDeath:
 		Actor: MIG.Husk
 	Contrail@1:
