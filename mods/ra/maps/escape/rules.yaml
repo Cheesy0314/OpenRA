@@ -1,0 +1,15 @@
+World:
+	Shroud:
+		ExploredMapCheckboxEnabled: true
+		ExploredMapCheckboxLocked: true
+		FogCheckboxLocked: true
+		FogCheckboxEnabled: true
+	LuaScript:
+		Scripts: ant-01.lua
+	MissionData:
+		StartVideo: countdwn.vqa
+		WinVideo: apcescpe.vqa
+		LossVideo: grvestne.vqa
+		Briefing: *ATTENTION!* YOU ARE IN GRAVE DANGER YOU MUST ESCAPE NOW!
+Player:
+	

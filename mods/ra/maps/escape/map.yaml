@@ -149,3 +149,4 @@ Actors:
 		Owner: Portugal
 		Location: 23,18
 		TurretFacing: 92
+Rules: rules.yaml, ra|campaign-rules.yaml, ra|campaign-tooltips.yaml
