@@ -4,7 +4,7 @@ Title: Reinforce Phoenix Base
 Author: Westwood Studios
 Tileset: TEMPERATE
 MapSize: 48,126
-Bounds: 2,14,45,105
+Bounds: 2,14,46,103
 Visibility: MissionSelector
 Categories: Campaign
 Players:
@@ -16,6 +16,8 @@ Players:
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
+		LockTeam: True
+		LockFaction: True
 		Faction: gdi
 		Allies: GDI
 		Enemies: Nod
@@ -109,22 +111,22 @@ Actors:
 		Owner: Neutral
 	Actor20: gaspot
 		Location: 41,18
-		Owner: Neutral
+		Owner: GDI
 		Facing: 160
 	Actor21: gaspot
 		Location: 41,11
-		Owner: Neutral
+		Owner: GDI
 		Facing: 160
 	Actor22: ca0010
 		Location: 58,18
 		Owner: Neutral
 	Actor23: napowr
 		Location: 53,-23
-		Owner: Neutral
+		Owner: Nod
 		Health: 75
-	Actor24: nahand
+	NodHand: nahand
 		Location: 50,-21
-		Owner: Neutral
+		Owner: Nod
 		Health: 75
 	Actor25: gaoldcc4
 		Location: 63,-23
@@ -211,25 +213,25 @@ Actors:
 		Owner: Nod
 		Facing: 100
 	Actor47: cyborg
-		Location: 53,4
+		Location: 53,-2
 		Owner: Nod
 		Health: 50
 		Facing: 100
 	Actor48: e1
 		Location: 83,3
-		Owner: GDI
+		Owner: Nod
 		Facing: 99
 	Actor49: e1
 		Location: 84,4
-		Owner: GDI
+		Owner: Nod
 		Facing: 99
 	Actor50: e1
 		Location: 66,3
-		Owner: GDI
+		Owner: Nod
 		Facing: 100
 	Actor51: e1
 		Location: 66,4
-		Owner: GDI
+		Owner: Nod
 		Facing: 99
 	Actor52: tree11
 		Location: 48,13

@@ -11,10 +11,13 @@ World:
 		AllyBuildRadiusCheckboxLocked: True
 		AllyBuildRadiusCheckboxEnabled: False
 		BuildRadiusCheckboxLocked: True
-		BuildRadiusCheckboxEnabled: True
+		BuildRadiusCheckboxEnabled: False
 	MapOptions:
 		ShortGameCheckboxLocked: True
 		ShortGameCheckboxEnabled: False
+	CrateSpawner:
+		CheckboxEnabled: False
+		CheckboxLocked: True
 
 Player:
 	-ConquestVictoryConditions:
@@ -22,9 +25,9 @@ Player:
 		EarlyGameOver: true
 	Shroud:
 		FogCheckboxLocked: True
-		FogCheckboxEnabled: True
+		FogCheckboxEnabled: False
 		ExploredMapCheckboxLocked: True
-		ExploredMapCheckboxEnabled: False
+		ExploredMapCheckboxEnabled: True
 	PlayerResources:
 		DefaultCashDropdownLocked: True
 		DefaultCash: 5000
