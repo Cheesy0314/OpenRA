@@ -53,26 +53,26 @@ Actors:
 		Owner: Neutral
 	Actor3: cabhut
 		Location: 56,-15
-		Owner: Neutral
+		Owner: GDI
 	Actor4: gactwr
 		Location: 42,13
-		Owner: Neutral
+		Owner: GDI
 		Facing: 160
 	Actor5: gacnst
 		Location: 27,11
-		Owner: Neutral
+		Owner: GDI
 	Actor6: gapowr
 		Location: 39,20
-		Owner: Neutral
+		Owner: GDI
 	Actor7: gapowr
 		Location: 35,18
-		Owner: Neutral
+		Owner: GDI
 	Actor8: gagate_b
 		Location: 42,14
-		Owner: Neutral
+		Owner: GDI
 	Actor9: gactwr
 		Location: 42,17
-		Owner: Neutral
+		Owner: GDI
 		Facing: 160
 	Actor10: city19
 		Location: 50,37
@@ -145,91 +145,91 @@ Actors:
 		Owner: Neutral
 	Actor30: garadr
 		Location: 32,4
-		Owner: Neutral
+		Owner: GDI
 	Actor31: gapowr
 		Location: 38,17
-		Owner: Neutral
+		Owner: GDI
 	Actor32: bggy
 		Location: 54,-15
-		Owner: Neutral
+		Owner: Nod
 		Facing: 0
 	Actor33: bggy
 		Location: 71,12
-		Owner: Neutral
+		Owner: Nod
 		Facing: 224
 	Actor34: bggy
 		Location: 66,34
-		Owner: Neutral
+		Owner: Nod
 		Health: 50
 		Facing: 128
 	Actor35: e1
 		Location: 63,39
-		Owner: Neutral
+		Owner: Nod
 		Facing: 99
 	Actor36: e1
 		Location: 63,39
-		Owner: Neutral
+		Owner: Nod
 		Facing: 98
 	Actor37: e1
 		Location: 72,28
-		Owner: Neutral
+		Owner: Nod
 		Facing: 100
 	Actor38: e1
 		Location: 72,28
-		Owner: Neutral
+		Owner: Nod
 		Facing: 99
 	Actor39: e1
 		Location: 66,18
-		Owner: Neutral
+		Owner: Nod
 		Facing: 100
 	Actor40: e1
 		Location: 57,33
-		Owner: Neutral
+		Owner: Nod
 		Facing: 98
 	Actor41: e1
 		Location: 61,2
-		Owner: Neutral
+		Owner: Nod
 		Facing: 98
 	Actor42: e1
 		Location: 52,45
-		Owner: Neutral
+		Owner: Nod
 		Facing: 99
 	Actor43: e1
 		Location: 52,45
-		Owner: Neutral
+		Owner: Nod
 		Facing: 98
 	Actor44: e1
 		Location: 67,35
-		Owner: Neutral
+		Owner: Nod
 		Facing: 98
 	Actor45: e1
 		Location: 67,36
-		Owner: Neutral
+		Owner: Nod
 		Facing: 99
 	Actor46: e1
 		Location: 53,3
-		Owner: Neutral
+		Owner: Nod
 		Facing: 100
 	Actor47: cyborg
-		Location: 53,-2
-		Owner: Neutral
+		Location: 53,4
+		Owner: Nod
 		Health: 50
 		Facing: 100
 	Actor48: e1
 		Location: 83,3
-		Owner: Neutral
+		Owner: GDI
 		Facing: 99
 	Actor49: e1
 		Location: 84,4
-		Owner: Neutral
+		Owner: GDI
 		Facing: 99
 	Actor50: e1
 		Location: 66,3
-		Owner: Neutral
+		Owner: GDI
 		Facing: 100
 	Actor51: e1
 		Location: 66,4
-		Owner: Neutral
+		Owner: GDI
 		Facing: 99
 	Actor52: tree11
 		Location: 48,13
@@ -531,7 +531,7 @@ Actors:
 	Actor158: waypoint
 		Location: 52,45
 		Owner: Neutral
-	Actor159: waypoint
+	Landing: waypoint
 		Location: 44,17
 		Owner: Neutral
 	Actor160: waypoint

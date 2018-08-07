@@ -1,0 +1,5 @@
+World:
+	LuaScript:
+		Scripts: gdi01.lua
+	MissionData:
+		Briefing: Emergency transmissions from GDI forces in this region indicate that Phoenix Base is under attack from Nod troops.\n\nIt is imperative that the base be restored by building a Tiberium Refinery and a Barracks.\n\nOnce the base is functional, all Nod forces in the area must be destroyed.
