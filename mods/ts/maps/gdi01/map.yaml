@@ -4,7 +4,7 @@ Title: Reinforce Phoenix Base
 Author: Westwood Studios
 Tileset: TEMPERATE
 MapSize: 48,126
-Bounds: 2,14,46,103
+Bounds: 3,15,45,101
 Visibility: MissionSelector
 Categories: Campaign
 Players:
@@ -16,8 +16,6 @@ Players:
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
-		LockTeam: True
-		LockFaction: True
 		Faction: gdi
 		Allies: GDI
 		Enemies: Nod
@@ -461,9 +459,6 @@ Actors:
 	Actor127: tree12
 		Location: 66,35
 		Owner: Neutral
-	GDISpawn: mpspawn
-		Location: 38,7
-		Owner: GDI
 	Actor136: waypoint
 		Location: 55,14
 		Owner: Neutral
@@ -717,79 +712,79 @@ Actors:
 		Location: 87,16
 		Owner: Neutral
 	Actor220: gawall
-		Owner: Creeps
+		Owner: GDI
 		Location: 42,18
 	Actor221: gawall
-		Owner: Creeps
+		Owner: GDI
 		Location: 42,19
 	Actor222: gawall
-		Owner: Creeps
+		Owner: GDI
 		Location: 42,20
 	Actor223: gawall
-		Owner: Creeps
+		Owner: GDI
 		Location: 42,21
 	Actor224: gawall
-		Owner: Creeps
+		Owner: GDI
 		Location: 42,22
 	Actor225: gawall
-		Owner: Creeps
+		Owner: GDI
 		Location: 42,23
 	Actor226: gawall
-		Owner: Creeps
+		Owner: GDI
 		Location: 42,24
 	Actor227: gawall
-		Owner: Creeps
+		Owner: GDI
 		Location: 42,25
 	Actor228: gawall
-		Owner: Creeps
+		Owner: GDI
 		Location: 41,25
 	Actor229: gawall
-		Owner: Creeps
+		Owner: GDI
 		Location: 40,25
 	Actor230: gawall
-		Owner: Creeps
+		Owner: GDI
 		Location: 39,25
 	Actor231: gawall
-		Owner: Creeps
+		Owner: GDI
 		Location: 38,25
 	Actor232: gawall
-		Owner: Creeps
+		Owner: GDI
 		Location: 36,25
 	Actor233: gawall
-		Owner: Creeps
+		Owner: GDI
 		Location: 37,25
 	Actor234: gawall
-		Owner: Creeps
+		Owner: GDI
 		Location: 42,12
 	Actor235: gawall
-		Owner: Creeps
+		Owner: GDI
 		Location: 42,11
 	Actor236: gawall
-		Owner: Creeps
+		Owner: GDI
 		Location: 42,10
 	Actor237: gawall
-		Owner: Creeps
+		Owner: GDI
 		Location: 42,8
 	Actor238: gawall
-		Owner: Creeps
+		Owner: GDI
 		Location: 42,9
 	Actor239: gawall
-		Owner: Creeps
+		Owner: GDI
 		Location: 42,7
 	Actor240: gawall
-		Owner: Creeps
+		Owner: GDI
 		Location: 42,5
 	Actor241: gawall
-		Owner: Creeps
+		Owner: GDI
 		Location: 42,4
 	Actor242: gawall
-		Owner: Creeps
+		Owner: GDI
 		Location: 42,3
 	Actor243: gawall
-		Owner: Creeps
+		Owner: GDI
 		Location: 42,6
 	Actor244: gawall
-		Owner: Creeps
+		Owner: GDI
 		Location: 41,3
 Rules: rules.yaml, ts|rules/campaign-rules.yaml, ts|rules/campaign-tooltips.yaml
 	World:
