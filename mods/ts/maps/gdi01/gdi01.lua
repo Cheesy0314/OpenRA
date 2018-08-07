@@ -1,15 +1,24 @@
 BaseIsBuilt = false
 SendWaves = true
 ticks = 0
-NodInfAttack = { };
-ValidForces = { 'e1', 'e3', 'cyborg', 'nahand', 'napower', 'buggy' }
+NodInfAttack = { }
+ValidForces = { 'e1', 'e3', 'cyborg', 'nahand', 'napowr', 'bggy' }
+startCounting = false
 
 SendReinforcements = function()
-	Reinforcements.ReinforceWithTransport(GDI, 'dshp', {'e1','e1','e1','e1','e1','e2','e2'}, {CPos.New(44,10), Landing.Location},{Landing.Location, CPos.New(44,10)})
+	Trigger.AfterDelay(DateTime.Seconds(5), function()
+		Media.PlaySpeechNotification(GDI, 'ReinforcementsArrived')
+		Reinforcements.ReinforceWithTransport(GDI, 'dshp', {'e1','e1','e1','e1','e1','e2','e2'}, {CPos.New(27,5), Landing.Location},{Landing.Location, CPos.New(27,5)})
+		Trigger.AfterDelay(25, function() startCounting = true end)
+	end)
 end
 
 SendEnemies = function()
-	Reinforcements.ReinforceWithTransport(Nod, 'sapc', {'cyborg', 'e1', 'e1', 'e1'}, {CPos.New(44,1), CPos.New(50,17)}, {CPos.New(44,1)})
+	local TransAndSoldiers = Reinforcements.ReinforceWithTransport(Nod, 'sapc', {'cyborg', 'e1', 'e1', 'e1'}, {CPos.New(52,-19), CPos.New(50,17)}, {CPos.New(52,-19)})
+	local troops = TransAndSoldiers[2]
+	Utils.Do(troops, function(soldier)
+		Trigger.OnIdle(soldier, function() soldier.Hunt() end)
+	end)
 end
 
 BuildInfantry = function()
@@ -46,7 +55,17 @@ end
 InitObjectives = function()
 	BuildBase = GDI.AddPrimaryObjective("Build Base")
 	KillEnemy = GDI.AddPrimaryObjective("Destroy All Nod Forces")
-	SendReinforcements()
+	Trigger.AfterDelay(DateTime.Seconds(18), function()
+		Media.PlaySpeechNotification(GDI, 'BuildABarracks')
+	end)
+
+	Trigger.AfterDelay(DateTime.Seconds(25), function()
+		Media.PlaySpeechNotification(GDI, 'BuildATiberiumRefineryToHarvestTiberium')
+	end)
+	Trigger.AfterDelay(DateTime.Seconds(3), function()
+		Media.PlaySpeechNotification(GDI, 'WhereTheHellAreThoseReinforcements');
+		SendReinforcements()
+	end)
 end
 
 CheckBaseRequirements = function()
@@ -61,36 +80,46 @@ end
 
 CheckEnemyUnitsRemaining = function()
 	local unitCount = 0
-	Utils.Do(validForces, function(actor) 
-		unitCount = unitCount + #Nod.GetActorsByType(actor)
+	Utils.Do(ValidForces, function(actorType)
+		unitCount = unitCount + #Nod.GetActorsByType(actorType)
 	end)
 
 	if unitCount == 0 then
+		Media.PlaySpeechNotification(GDI, 'SiteSecureObjectiveComplete')
 		GDI.MarkCompletedObjective(KillEnemy)
 	end
+end
+
+InitSpeechTriggers = function()
+	Trigger.OnPlayerWon(GDI, function()
+		Trigger.AfterDelay(DateTime.Seconds(2), function() Media.PlaySpeechNotification(GDI, 'CongratulationsOnYourSuccess') end)
+	end)
+
 end
 
 WorldLoaded = function()
 	GDI = Player.GetPlayer("GDI")
 	Nod = Player.GetPlayer("Nod")
+	InitSpeechTriggers()
 	InitObjectives()
-	if SendWaves then
+	if SendWaves and startCounting then
 		BuildInfantry()
 	end
 end
 
 Tick = function()
-	if ticks > 25 then
-		if not BaseIsBuilt then
-			CheckBaseRequirements()
-			if ticks % DateTime.Seconds(60) == 0 then 
-				SendEnemies()
+	if startCounting then
+		if ticks > 25 then
+			if not BaseIsBuilt then
+				CheckBaseRequirements()
+				if ticks % DateTime.Seconds(60) == 0 then 
+					SendEnemies()
+				end
+			else 
+				CheckEnemyUnitsRemaining()
 			end
-		else 
-			CheckEnemyUnitsRemaining()
 		end
+
+		ticks = ticks + 1
 	end
-
-	ticks = ticks + 1
-
 end
