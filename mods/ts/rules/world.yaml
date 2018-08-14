@@ -278,6 +278,7 @@ World:
 		Sequence: largecraters
 	ResourceLayer:
 	BridgeLayer:
+	ElevatedBridgeLayer:
 	CustomTerrainDebugOverlay:
 	ResourceClaimLayer:
 	WarheadDebugOverlay:
