@@ -31,7 +31,3 @@ Player:
 	PlayerResources:
 		DefaultCashDropdownLocked: True
 		DefaultCash: 5000
-
-TRUCK:
-	Buildable:
-		Prerequisites: ~disabled
