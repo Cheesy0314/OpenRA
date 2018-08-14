@@ -1,0 +1,132 @@
+World:
+	Faction@mutants:
+		Name: Forgotten
+		InternalName: mutants
+		Description: The Forgotten\nThe Forgotten is a loose confederation of humans who possess a rare\ngenetic mutation that renders them able to survive Tiberium Toxemia,\nending up as human/Tiberium hybrids. They are shunned by normal society\ndue to their mutations and often horrifying appearance.
+			Brotherhood of Nod\nThe Brotherhood is a religious cult centered around their leader Kane\nand the alien substance Tiberium. They utilize stealth technology\nand guerilla tactics to defeat those who oppose them.
+
+MUTANT:
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 20
+		Prerequisites: ~mubarr, ~techlevel.low
+		Description: Mutant militant
+	Armament:
+		Weapon: Minigun
+
+MWMN:
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 20
+		Prerequisites: ~mubarr, ~techlevel.low
+		Description: Mutant Flamethrower
+	Armament:
+		Weapon: FireballLauncher
+
+MUTANT3:
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 20
+		Prerequisites: ~mubarr, ~techlevel.low
+		Description: Mutant Sergeant
+
+UMAGON:
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 20
+		Prerequisites: ~mubarr, ~techlevel.low
+		Description: A Forgotten commando, She is one of the fiercest warriors of the Forgotten.
+
+CHAMSPY:
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 20
+		Prerequisites: ~mubarr, ~techlevel.low
+		Description: Forgotten Soldiers who wear stealth suits which allow these infantry to seemingly disappear into thin air.
+
+MTMSSL:
+	Inherits: E3
+	RenderSprites:
+		Image: E3
+	Buildable:
+		Prerequisites: ~mubarr, ~techlevel.low
+
+MTCONST:
+	Inherits: GACNST
+	RenderSprites:
+		Image: GAOLDCC1
+	ProvidesPrerequisite@mutants:
+		Factions: mutants
+		Prerequisite: structures.mutants
+	
+GASAND:
+	Buildable:
+		Prerequisites: ~mubarr
+
+GASPOT:
+	Buildable:
+		Prerequisites: ~mubarr
+
+PROC:
+	RenderSprites:
+		FactionImages:
+			mutants: proc.gdi
+
+GASILO:
+	RenderSprites:
+		FactionImages:
+			mutants: gasilo.gdi
+
+MUBARR:
+	Inherits: GAPILE
+	RenderSprites:
+		Image: GAPILE
+	Buildable:
+		Prerequisites: ~anypower, ~structures.mutants
+		Description: Mutant barracks
+	ProvidesPrerequisite:
+		Prerequisite: infantry.mutants, barracks
+
+MUPWR:
+	Inherits: ^Building
+	Inherits@SHAPE: ^1x2Shape
+	RenderSprites:
+		Image: CA0018
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, -512,-512,0
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 10
+		Prerequisites: ~structures.mutants, ~techlevel.low
+		Description: Provides power for other structures.
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Solar Panel
+	Building:
+		Footprint: x x
+		Dimensions: 1, 2
+	Armor:
+		Type: light
+	Health:
+		HP: 50000
+	ProvidesPrerequisite:
+		Prerequisite: anypower
+	RevealsShroud:
+		Range: 4c0
+		MaxHeightDelta: 3
+	Power:
+		Amount: 150
+	PowerTooltip:
+	Targetable:
+		TargetTypes: Ground, Building, C4, SpyInfiltrate
+	ScalePowerWithHealth:
+	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+MURADR:
+	Inherits: NARADR
+	RenderSprites:
+		Image: NARADR
+	Buildable:
+		Prerequisites: ~proc, ~structures.mutants
