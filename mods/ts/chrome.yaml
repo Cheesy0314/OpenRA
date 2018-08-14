@@ -930,3 +930,177 @@ mainmenu-border: dialog.png
 
 dropdown: dialog.png
 	separator: 512,1,1,19
+	
+	
+# ----------------------------------------------------------------------
+# Mutants
+# ----------------------------------------------------------------------
+
+sidebar-mutants: chrome.png
+	background-top: 0,0,235,260
+	background-iconrow: 0,260,235,52
+	background-bottom: 0,312,235,26
+	background-commandbar: 87,461,425,51
+
+sidebar-button-mutants: chrome.png
+	background: 235,119,30,31
+sidebar-button-mutants-hover: chrome.png
+	background: 235,150,30,31
+sidebar-button-mutants-pressed: chrome.png
+	background: 235,181,30,31
+sidebar-button-mutants-highlighted: chrome.png
+	background: 235,212,30,31
+sidebar-button-mutants-highlighted-hover: chrome.png
+	background: 235,243,30,31
+sidebar-button-mutants-highlighted-pressed: chrome.png
+	background: 235,274,30,31
+sidebar-button-mutants-highlighted-disabled: chrome.png
+	background: 235,305,30,31
+sidebar-button-mutants-disabled: chrome.png
+	background: 235,305,30,31
+
+scrollup-buttons-mutants: chrome.png
+	background: 0,338,34,27
+scrollup-buttons-mutants-hover: chrome.png
+	background: 34,338,34,27
+scrollup-buttons-mutants-pressed: chrome.png
+	background: 66,338,34,27
+scrollup-buttons-mutants-highlighted: chrome.png
+	background: 34,338,34,27
+scrollup-buttons-mutants-highlighted-hover: chrome.png
+	background: 34,338,34,27
+scrollup-buttons-mutants-highlighted-pressed: chrome.png
+	background: 66,338,34,27
+scrollup-button-mutants-highlighted-disabled: chrome.png
+	background: 0,338,34,27
+scrollup-buttons-mutants-disabled: chrome.png
+	background: 0,338,34,27
+
+scrolldown-buttons-mutants: chrome.png
+	background: 102,338,34,27
+scrolldown-buttons-mutants-hover: chrome.png
+	background: 136,338,34,27
+scrolldown-buttons-mutants-pressed: chrome.png
+	background: 170,338,34,27
+scrolldown-buttons-mutants-highlighted: chrome.png
+	background: 136,338,34,27
+scrolldown-buttons-mutants-highlighted-hover: chrome.png
+	background: 136,338,34,27
+scrolldown-buttons-mutants-highlighted-pressed: chrome.png
+	background: 170,338,34,27
+scrolldown-button-mutants-highlighted-disabled: chrome.png
+	background: 102,338,34,27
+scrolldown-buttons-mutants-disabled: chrome.png
+	background: 102,338,34,27
+
+radar-mutants: chrome.png
+	insignia: 235,0,164,119
+
+production-icons-mutants: chrome.png
+	building: 416,0,16,16
+	building-disabled: 432,0,16,16
+	building-alert: 448,0,16,16
+	defense: 416,16,16,16
+	defense-disabled: 432,16,16,16
+	defense-alert: 448,16,16,16
+	infantry: 416,32,16,16
+	infantry-disabled: 432,32,16,16
+	infantry-alert: 448,32,16,16
+	vehicle: 416,48,16,16
+	vehicle-disabled: 432,48,16,16
+	vehicle-alert: 448,48,16,16
+	air: 416,64,16,16
+	air-disabled: 432,64,16,16
+	air-alert: 448,64,16,16
+
+order-icons-mutants: chrome.png
+	debug: 265,119,30,31
+	debug-disabled: 295,119,30,31
+	debug-active: 265,119,30,31
+	repair: 265,150,30,31
+	repair-disabled: 295,150,30,31
+	repair-active: 265,150,30,31
+	sell: 265,181,30,31
+	sell-disabled: 295,181,30,31
+	sell-active: 265,181,30,31
+	options: 265,212,30,31
+	options-disabled: 295,212,30,31
+	options-active: 265,212,30,31
+	beacon: 265,243,30,31
+	beacon-disabled: 295,243,30,31
+	beacon-active: 265,243,30,31
+	power: 265,274,30,31
+	power-disabled: 295,274,30,31
+	power-active: 265,274,30,31
+
+power-icons-mutants: chrome.png
+	power-normal: 480,160,16,16
+	power-critical: 496,160,16,16
+
+cash-icons-mutants: chrome.png
+	cash-normal: 480,144,16,16
+	cash-critical: 496,144,16,16
+
+command-icons-mutants: chrome.png
+	attack-move: 304,331,26,26
+	attack-move-disabled: 304,357,26,26
+	attack-move-active: 304,383,26,26
+	attack-move-hover: 304,409,26,26
+	attack-move-active-hover: 304,435,26,26
+	force-move: 330,331,24,24
+	force-move-disabled: 330,357,26,26
+	force-move-active: 330,383,26,26
+	force-move-hover: 330,409,26,26
+	force-move-active-hover: 330,435,26,26
+	force-attack: 356,331,26,26
+	force-attack-disabled: 356,357,26,26
+	force-attack-active: 356,383,26,26
+	force-attack-hover: 356,409,26,26
+	force-attack-active-hover: 356,435,26,26
+	guard: 382,331,24,24
+	guard-disabled: 382,357,26,26
+	guard-active: 382,383,26,26
+	guard-hover: 382,409,26,26
+	guard-active-hover: 382,435,26,26
+	deploy: 408,331,24,24
+	deploy-disabled: 408,357,26,26
+	deploy-active: 408,383,26,26
+	deploy-hover: 408,409,26,26
+	deploy-active-hover: 408,435,26,26
+	scatter: 434,331,26,26
+	scatter-disabled: 434,357,26,26
+	scatter-active: 434,383,26,26
+	scatter-hover: 434,409,26,26
+	scatter-active-hover: 434,435,26,26
+	stop: 460,331,26,26
+	stop-disabled: 460,357,26,26
+	stop-active: 460,383,26,26
+	stop-hover: 460,409,26,26
+	stop-active-hover: 460,435,26,26
+	queue-orders: 486,331,26,26
+	queue-orders-disabled: 486,357,26,26
+	queue-orders-active: 486,383,26,26
+	queue-orders-hover: 486,409,26,26
+	queue-orders-active-hover: 486,435,26,26
+
+stance-icons-mutants: chrome.png
+	attack-anything: 424,176,22,22
+	attack-anything-disabled: 424,198,22,22
+	attack-anything-active: 424,220,22,22
+	attack-anything-hover: 424,242,22,22
+	attack-anything-active-hover: 424,264,22,22
+	defend: 446,176,22,22
+	defend-disabled: 446,198,22,22
+	defend-active: 446,220,22,22
+	defend-hover: 446,242,22,22
+	defend-active-hover: 446,264,22,22
+	return-fire: 468,176,22,22
+	return-fire-disabled: 468,198,22,22
+	return-fire-active: 468,220,22,22
+	return-fire-hover: 468,242,22,22
+	return-fire-active-hover: 468,264,22,22
+	hold-fire: 490,176,22,22
+	hold-fire-disabled: 490,198,22,22
+	hold-fire-active: 490,220,22,22
+	hold-fire-hover: 490,242,22,22
+	hold-fire-active-hover: 490,264,22,22
