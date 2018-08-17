@@ -47,38 +47,38 @@ Actors:
 		Owner: Neutral
 	Actor1: proc
 		Location: 70,-18
-		Owner: Neutral
+		Owner: Nod
 	Actor2: gasilo
 		Location: 66,-20
-		Owner: Neutral
+		Owner: Nod
 	Actor3: gasilo
 		Location: 66,-22
-		Owner: Neutral
+		Owner: Nod
 	Actor4: gacnst
 		Location: 61,-24
-		Owner: Neutral
+		Owner: Nod
 	Actor5: napowr
 		Location: 66,-29
-		Owner: Neutral
+		Owner: Nod
 	Actor6: napowr
 		Location: 64,-31
-		Owner: Neutral
+		Owner: Nod
 	Actor7: napowr
 		Location: 63,-29
-		Owner: Neutral
+		Owner: Nod
 	Actor8: nahand
 		Location: 67,-25
-		Owner: Neutral
+		Owner: Nod
 	Actor9: nalasr
 		Location: 78,-14
-		Owner: Neutral
+		Owner: Nod
 		Facing: 160
 	Actor10: naradr
 		Location: 72,-27
-		Owner: Neutral
+		Owner: Nod
 	Actor11: nalasr
 		Location: 78,-20
-		Owner: Neutral
+		Owner: Nod
 		Facing: 160
 	Actor12: ca0001
 		Location: 92,-8
@@ -136,26 +136,26 @@ Actors:
 		Owner: Neutral
 	Actor30: nasam
 		Location: 70,6
-		Owner: Neutral
+		Owner: Nod
 	Actor31: nasam
 		Location: 75,-9
-		Owner: Neutral
+		Owner: Nod
 	Actor32: nasam
 		Location: 123,26
-		Owner: Neutral
+		Owner: Nod
 	Actor33: nasam
 		Location: 52,9
-		Owner: Neutral
+		Owner: Nod
 	Actor34: nasam
 		Location: 123,29
-		Owner: Neutral
+		Owner: Nod
 	Actor35: nasam
 		Location: 74,30
-		Owner: Neutral
+		Owner: Nod
 		Facing: 118
 	Actor36: nasam
 		Location: 77,30
-		Owner: Neutral
+		Owner: Nod
 		Facing: 108
 	Actor37: cabhut
 		Location: 82,25
@@ -165,108 +165,108 @@ Actors:
 		Owner: Neutral
 	Actor39: naweap
 		Location: 54,-26
-		Owner: Neutral
+		Owner: Nod
 	Actor40: naapwr
 		Location: 61,-33
-		Owner: Neutral
+		Owner: Nod
 	Actor41: naapwr
 		Location: 66,-33
-		Owner: Neutral
+		Owner: Nod
 	Actor42: harv
 		Location: 72,-17
-		Owner: Neutral
+		Owner: Nod
 		Facing: 160
 	Actor43: bggy
 		Location: 56,-9
-		Owner: Neutral
+		Owner: Nod
 		Facing: 229
 	Actor44: bggy
 		Location: 69,-27
-		Owner: Neutral
+		Owner: Nod
 		Facing: 192
 	Actor45: bggy
 		Location: 69,-30
-		Owner: Neutral
+		Owner: Nod
 		Facing: 192
 	Actor46: bggy
 		Location: 121,33
-		Owner: Neutral
+		Owner: Nod
 		Facing: 0
 	Actor47: bggy
 		Location: 59,-19
-		Owner: Neutral
+		Owner: Nod
 		Facing: 224
 	Actor48: e1
 		Location: 113,36
-		Owner: Neutral
+		Owner: Nod
 		Facing: 100
 	Actor49: e1
 		Location: 112,34
-		Owner: Neutral
+		Owner: Nod
 		Facing: 99
 	Actor50: e1
 		Location: 93,53
-		Owner: Neutral
+		Owner: Nod
 		Facing: 98
 	Actor51: e1
 		Location: 98,51
-		Owner: Neutral
+		Owner: Nod
 		Facing: 98
 	Actor52: e1
 		Location: 99,46
-		Owner: Neutral
+		Owner: Nod
 		Facing: 100
 	Actor53: e1
 		Location: 79,-20
-		Owner: Neutral
+		Owner: Nod
 		Facing: 99
 	Actor54: e1
 		Location: 79,-20
-		Owner: Neutral
+		Owner: Nod
 		Facing: 100
 	Actor55: e1
 		Location: 42,5
-		Owner: Neutral
+		Owner: Nod
 		Facing: 100
 	Actor56: e1
 		Location: 41,6
-		Owner: Neutral
+		Owner: Nod
 		Facing: 98
 	Actor57: e1
 		Location: 55,19
-		Owner: Neutral
+		Owner: Nod
 		Facing: 99
 	Actor58: e1
 		Location: 58,16
-		Owner: Neutral
+		Owner: Nod
 		Facing: 100
 	Actor59: e1
 		Location: 59,13
-		Owner: Neutral
+		Owner: Nod
 		Facing: 99
 	Actor60: e1
 		Location: 66,-15
-		Owner: Neutral
+		Owner: Nod
 		Facing: 99
 	Actor61: e1
 		Location: 66,-16
-		Owner: Neutral
+		Owner: Nod
 		Facing: 98
 	Actor62: e1
 		Location: 67,-16
-		Owner: Neutral
+		Owner: Nod
 		Facing: 98
 	Actor63: e1
 		Location: 67,-15
-		Owner: Neutral
+		Owner: Nod
 		Facing: 99
 	Actor64: cyborg
 		Location: 79,-18
-		Owner: Neutral
+		Owner: Nod
 		Facing: 98
 	Actor65: cyborg
 		Location: 79,-15
-		Owner: Neutral
+		Owner: Nod
 		Facing: 99
 	Actor66: tree05
 		Location: 51,8
