@@ -16,12 +16,20 @@ InitObjective = function()
 
 		Trigger.AfterDelay(DateTime.Seconds(2), function()
 			Media.PlaySpeechNotification(GDI, "SamSitesDestroyedDropshipsInbound")
+			SendRescueMission()
 		end)
 
 		Trigger.AfterDelay(DateTime.Seconds(5), function()
 			Media.PlaySpeechNotification(GDI, "DestroyAllNodForcesInTheArea")
 			Trigger.AfterDelay(15, function() GDI.MarkCompletedObjective(SAMObjective) end)
 		end)
+	end)
+end
+
+SendRescueMission = function()
+	OrcaTran = Actor.Create('orcatran.mission', true, {Owner = GDI, Location = Actor370.Location})
+	Trigger.OnAddedToWorld(OrcaTran, function()
+		OrcaTran.Move(Actor367.Location)
 	end)
 end
 
@@ -47,7 +55,7 @@ WorldLoaded = function()
 	Creeps = Player.GetPlayer("Creeps")
         local transports = Reinforcements.Reinforce(GDI, { "orcatran.mission", "orcatran.mission" }, { Actor370.Location, Actor367.Location }, function(actor)
 		Trigger.OnDamaged(actor, function(self, attacker)
-			Trigger.AfterDelay(DateTime.Seconds(1), function() self.Kill() end)
+			Trigger.AfterDelay(10, function() self.Kill() end)
 		end)
 	end)
 
