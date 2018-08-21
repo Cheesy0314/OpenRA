@@ -18,6 +18,8 @@ Players:
 		NonCombatant: True
 		Faction: gdi
 		Allies: GDI
+		LockColor: True
+		Color: F5D378
 		Enemies: Nod
 	PlayerReference@Nod:
 		Name: Nod
@@ -1326,7 +1328,7 @@ Actors:
 	Actor425: bridge2
 		Location: 80,22
 		Owner: Neutral
-Rules: ts|rule/campaign-rules.yaml, ts|rules/campaign-tooltips.yaml, rules.yaml
+Rules: ts|rules/campaign-rules.yaml, ts|rules/campaign-tooltips.yaml, rules.yaml
 	World:
 		GlobalLightingPaletteEffect:
 			Ambient: 0.55

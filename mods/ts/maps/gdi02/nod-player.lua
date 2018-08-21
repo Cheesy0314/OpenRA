@@ -9,10 +9,20 @@ AttackForceVehicle = {
 }
 
 NodInf = { }
+NodVeh = { }
 
 InitAI = function(player)
 	Nod = player
 	InitAttacks()
+end
+
+InitAttacks = function()
+	Trigger.AfterDelay(DateTime.Minutes(1), function()
+		BuildInfantry()
+	end)
+	Trigger.AfterDelay(DateTime.Minutes(3), function()
+		BuildVehicles()
+	end)
 end
 
 BuildInfantry = function()

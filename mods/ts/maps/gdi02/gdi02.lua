@@ -2,8 +2,7 @@ SAMSites = { SAM1, SAM2, SAM3, SAM4, SAM5, SAM6, SAM7 }
 
 BaseBuildings = { ConstructionYard, Power1, Power2, Power3, Power4, WarFactor, HandOfNod, Radar, LaserTurret1, LaserTurret2, Silo1, Silo2, Refinery }
 
-InitObjective = function()
-	Media.PlaySpeechNotification(GDI, "AllSamSitesMustBeDestroyedBeforeDropshipsCanBeDeployed")
+InitObjectives = function()
 	SAMObjective = GDI.AddPrimaryObjective("Destroy SAM sites")
 
 	Utils.Do(SAMSites, function(sam) 
@@ -27,9 +26,27 @@ InitObjective = function()
 end
 
 SendRescueMission = function()
-	OrcaTran = Actor.Create('orcatran.mission', true, {Owner = GDI, Location = Actor370.Location})
-	Trigger.OnAddedToWorld(OrcaTran, function()
-		OrcaTran.Move(Actor367.Location)
+	local flyer = Reinforcements.Reinforce(Creeps, { 'orcatran' }, { Actor370.Location, Actor367.Location }, 30)
+	Trigger.AfterDelay(30, function()
+	Trigger.OnPassengerEntered(flyer, function(trans, pass)
+		if trans.PassengerCount() == 5 then
+			Trigger.OnEnteredProximityTrigger(Actor370.CenterPosition, WDist.FromCells(3), function(actor, tid)
+				if (actor.Type == "orcatran") then
+					actor.Destroy()
+					Trigger.RemoveProximityTrigger(tid)
+				end
+			end)
+			Trigger.AfterDelay(DateTime.Seconds(1), function() trans.Move(Actor370.Location()) end)
+		end
+	end)
+	Trigger.OnEnteredProximityTrigger(Actor367.CenterPosition, WDist.FromCells(1), function(actor, id)
+		if actor.Type == 'orcatran' and actor.Owner == Creeps then
+			Reinforcements.Reinforce(Creeps, Civilians, { "slav", "civ1", "civ2", "e1", "e1" }, 30, function(person)
+				person.EnterTransport(flyer)
+			end)
+			Trigger.RemoveProximityTrigger(id)
+		end
+	end)
 	end)
 end
 
@@ -51,19 +68,17 @@ end
 WorldLoaded = function()
 	GDI = Player.GetPlayer("GDI")
 	Nod = Player.GetPlayer("Nod")
-	InitAI(Nod)
+	--InitAI(Nod)
 	Creeps = Player.GetPlayer("Creeps")
-        local transports = Reinforcements.Reinforce(GDI, { "orcatran.mission", "orcatran.mission" }, { Actor370.Location, Actor367.Location }, function(actor)
-		Trigger.OnDamaged(actor, function(self, attacker)
-			Trigger.AfterDelay(10, function() self.Kill() end)
-		end)
+        local transports = Reinforcements.Reinforce(Creeps, { "orcatran", "orcatran" }, { Actor370.Location, Actor367.Location }, 15)
+	Trigger.AfterDelay(DateTime.Seconds(20), function()
+		Utils.Do(SAMSites, function(site) site.Kill() end)
 	end)
-
         Trigger.OnAllKilled(transports, function() 
 		InitObjectives()
 		Trigger.AfterDelay(DateTime.Seconds(3), function()
 			Media.PlaySpeechNotification(GDI, "ReinforcementsArrived")
-			Reinforcements.Reinforce(GDI, { "mcv", "smech", "smech", "e1", "e1", "e1" }, { Actor370.Location, CPos.New(61, 42) })
+			Reinforcements.Reinforce(GDI, { "mcv", "smech", "smech", "e1", "e1", "e1" }, { Actor370.Location + CVec.New(3,0), CPos.New(61, 42) }, 15)
 		end)
 	end)
 
