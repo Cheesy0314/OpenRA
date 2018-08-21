@@ -3,3 +3,10 @@ World:
                 Scripts: gdi02.lua
         MissionData:
                 Briefing: The Nod forces that attacked Phoenix Base have been traced back to a small base in this sector.\nOrders received from GDI Command state that the Nod base must be destroyed. However, there is a significant civilian population in the immediate area that must be evacuated by ORCA Transport before the fighting gets too heavy.\nBefore the Transports can safely land, all seven SAM sites must be destroyed. Once the civilians have been evacuated, the Nod base can be destroyed.\n\n        - Objective One: Deploy the M.C.V. and begin building a base.\n\n        - Objective Two: Destroy all Nod SAM sites.\n\n        - Objective Three: Destroy the Nod base.
+
+ORCATRAN.mission:
+	Inherits: ORCATRAN
+	-Interactable:
+	-Selectable:
+	Health:
+		HP: 1

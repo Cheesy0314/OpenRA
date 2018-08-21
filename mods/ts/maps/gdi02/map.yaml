@@ -45,38 +45,38 @@ Actors:
 	Actor0: cabhut
 		Location: 78,11
 		Owner: Neutral
-	Actor1: proc
+	Refinery: proc
 		Location: 70,-18
 		Owner: Nod
-	Actor2: gasilo
+	Silo1: gasilo
 		Location: 66,-20
 		Owner: Nod
-	Actor3: gasilo
+	Silo2: gasilo
 		Location: 66,-22
 		Owner: Nod
-	Actor4: gacnst
+	ConstructionYard: gacnst
 		Location: 61,-24
 		Owner: Nod
-	Actor5: napowr
+	Power1: napowr
 		Location: 66,-29
 		Owner: Nod
-	Actor6: napowr
+	Power2: napowr
 		Location: 64,-31
 		Owner: Nod
-	Actor7: napowr
+	Power3: napowr
 		Location: 63,-29
 		Owner: Nod
-	Actor8: nahand
+	HandOfNod: nahand
 		Location: 67,-25
 		Owner: Nod
-	Actor9: nalasr
+	LaserTurret1: nalasr
 		Location: 78,-14
 		Owner: Nod
 		Facing: 160
-	Actor10: naradr
+	Radar: naradr
 		Location: 72,-27
 		Owner: Nod
-	Actor11: nalasr
+	LaserTurret2: nalasr
 		Location: 78,-20
 		Owner: Nod
 		Facing: 160
@@ -134,26 +134,26 @@ Actors:
 	Actor29: ca0020
 		Location: 102,-8
 		Owner: Neutral
-	Actor30: nasam
+	SAM1: nasam
 		Location: 70,6
 		Owner: Nod
-	Actor31: nasam
+	SAM2: nasam
 		Location: 75,-9
 		Owner: Nod
-	Actor32: nasam
+	SAM3: nasam
 		Location: 123,26
 		Owner: Nod
-	Actor33: nasam
+	SAM4: nasam
 		Location: 52,9
 		Owner: Nod
-	Actor34: nasam
+	SAM5: nasam
 		Location: 123,29
 		Owner: Nod
-	Actor35: nasam
+	SAM6: nasam
 		Location: 74,30
 		Owner: Nod
 		Facing: 118
-	Actor36: nasam
+	SAM7: nasam
 		Location: 77,30
 		Owner: Nod
 		Facing: 108
@@ -163,13 +163,13 @@ Actors:
 	Actor38: cabhut
 		Location: 48,-8
 		Owner: Neutral
-	Actor39: naweap
+	WarFactory: naweap
 		Location: 54,-26
 		Owner: Nod
-	Actor40: naapwr
+	Power3: naapwr
 		Location: 61,-33
 		Owner: Nod
-	Actor41: naapwr
+	Power4: naapwr
 		Location: 66,-33
 		Owner: Nod
 	Actor42: harv
