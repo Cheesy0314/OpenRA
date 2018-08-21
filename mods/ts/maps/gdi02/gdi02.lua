@@ -5,31 +5,29 @@ BaseBuildings = { ConstructionYard, Power1, Power2, Power3, Power4, WarFactor, H
 InitObjectives = function()
 	SAMObjective = GDI.AddPrimaryObjective("Destroy SAM sites")
 
-	Utils.Do(SAMSites, function(sam) 
-		Trigger.OnKilled(sam, function()
-			Media.PlaySpeechNotification(GDI, "NodSamSitesDestroyed")
-		end)
-	end)
 
 	Trigger.OnAllKilled(SAMSites, function() 
 
 		Trigger.AfterDelay(DateTime.Seconds(2), function()
-			Media.PlaySpeechNotification(GDI, "SamSitesDestroyedDropshipsInbound")
+			Media.PlaySpeechNotification(GDI, "NodSamSitesDestroyed")
 			SendRescueMission()
 		end)
 
 		Trigger.AfterDelay(DateTime.Seconds(5), function()
 			Media.PlaySpeechNotification(GDI, "DestroyAllNodForcesInTheArea")
+			InitKillEnemy()
 			Trigger.AfterDelay(15, function() GDI.MarkCompletedObjective(SAMObjective) end)
 		end)
 	end)
 end
 
 SendRescueMission = function()
-	local flyer = Reinforcements.Reinforce(Creeps, { 'orcatran' }, { Actor370.Location, Actor367.Location }, 30)
-	Trigger.AfterDelay(30, function()
+	local flyer = Actor.Create("orcatran", true, {Owner = GDI, Location = Actor370.Location + CVec.New(4,0)})
+	flyer.Move(Actor367.Location - CVec.New(1,0))
+	flyer.Land(Actor367)
+	
 	Trigger.OnPassengerEntered(flyer, function(trans, pass)
-		if trans.PassengerCount() == 5 then
+		if trans.PassengerCount == 5 then
 			Trigger.OnEnteredProximityTrigger(Actor370.CenterPosition, WDist.FromCells(3), function(actor, tid)
 				if (actor.Type == "orcatran") then
 					actor.Destroy()
@@ -39,29 +37,20 @@ SendRescueMission = function()
 			Trigger.AfterDelay(DateTime.Seconds(1), function() trans.Move(Actor370.Location()) end)
 		end
 	end)
-	Trigger.OnEnteredProximityTrigger(Actor367.CenterPosition, WDist.FromCells(1), function(actor, id)
-		if actor.Type == 'orcatran' and actor.Owner == Creeps then
-			Reinforcements.Reinforce(Creeps, Civilians, { "slav", "civ1", "civ2", "e1", "e1" }, 30, function(person)
-				person.EnterTransport(flyer)
+	Trigger.OnEnteredProximityTrigger(Actor367.CenterPosition, WDist.FromCells(5), function(actor, id)
+		if actor.Type == 'orcatran' then
+			Trigger.AfterDelay(DateTime.Seconds(5), function()
+				Reinforcements.Reinforce(Creeps, { "slav", "civ1", "civ2", "e1", "e1" }, { Actor375.Location + CVec.New(0,1), Actor380.Location }, 30, function(person)
+					Trigger.AfterDelay(15,  function() person.EnterTransport(actor) end)
+				end)
 			end)
 			Trigger.RemoveProximityTrigger(id)
 		end
-	end)
 	end)
 end
 
 InitKillEnemy = function()
 	KillEnemy = GDI.AddPrimaryObjective("Destroy all Nod forces.")
-	local units = Nod.GetGroundAttackers()
-	for i,v in pairs(BaseBuildings) do
-		table.insert(units, v)
-	end
-
-	Trigger.OnAllKilled(units, function() 
-		Trigger.AfterDelay(DateTime.Seconds(3), function()
-			GDI.MarkCompletedObjective(KillEnemy) 
-		end)
-	end)
 end
 
 
