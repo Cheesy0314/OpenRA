@@ -7,7 +7,13 @@ WorldLoaded = function()
 		Trigger.OnIdle(boat, function() boat.Hunt() end)
 	end)
 	Trigger.OnKilled(Actor274, function() 
-		Reinforcements.ReinforceWithTransport(GDI, "lst", {"2tnk","2tnk","jeep","mcv","4tnk"}, {CPos.New(35, 128), Actor299.Location},{CPos.New(35, 128)})
-
+		Reinforcements.ReinforceWithTransport(GDI, "lst", {"2tnk","2tnk","jeep","mcv","4tnk"}, {CPos.New(35, 128), Actor299.Location - CVec.New(0,2)},{CPos.New(35, 128)})
+		Trigger.AfterDelay(DateTime.Minutes(2), function()
+			TurnOnAI()
+		end)
 	end)
+end
+
+TurnOnAI = function()
+	print("AI is on")
 end
