@@ -189,18 +189,63 @@ ActivateTriggers = function()
                         actor.Destroy()
                 end
         end)
+		
+
+end
+
+SendFireMission = function(target)
+	Media.DisplayMessage("Hold tight, I'll knock that out for you.", "Pilot", Coalition.Color)
+	local fighter = Actor.Create("phant", true, {Owner = Coalition, Location = EnglishBaseEntry.Location })
+	Trigger.AfterDelay(DateTime.Seconds(1), function()
+	--fighter.Move(target.Location)
+	fighter.Attack(target)
+	Trigger.OnKilled(target, function()
+		fighter.Move(EnglishBaseEntry.Location)
+		Trigger.AfterDelay(DateTime.Seconds(1), function() Trigger.OnIdle(fighter, function() fighter.Destroy() end) end)
+	end)
+	end)
 end
 
 SendAlliedForces = function()
 	local ChopperTeam = { "sniper" }
-	local InsertionPath = { GermanBaseEntry.Location, GermanHPad.Location, Beach.Location }
+	local InsertionPath = { EnglishBaseEntry.Location, EnglishHPad.Location, Beach.Location }
+	local ExitPath = { EnglishBaseEntry.Location }
 	local InsertionHelicopterType = 'tran'
 	Reinforcements.ReinforceWithTransport(Coalition, InsertionHelicopterType, ChopperTeam, InsertionPath, ExitPath)
 	Trigger.AfterDelay(DateTime.Seconds(1), function()
 		local chopper =  Coalition.GetActorsByType("tran")
 		Trigger.OnPassengerExited(chopper[1], function(trans, sniper) 
 			sniper.Owner = GDI
+			Trigger.OnEnteredProximityTrigger(Actor359.CenterPosition, WDist.FromCells(10), function(target, id)
+				if (target == sniper) then
+					Trigger.RemoveProximityTrigger(id)
+					SendFireMission(Actor359)
+				end
+			end)
+			
+			Trigger.OnEnteredProximityTrigger(Actor360.CenterPosition, WDist.FromCells(10), function(target, id)
+				if (target == sniper) then
+					Trigger.RemoveProximityTrigger(id)
+					SendFireMission(Actor360)
+				end
+			end)
+			
+			Trigger.OnEnteredProximityTrigger(Actor362.CenterPosition, WDist.FromCells(10), function(target, id)
+				if (target == sniper) then
+					Trigger.RemoveProximityTrigger(id)
+					SendFireMission(Actor362)
+				end
+			end)
 		end)
+	end)
+	
+	Trigger.OnEnteredProximityTrigger(Actor402.CenterPosition, WDist.FromCells(3), function(actor, id)
+		if (actor.Owner == GDI) then
+			Reinforcements.Reinforce(Coalition, { "2tnk", "2tnk", "jeep", "4tnk", "apc", "e6", "e1r1", "e1r1", "e2", "e6" }, {CPos.New(1,52), Actor402.Location}, 10, function(actor)
+				actor.Owner = GDI
+			end)
+			Trigger.RemoveProximityTrigger(id)
+		end
 	end)
 
 end
@@ -208,13 +253,15 @@ end
 
 WorldLoaded = function()
 	GDI = Player.GetPlayer("Spain")
-	Soviet = Player.GetPlayer("Russia")
-	Coalition = Player.GetPlayer("Germany")
+	Soviet = Player.GetPlayer("USSR")
+	Coalition = Player.GetPlayer("England")
 	Creeps = Player.GetPlayer("Creeps")
 	Civilians = Player.GetPlayer("Neutral")
 	ActivateShipments()
 	ActivateTriggers()
 	SendAlliedForces()
-	Camera.Position = GermanHPad.CenterPosition
+	Camera.Position = EnglishHPad.CenterPosition
 	ReconObj = GDI.AddPrimaryObjective("Find allied operative in south western town.")
+	Media.DisplayMessage("Commander, air assets will assist you until more forces can arrive.", "Command", Coalition.Color)
+
 end

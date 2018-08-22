@@ -1,0 +1,10 @@
+TankBuster:
+	Inherits: Maverick
+	Warhead@1Dam: SpreadDamage
+		Damage: 20000
+		Versus:
+			None: 30
+			Wood: 90
+			Light: 100
+			Heavy: 115
+			Concrete: 110

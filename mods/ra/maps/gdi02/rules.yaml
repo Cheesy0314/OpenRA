@@ -2,8 +2,30 @@ World:
 	LuaScript:
 		Scripts: gdi02.lua
 	MissionData:
-		Briefing: Goodwork in the Balkins, glad to see your command skills are still sharp.\n\nYour next mission is to netralize a small Soviet turned Mercenary force that has set up shop in the Russian Stepps.\n\nObjectives    -Take your commando and move to the Southwest village and make contact with local operatives.\n   -Once contact is made, and the situation assessed, we will send reinforcements for you.\n   -Destroy all forces in the area\n\n\nKeep a lookout for anything odd, and use discretion. This situation remains sensitive, and out existance is not \"official\"...\n\nThat is all commander. 
+		Briefing: Goodwork in the Balkins, glad to see your command skills are still sharp.\n\nYour next mission is to netralize a small Soviet turned Mercenary force that has set up shop in the Russian Stepps.\n\nObjectives	-Take your commando and move to the Southwest village and make contact with local operatives.\n   -Once contact is made, and the situation assessed, we will send reinforcements for you.\n   -Destroy all forces in the area\n\n\nKeep a lookout for anything odd, and use discretion. This situation remains sensitive, and out existance is not \"official\"...\n\nThat is all commander. 
 
 Player:
 	PlayerResources:
 		DefaultCash: 5000
+
+PHANT:
+	Inherits: MIG
+	RenderSprites:
+		Image: mig
+	Armament:
+		Weapon: TankBuster
+		LocalOffset: 0,-640,0, 0,640,0
+		LocalYaw: -40, 24
+		-PauseOnCondition:
+	Aircraft:
+		CruiseAltitude: 2900
+		InitialFacing: 192
+		TurnSpeed: 6
+		Speed: 350
+		RepulsionSpeed: 40
+		MaximumPitch: 56
+	Health:
+		HP: 200000
+	Armor:
+		Type: Heavy
+	-AmmoPool:
