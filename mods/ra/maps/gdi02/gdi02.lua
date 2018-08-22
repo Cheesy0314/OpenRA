@@ -54,21 +54,21 @@ NextLocation = {
 }
 
 ActivateShipments = function()
-	local forces = Reinforcements.Reinforce(Soviet, { "truk" }, SouthEastToPrison, 30, function(truck)
+	Reinforcements.Reinforce(Soviet, { "truk" }, SouthEastToPrison, 30, function(truck)
+		ConvoyTuck = truck[1]
 		BeginTransport = true
 		CurrentTruckLocation = "prison"
 		MoveShippment()
 	end)
-	ConvoyTruck = forces[1]
 	Trigger.OnKilled(ConvoyTruck, function(truck, killer)
 		BeginTransport = false
 		if BioLabNotCaptured then
-			local newTruck = Reinforcements.Reinforce(Soviet, { "truk" }, SouthEastToPrison, 30, function(trans) 
+			Reinforcements.Reinforce(Soviet, { "truk" }, SouthEastToPrison, 30, function(trans) 
+				ConvoyTruck = trans[1]
 				BeginTransport = true 
 				CurrentTruckLocation = "prison"
 				MoveShippment()
 			end)
-			ConvoyTruck = newTruck[1]
 		end
 
 		if not killer.IsDead() then
