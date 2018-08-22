@@ -194,10 +194,9 @@ end
 SendAlliedForces = function()
 	local forces = Reinforcements.ReinforceWithTransport(Coalition, "tran", { "sniper" }, { GermanBaseEntry.Location, Beach.Location }, nil, function(transport, peoples)
 		chopper.UnloadPassengers()
-	end)
-	local chopper = forces[1]
-	Trigger.OnPassengerExited(chopper, function(trans,sniper)
-		Trigger.AfterDelay(10, function() sniper.Owner = GDI end)
+		Trigger.OnPassengerExited(chopper, function(trans,sniper)
+			Trigger.AfterDelay(10, function() sniper.Owner = GDI end)
+		end)
 	end)
 end
 

@@ -65,10 +65,6 @@ Actors:
 	Actor9: tent
 		Owner: Germany
 		Location: 51,60
-	Actor10: tran
-		Owner: Germany
-		Location: 53,62
-		Facing: 92
 	GermanHPad: waypoint
 		Owner: Neutral
 		Location: 54,63
