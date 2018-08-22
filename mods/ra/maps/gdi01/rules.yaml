@@ -8,24 +8,153 @@ Player:
 	PlayerResources:
 		DefaultCash: 5000
 
+E2:
+	Buildable:
+		Prerequisites: ~tent
+
 E3:
 	Buildable:
 		Prerequisites: ~disabled
+
 E7:
 	Buildable:
 		Prerequisites: ~disabled
+
 SNIPER:
 	Buildable:
 		Prerequisites: ~atek
+	Tooltip:
+		Name: Sniper Commando
+		GenericName: Commando
+	Valued:
+		Cost: 1200
+	Demolition:
+		DetonationDelay: 45
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
 1TNK:
 	Buildable:
 		Prerequisites: ~disabled
+
 2TNK:
 	Buildable:
 		Prerequisites: ~tent
+
 3TNK:
 	Buildable:
 		Prerequisites: ~disabled
+
 4TNK:
 	Buildable:
 		Prerequisites: ~fix
+V2RL:
+	Buildable:
+		Prerequisites: dome, ~vehicles.allies
+ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+
+MNLY:
+	Buildable:
+		Prerequisites: ~disabled
+
+APC:
+	Buildable:
+		Prerequisites: tent, ~vehicles.allies
+
+MGG:
+	Buildable:
+		Prerequisites: ~disabled
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+TTNK:
+	Buildable:
+		Prerequisites: ~disabled
+CTNK:
+	Buildable:
+		Prerequisites: ~disabled
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+DTRK:
+	Buildable:
+		Prerequisites: ~disabled
+HIND:
+	Buildable:
+		Prerequisites: ~disabled
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+E2R1:
+	Inherits: E2
+	RenderSprites:
+		Image: E2
+	ProducibleWithLevel:
+		Prerequisites: techlevel.infonly
+		InitialLevels: 1
+	-Buildable:
+HPAD:
+	ParatroopersPower@paratroopers:
+		OrderName: SovietParatroopers
+		Prerequisites: aircraft.allies
+		Icon: paratroopers
+		ChargeInterval: 7500
+		Description: Paratroopers
+		LongDesc: A Badger drops a squad of infantry\nanywhere on the map.
+		DropItems: E1R1,E1R1,E1R1,E2R1,E2R1
+		ReinforcementsArrivedSpeechNotification: ReinforcementsArrived
+		SelectTargetSpeechNotification: SelectTarget
+		AllowImpassableCells: false
+		QuantizedFacings: 8
+		CameraActor: camera.paradrop
+		DisplayBeacon: true
+		BeaconPoster: pinficon
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles
+	AirstrikePower@parabombs:
+		OrderName: UkraineParabombs
+		Prerequisites: aircraft.allies
+		Icon: parabombs
+		ChargeInterval: 7500
+		Description: Parabombs
+		LongDesc: A squad of Badgers drop parachuted\nbombs on your target.
+		SelectTargetSpeechNotification: SelectTarget
+		CameraActor: camera
+		CameraRemoveDelay: 150
+		UnitType: badr.bomber
+		QuantizedFacings: 8
+		DisplayBeacon: true
+		BeaconPoster: pbmbicon
+		SquadSize: 3
+		SquadOffset: 1792,1792,0
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles
+
+CYCL:
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 10
+		Prerequisites: fact, ~structures.allies, ~techlevel.low
+		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
+	Valued:
+		Cost: 25
+	CustomSellValue:
+		Value: 0
+	Health:
+		HP: 10000

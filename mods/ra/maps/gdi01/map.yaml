@@ -39,8 +39,11 @@ Players:
 	PlayerReference@Turkey:
 		Name: Turkey
 		Playable: False
-		Faction: allies
-		Enemies: Creeps
+		LockColor: True
+		LockTeam: True
+		LockFaction: True
+		Faction: soviet
+		Enemies: Creeps, Germany, Spain
 Actors:
 	Actor0: mine
 		Owner: Neutral
