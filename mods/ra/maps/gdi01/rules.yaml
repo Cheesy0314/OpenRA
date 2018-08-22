@@ -1,0 +1,31 @@
+World:
+	LuaScript:
+		Scripts: gdi01.lua
+	MissionData:
+		Briefing: Welcome Commander to the UN's newest special ops group, and congratulations on your selection.\nYour first mission will be to pacify some remaining rebels in the Greek penisula, this should be an easy task for someone as decorated as yourself.\n\nTake the beachhead first, then locate and destroy the rebel base.\n\nThat is all Commander, goodluck.
+
+Player:
+	PlayerResources:
+		DefaultCash: 5000
+
+E3:
+	Buildable:
+		Prerequisites: ~disabled
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+SNIPER:
+	Buildable:
+		Prerequisites: ~atek
+1TNK:
+	Buildable:
+		Prerequisites: ~disabled
+2TNK:
+	Buildable:
+		Prerequisites: ~tent
+3TNK:
+	Buildable:
+		Prerequisites: ~disabled
+4TNK:
+	Buildable:
+		Prerequisites: ~fix
