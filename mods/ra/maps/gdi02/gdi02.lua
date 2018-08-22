@@ -35,6 +35,12 @@ ForcesToSend = {
 	{ "4tnk", "2tnk", "1tnk"}
 }
 
+Terminus = {
+	prison = Actor401.CenterPosition,
+	base = Actor275.CenterPosition,
+	radar = Actor259.CenterPosition
+}
+
 ShipmentsLeaveMap = {
 	{ Actor401.Location, Actor123.Location, Actor254.Location, Actor267.Location, Actor268.Location, Actor269.Location, Actor270.Location },
 	{ Actor401.Location, Actor123.Location, Actor254.Location, Actor255.Location, Actor264.Location, Actor265.Location, Actor266.Location },
@@ -54,61 +60,55 @@ NextLocation = {
 }
 
 ActivateShipments = function()
+	BuildTruck()
+end
+
+BuildTruck = function()
 	Reinforcements.Reinforce(Soviet, { "truk" }, SouthEastToPrison, 30, function(truck)
-		ConvoyTuck = truck[1]
+		ConvoyTuck = truck
 		BeginTransport = true
 		CurrentTruckLocation = "prison"
-		MoveShippment()
-	end)
-	Trigger.OnKilled(ConvoyTruck, function(truck, killer)
-		BeginTransport = false
-		if BioLabNotCaptured then
-			Reinforcements.Reinforce(Soviet, { "truk" }, SouthEastToPrison, 30, function(trans) 
-				ConvoyTruck = trans[1]
-				BeginTransport = true 
-				CurrentTruckLocation = "prison"
-				MoveShippment()
-			end)
-		end
+		MoveShippment(truck)
+		Trigger.OnKilled(truck, function(actor, killer)
+			BeginTransport = false
+			if BioLabNotCaptured then
+				BuildTruck()
+			end
 
-		if not killer.IsDead() then
-			SendStrikeTeam(killer)
-		end
-	end)
-
-	Trigger.AfterDelay(DateTime.Minutes(3), function()
-		ExportShipments()
+			if not killer.IsDead() then
+				SendStrikeTeam(killer)
+			end
+		end)
 	end)
 end
 
-MoveShippment = function()
-	if not ConvoyTruck.IsDead() then
+MoveShippment = function(truck)
+	if truck ~= nil then
+		ConvoyTruck = truck
+	else
+		return
+	end
+	if not ConvoyTruck.IsDead then
 		if CurrentTruckLocation == "prison" and MovementCounter > 5 then
 			local attackPath = Utils.Random(PoisonTownPath)
                         Utils.Do(attackPath, function(waypoint)
                         	ConvoyTruck.Move(waypoint, 1)
                         end)
-			Trigger.OnEnteredProximityTrigger(attackPath[#attackPath], WDist.FromCells(3), function(truck, id)
-				if truck == ConvoyTruck then
-					truck.Kill()
-					MovementCounter = 0
-					if attackPath[#attackPath] == Actor402.Location then
-						PoisonTown("south")
-					else
-						PoisonTown("north")
-					end
-				end
-			end)
+			Trigger.AfterDelay(DateTime.Seconds(120), function() ConvoyTruck.Kill() end )
 		else
 			Trigger.AfterDelay(DateTime.Seconds(5), function()
+				if not ConvoyTruck.IsDead then
 				Utils.Do(ShippmentPaths[CurrentTruckLocation], function(waypoint)
-					ConvoyTruck.Move(waypoint, 1)
+					if not ConvoyTruck.IsDead then
+						ConvoyTruck.Move(waypoint, 1)
+					end
 				end)
+				end
 				local nextTruckLocation = NextLocation[CurrentTruckLocation]
 				CurrentTruckLocation = nextTruckLocation
 				Trigger.OnEnteredProximityTrigger(Terminus[nextTruckLocation], WDist.FromCells(3), function(transport, id)
 					if transport == ConvoyTruck then
-						Trigger.AfterDelay(DateTime.Minutes(2), function() MoveShippment() end)
+						Trigger.AfterDelay(DateTime.Minutes(2), function() MoveShippment(ConvoyTruck) end)
 						Trigger.RemoveProximityTrigger(id)
 					end
 				end)
@@ -192,9 +192,12 @@ ActivateTriggers = function()
 end
 
 SendAlliedForces = function()
-	Reinforcements.ReinforceWithTransport(Coalition, "tran", { "sniper" }, { GermanBaseEntry.Location, Beach.Location }, { GermanBaseEntry.Location }, function(chopper, snipers) 
-		local sniper = snipers[1]
-		AfterDelay(10, function() sniper.Owner = GDI end)
+	local forces = Reinforcements.ReinforceWithTransport(Coalition, "tran", { "sniper" }, { GermanBaseEntry.Location, Beach.Location }, nil, function(transport, peoples)
+		chopper.UnloadPassengers()
+	end)
+	local chopper = forces[1]
+	Trigger.OnPassengerExited(chopper, function(trans,sniper)
+		Trigger.AfterDelay(10, function() sniper.Owner = GDI end)
 	end)
 end
 
@@ -208,5 +211,6 @@ WorldLoaded = function()
 	ActivateShipments()
 	ActivateTriggers()
 	SendAlliedForces()
+	Camera.Position = Beach.CenterPosition + WVec.New(0, 3, 0)
 	ReconObj = GDI.AddPrimaryObjective("Find allied operative in south western town.")
 end
