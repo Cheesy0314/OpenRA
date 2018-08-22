@@ -640,3 +640,4 @@ cycl:
 	damaged-idle:
 		Start: 16
 		Length: 16
+	icon: cyclicon

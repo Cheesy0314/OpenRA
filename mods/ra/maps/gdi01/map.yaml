@@ -661,25 +661,25 @@ Actors:
 	Actor205: dome
 		Owner: Turkey
 		Location: 62,5
-	Actor206: weap
+	SovietWarFactory1: weap
 		Owner: Turkey
 		Location: 53,11
-	Actor207: weap
+	SovietWarFactory2: weap
 		Owner: Turkey
 		Location: 59,11
-	Actor208: tent
+	SovietBarracks1: tent
 		Owner: Turkey
 		Location: 36,3
-	Actor209: tent
+	SovietBarracks2: tent
 		Owner: Turkey
 		Location: 34,3
-	Actor210: tent
+	SovietBarracks3: tent
 		Owner: Turkey
 		Location: 32,3
-	Actor211: hpad
+	SovietHeliPad1: hpad
 		Owner: Turkey
 		Location: 38,8
-	Actor212: hpad
+	SovietHeliPad2: hpad
 		Owner: Turkey
 		Location: 40,8
 	Actor214: silo
