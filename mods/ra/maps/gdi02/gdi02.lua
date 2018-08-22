@@ -192,12 +192,17 @@ ActivateTriggers = function()
 end
 
 SendAlliedForces = function()
-	local forces = Reinforcements.ReinforceWithTransport(Coalition, "tran", { "sniper" }, { GermanBaseEntry.Location, Beach.Location }, nil, function(transport, peoples)
-		chopper.UnloadPassengers()
-		Trigger.OnPassengerExited(chopper, function(trans,sniper)
-			Trigger.AfterDelay(10, function() sniper.Owner = GDI end)
+	local ChopperTeam = { "sniper" }
+	local InsertionPath = { GermanBaseEntry.Location, GermanHPad.Location, Beach.Location }
+	local InsertionHelicopterType = 'tran'
+	Reinforcements.ReinforceWithTransport(Coalition, InsertionHelicopterType, ChopperTeam, InsertionPath, ExitPath)
+	Trigger.AfterDelay(DateTime.Seconds(1), function()
+		local chopper =  Coalition.GetActorsByType("tran")
+		Trigger.OnPassengerExited(chopper[1], function(trans, sniper) 
+			sniper.Owner = GDI
 		end)
 	end)
+
 end
 
 
@@ -210,6 +215,6 @@ WorldLoaded = function()
 	ActivateShipments()
 	ActivateTriggers()
 	SendAlliedForces()
-	Camera.Position = Beach.CenterPosition + WVec.New(0, 3, 0)
+	Camera.Position = GermanHPad.CenterPosition
 	ReconObj = GDI.AddPrimaryObjective("Find allied operative in south western town.")
 end
