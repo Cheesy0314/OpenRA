@@ -7,7 +7,7 @@ ProducedUnitTypes =
 
 WorldLoaded = function()
 	GDI = Player.GetPlayer("Spain")
-	Germany = Player.GetPlayer("Germany")
+	Coalition = Player.GetPlayer("Germany")
 	KillObj = GDI.AddPrimaryObjective("Destroy Enemy Forces")
 	Camera.Position = Actor274.CenterPosition
 	Trigger.AfterDelay(DateTime.Seconds(1), SendStrikeFighters)

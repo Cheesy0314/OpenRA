@@ -124,7 +124,7 @@ PHANT:
 		Image: mig
 	Buildable:
 		Prerequisites: ~disabled
-	Tooltips:
+	Tooltip:
 		Name: Phantom II
 	Armament:
 		Weapon: TankBuster

@@ -34,7 +34,7 @@ TankBuster:
 		InvalidTargets: Ship, Structure, Bridge
 
 AirstrikeNapalm:
-	Inherits: Napalm
+	Inherits: ^FireWeapon
 	ReloadDelay: 20
 	Range: 4c512
 	Burst: 2
