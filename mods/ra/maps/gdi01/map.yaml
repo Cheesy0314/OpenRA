@@ -1223,3 +1223,4 @@ Actors:
 		Facing: 92
 		TurretFacing: 92
 Rules: ra|rules/campaign-palettes.yaml, ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml
+Weapons: weapons.yaml

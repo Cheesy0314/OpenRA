@@ -10,7 +10,7 @@ TankBuster:
 		Damage: 20000
 		Versus:
 			None: 200
-			Wood: 140
+			Wood: 140 
 			Light: 125
 			Heavy: 115
 			Concrete: 90
@@ -52,3 +52,4 @@ AirstrikeNapalm:
 			Light: 65
 			Heavy: 30
 			Concrete: 55
+	
