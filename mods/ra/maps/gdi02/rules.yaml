@@ -7,7 +7,7 @@ World:
 	LuaScript:
 		Scripts: gdi02.lua
 	MissionData:
-		Briefing: Goodwork in the Balkins, glad to see your command skills are still sharp.\n\n\nYour next mission is to netralize a small Soviet turned Mercenary force that has set up shop in the Russian Stepps.\n\nObjectives\n\n	  -Take your commando and move to the Southwest village and make contact with local operatives.\n	  -Once contact is made, and the situation assessed, we will send reinforcements for you.\n	  -Destroy all forces in the area\n\n\nKeep a lookout for anything odd, and use discretion. This situation remains sensitive, and out existance is not \"official\"...\n\nThat is all commander. 
+		Briefing: Goodwork in the Balkins, glad to see your command skills are still sharp.\n\n\nYour next mission is to netralize a small Soviet turned Mercenary force that has set up shop in the Russian Stepps.\n\nObjectives\n\n	  -Take your commando and move to the Southwest village and make contact with local operatives.\n	  -Once contact is made, and the situation assessed, we will send reinforcements for you.\n	  -Destroy all forces in the area\n\n\nKeep a lookout for anything odd, and use discretion. This situation remains secret as out existance is not public...\n\nThat is all commander. 
 
 Player:
 	PlayerResources:
@@ -108,6 +108,12 @@ PDOX:
 MSLO:
 	Buildable:
 		Prerequisites: ~disabled
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+HELI:
+	Buildable:
+		Prerequisites: hpad
 
 E2R1:
 	Inherits: E2
@@ -119,11 +125,8 @@ E2R1:
 	-Buildable:
 
 PHANT.napalm:
-	Inherits: BADR.Bomber
-	Aircraft:
-		Speed: 300
-	AttackPlane:
-		FacingTolerance: 20
+	Inherits: ^NeutralPlane
+	AttackBomber:
 	Armament:
 		Weapon: AirstrikeNapalm
 		LocalOffset: 0,-640,0, 0,640,0
@@ -142,6 +145,13 @@ PHANT.napalm:
 		Name: Phantom II Bomber
 	SpawnActorOnDeath:
 		Actor: MIG.Husk
+	-Selectable:
+	-Voiced:
+	-EjectOnDeath:
+	RejectsOrders:
+	GivesExperience:
+		Experience: 1200
+	Interactable:
 	Contrail@1:
 		Offset: -598,-683,0
 	Contrail@2:
@@ -153,7 +163,7 @@ PHANT.napalm:
 	RenderSprites:
 		Image: mig
 	AmmoPool:
-		Ammo: 12
+		Ammo: 6
 
 powerproxy.napalmstrike:
 	AlwaysVisible:
@@ -161,7 +171,7 @@ powerproxy.napalmstrike:
 		Icon: parabombs
 		Description: Napalm Strike (Single Use)
 		LongDesc: A fighter-bomber delivers a payload of napalm to designated position.
-		OneShot: true
+		OneShot: false
 		AllowMultiple: true
 		UnitType: phant.napalm
 		SelectTargetSpeechNotification: SelectTarget
@@ -171,6 +181,7 @@ powerproxy.napalmstrike:
 		CameraActor: camera
 		CameraRemoveDelay: 150
 		ArrowSequence: arrow
+		ChargeInterval: 1000
 		ClockSequence: clock
 		CircleSequence: circles
 
