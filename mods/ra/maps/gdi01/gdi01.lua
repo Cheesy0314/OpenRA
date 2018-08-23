@@ -18,13 +18,16 @@ WorldLoaded = function()
 	Turkey = Player.GetPlayer("Turkey")
 	KillObj = GDI.AddPrimaryObjective("Destroy Enemy Forces")
 	Camera.Position = Actor274.CenterPosition
-	Trigger.AfterDelay(DateTime.Seconds(1), SendStrikeFighters)
+	FirstStrike = Actor.Create("powerproxy.napalmstrike", true, {Owner = GDI})
+	Media.DisplayMessage("Airstrike the enemy base to begin invasion")
+
 	Trigger.OnKilled(Actor274, function() 
 		Reinforcements.ReinforceWithTransport(GDI, "lst", {"2tnk","2tnk","jeep","mcv","4tnk"}, {CPos.New(35, 128), Actor302.Location},{CPos.New(35, 128)})
 		Trigger.AfterDelay(DateTime.Minutes(2), function()
 			TurnOnAI()
 		end)
 	end)
+	
 end
 
 SendStrikeFighters = function()
@@ -67,10 +70,8 @@ TurnOnAI = function()
 		Trigger.OnProduction(production.factory, function(_, a) BindActorTriggers(a) end)
 		ProduceUnits(production)
 	end)
-
 	SendRandomForces()
 end
-
 
 ProduceUnits = function(t)
 	local factory = t.factory
@@ -88,7 +89,9 @@ end
 SendRandomForces = function()
 	local attackData = Utils.Random(Points)
 	if attackData.withTrans then 
-		Reinforcements.ReinforceWithTransport(Turkey, attackData.trans, attackData.units, { attackData.point, attackData.landing }, { attackData.point }, function(trans, units)
+		local reinf = Reinforcements.ReinforceWithTransport(Turkey, attackData.trans, attackData.units, { attackData.point, attackData.landing }, { attackData.point })
+		local units = reinf[2]
+		Trigger.AfterDelay(14, function()
 			Utils.Do(units, function(unit)
 				Trigger.OnAddedToWorld(unit, function(self)
 					unit.AttackMove(Actor309.Location)
@@ -101,4 +104,6 @@ SendRandomForces = function()
 			Trigger.OnIdle(actor, function() actor.Hunt() end)
 		end)
 	end
+
+	Trigger.AfterDelay(DateTime.Minutes(3), SendRandomForces)
 end
