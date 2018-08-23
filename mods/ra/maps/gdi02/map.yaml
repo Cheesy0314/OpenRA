@@ -1,6 +1,6 @@
 MapFormat: 11
 RequiresMod: ra
-Title: Recon Work
+Title: 2: Recon Work
 Author: Cheesy314
 Tileset: TEMPERAT
 MapSize: 66,66
@@ -696,7 +696,7 @@ Actors:
 		SubCell: 3
 		Facing: 92
 		TurretFacing: 92
-	Actor235: sniper
+	Actor235: e1r1
 		Owner: USSR
 		Location: 14,59
 		SubCell: 3

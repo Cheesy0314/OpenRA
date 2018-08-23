@@ -212,26 +212,28 @@ SendAlliedForces = function()
 	local ExitPath = { EnglishBaseEntry.Location }
 	local InsertionHelicopterType = 'tran'
 	Reinforcements.ReinforceWithTransport(Coalition, InsertionHelicopterType, ChopperTeam, InsertionPath, ExitPath)
+	
 	Trigger.AfterDelay(DateTime.Seconds(1), function()
 		local chopper =  Coalition.GetActorsByType("tran")
 		Trigger.OnPassengerExited(chopper[1], function(trans, sniper) 
 			sniper.Owner = GDI
+			Media.PlaySpeechNotification(GDI, "ReinforcementsArrived")
 			Trigger.OnEnteredProximityTrigger(Actor359.CenterPosition, WDist.FromCells(10), function(target, id)
-				if (target == sniper) then
+				if (target == sniper and not Actor359.IsDead) then
 					Trigger.RemoveProximityTrigger(id)
 					SendFireMission(Actor359)
 				end
 			end)
 			
 			Trigger.OnEnteredProximityTrigger(Actor360.CenterPosition, WDist.FromCells(10), function(target, id)
-				if (target == sniper) then
+				if (target == sniper and not Actor360.IsDead ) then
 					Trigger.RemoveProximityTrigger(id)
 					SendFireMission(Actor360)
 				end
 			end)
 			
 			Trigger.OnEnteredProximityTrigger(Actor362.CenterPosition, WDist.FromCells(10), function(target, id)
-				if (target == sniper) then
+				if (target == sniper and not Actor362.IsDead) then
 					Trigger.RemoveProximityTrigger(id)
 					SendFireMission(Actor362)
 				end
@@ -241,15 +243,33 @@ SendAlliedForces = function()
 	
 	Trigger.OnEnteredProximityTrigger(Actor402.CenterPosition, WDist.FromCells(3), function(actor, id)
 		if (actor.Owner == GDI) then
-			Reinforcements.Reinforce(Coalition, { "2tnk", "2tnk", "jeep", "4tnk", "apc", "e6", "e1r1", "e1r1", "e2", "e6" }, {CPos.New(1,52), Actor402.Location}, 10, function(actor)
-				actor.Owner = GDI
-			end)
+			Media.PlaySpeechNotification(GDI, "ReinforcementsArrived")
+			Reinforcements.Reinforce(GDI, { "2tnk", "2tnk", "jeep", "4tnk", "apc", "e6", "e1r1", "e1r1", "e2", "e6" }, {CPos.New(1,52), Actor402.Location}, 10)
+			RadarObj = GDI.AddPrimaryObjective("Capture radar base.")
+			Trigger.AfterDelay(15, function() GDI.MarkCompletedObjective(ReconObj) end)
 			Trigger.RemoveProximityTrigger(id)
 		end
 	end)
 
+	Trigger.OnCapture(Actor139, function()
+		Reinforcements.Reinforce(GDI, { "2tnk", "2tnk", "mcv" }, { CPos.New(1,52), CPos.New(6,52) },30)
+		Media.PlaySpeechNotification(GDI, "ReinforcementsArrived")
+		DestroyObj = GDI.AddPrimaryObjective("Destroy all enemy forces.")
+		Trigger.AfterDelay(15, function() GDI.MarkCompletedObjective(RadarObj) end)
+	end)
+	
+	Trigger.OnKilled(Actor139, function()
+		GDI.MarkFailedObjective(RadarObj)
+	end)
 end
 
+MissionAccomplished = function()
+	Media.PlaySpeechNotification(GDI, "MissionAccomplished")
+end
+
+MissionFailed = function()
+	Media.PlaySpeechNotification(GDI, "MissionFailed")
+end
 
 WorldLoaded = function()
 	GDI = Player.GetPlayer("Spain")
@@ -257,6 +277,21 @@ WorldLoaded = function()
 	Coalition = Player.GetPlayer("England")
 	Creeps = Player.GetPlayer("Creeps")
 	Civilians = Player.GetPlayer("Neutral")
+	
+	
+	Trigger.OnObjectiveAdded(GDI, function(p, id)
+		Media.DisplayMessage(GDI.GetObjectiveDescription(id), "New " .. string.lower(GDI.GetObjectiveType(id)) .. " objective")
+	end)
+	Trigger.OnObjectiveCompleted(GDI, function(p, id)
+		Media.DisplayMessage(GDI.GetObjectiveDescription(id), "Objective completed")
+	end)
+	Trigger.OnObjectiveFailed(GDI, function(p, id)
+		Media.DisplayMessage(GDI.GetObjectiveDescription(id), "Objective failed")
+	end)
+
+	Trigger.OnPlayerLost(GDI, MissionFailed)
+	Trigger.OnPlayerWon(GDI, MissionAccomplished)
+	
 	ActivateShipments()
 	ActivateTriggers()
 	SendAlliedForces()
