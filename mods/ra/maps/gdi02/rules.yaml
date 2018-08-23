@@ -168,8 +168,8 @@ PHANT.napalm:
 powerproxy.napalmstrike:
 	AlwaysVisible:
 	AirstrikePower:
-		Icon: parabombs
-		Description: Napalm Strike (Single Use)
+		Icon: airstrike
+		Description: Napalm Strike
 		LongDesc: A fighter-bomber delivers a payload of napalm to designated position.
 		OneShot: false
 		AllowMultiple: true
