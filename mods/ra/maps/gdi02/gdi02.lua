@@ -218,7 +218,9 @@ SendAlliedForces = function()
 		Trigger.OnPassengerExited(chopper[1], function(trans, sniper) 
 			sniper.Owner = GDI
 			Media.PlaySpeechNotification(GDI, "ReinforcementsArrived")
-			Trigger.OnEnteredProximityTrigger(Actor359.CenterPosition, WDist.FromCells(10), function(target, id)
+			Media.DisplayMessage("Commander, air assets will assist you until more forces can arrive.", "Command", GDI.Color)
+			AirstrikeActor = Actor.Create("powerproxy.napalmstrike",true,{Owner = GDI})
+			--[[Trigger.OnEnteredProximityTrigger(Actor359.CenterPosition, WDist.FromCells(10), function(target, id)
 				if (target == sniper and not Actor359.IsDead) then
 					Trigger.RemoveProximityTrigger(id)
 					SendFireMission(Actor359)
@@ -237,16 +239,31 @@ SendAlliedForces = function()
 					Trigger.RemoveProximityTrigger(id)
 					SendFireMission(Actor362)
 				end
-			end)
+			end)]]
 		end)
 	end)
 	
 	Trigger.OnEnteredProximityTrigger(Actor402.CenterPosition, WDist.FromCells(3), function(actor, id)
-		if (actor.Owner == GDI) then
-			Media.PlaySpeechNotification(GDI, "ReinforcementsArrived")
-			Reinforcements.Reinforce(GDI, { "2tnk", "2tnk", "jeep", "4tnk", "apc", "e6", "e1r1", "e1r1", "e2", "e6" }, {CPos.New(1,52), Actor402.Location}, 10)
-			RadarObj = GDI.AddPrimaryObjective("Capture radar base.")
-			Trigger.AfterDelay(15, function() GDI.MarkCompletedObjective(ReconObj) end)
+		if (actor.Owner == GDI and actor.Type == "sniper") then
+			Reinforcements.Reinforce(Coalition, { "chan" }, {Actor373.Location, Actor402.Location}, 20, function(actor)
+				actor.Flash(75)
+				Media.DisplayMessage("About time you got here!","Operative", Coalition.Color)
+				RadarCam = Actor.Create("camera", true, {Owner = GDI, Location = Actor259.Location})
+				Trigger.AfterDelay(15,function()
+					Media.DisplayMessage("There's multiple bases, you should be able to get data on them by capturing the radar base at this location", "Operative", Coalition.Color)
+					Camera.Position = Actor259.CenterPosition
+				end)
+				
+				Trigger.AfterDelay(35, function() Media.DisplayMessage("Goodluck Commander.", "Operative", Coalition.Color) 
+					actor.Move(CPos.New(1,52))
+					Trigger.AfterDelay(200, function() Camera.Position = Actor402.CenterPosition 
+                                                        Media.PlaySpeechNotification(GDI, "ReinforcementsArrived")
+                                                        Reinforcements.Reinforce(GDI, { "2tnk", "2tnk", "jeep", "4tnk", "apc", "e6", "e1r1", "e1r1", "e2", "e6" }, {CPos.New(1,52), Actor402.Location}, 10)
+                                                        RadarObj = GDI.AddPrimaryObjective("Capture radar base.")
+                                                        Trigger.AfterDelay(15, function() GDI.MarkCompletedObjective(ReconObj) end)
+					end)
+				end)
+			end)
 			Trigger.RemoveProximityTrigger(id)
 		end
 	end)
@@ -297,6 +314,4 @@ WorldLoaded = function()
 	SendAlliedForces()
 	Camera.Position = EnglishHPad.CenterPosition
 	ReconObj = GDI.AddPrimaryObjective("Find allied operative in south western town.")
-	Media.DisplayMessage("Commander, air assets will assist you until more forces can arrive.", "Command", Coalition.Color)
-
 end

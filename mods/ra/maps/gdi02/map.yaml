@@ -37,7 +37,7 @@ Players:
 	PlayerReference@USSR:
 		Name: USSR
 		LockFaction: True
-		Faction: ussr
+		Faction: soviet
 		LockColor: True
 		LockTeam: True
 		Enemies: Creeps, England, Spain

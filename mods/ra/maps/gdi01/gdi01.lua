@@ -45,7 +45,6 @@ end
 
 BindActorTriggers = function(a)
 	a.AttackMove(CPos.New(31,92))
-	print("Produced: " .. a.Type)
 	if a.HasProperty("Hunt") then
 		Trigger.OnIdle(a, function(a)
 			if a.IsInWorld then
@@ -65,7 +64,6 @@ BindActorTriggers = function(a)
 end
 
 TurnOnAI = function()
-	print("In turn on AI")
 	Utils.Do(ProducedUnitTypes, function(production)
 		Trigger.OnProduction(production.factory, function(_, a) BindActorTriggers(a) end)
 		ProduceUnits(production)
