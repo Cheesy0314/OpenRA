@@ -273,6 +273,7 @@ SendAlliedForces = function()
 		Media.PlaySpeechNotification(GDI, "ReinforcementsArrived")
 		DestroyObj = GDI.AddPrimaryObjective("Destroy all enemy forces.")
 		Trigger.AfterDelay(15, function() GDI.MarkCompletedObjective(RadarObj) end)
+		Trigger.AfterDelay(DateTime.Seconds(55),SendAttack)
 	end)
 	
 	Trigger.OnKilled(Actor139, function()
@@ -309,7 +310,6 @@ WorldLoaded = function()
 	Trigger.OnPlayerLost(GDI, MissionFailed)
 	Trigger.OnPlayerWon(GDI, MissionAccomplished)
 	
-	ActivateShipments()
 	ActivateTriggers()
 	SendAlliedForces()
 	Camera.Position = EnglishHPad.CenterPosition

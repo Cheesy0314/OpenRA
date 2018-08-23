@@ -1324,3 +1324,4 @@ Actors:
 		Location: 32,58
 Rules: ra|rules/campaign-tooltips.yaml, ra|rules/campaign-rules.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 Weapons: weapons.yaml
+Sequences: sequences.yaml
