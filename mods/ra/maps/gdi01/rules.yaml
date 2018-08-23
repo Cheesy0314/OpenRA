@@ -55,7 +55,7 @@ MECH:
 
 4TNK:
 	Buildable:
-		Prerequisites: ~fix
+		Prerequisites: ~disabled
 V2RL:
 	Buildable:
 		Prerequisites: dome, ~vehicles.allies
@@ -103,7 +103,12 @@ PDOX:
 MSLO:
 	Buildable:
 		Prerequisites: ~disabled
-
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
 E2R1:
 	Inherits: E2
 	RenderSprites:
@@ -112,6 +117,10 @@ E2R1:
 		Prerequisites: techlevel.infonly
 		InitialLevels: 1
 	-Buildable:
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
 
 PHANT:
 	Inherits: MIG
