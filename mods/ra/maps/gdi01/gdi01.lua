@@ -1,13 +1,21 @@
+Points = { 
+	{ units = { "1tnk", "jeep", "jeep" }, point = CPos.New(1,69), withTrans = false },
+	{ units = { "2tnk", "1tnk", "1tnk" }, point = CPos.New(24,1), withTrans = false }, 
+	{ units = { "1tnk", "1tnk" }, point = CPos.New(1,127), withTrans = true, trans = "lst", landing = Actor301.Location },
+	{ units = { "e1r1", "e1r1", "e3r1", "e3r1", "e1r1" }, point = CPos.New(64,67), withTrans = true, trans = "tran", landing = Actor307.Location }
+}
+
 ProducedUnitTypes =
 	{
-		{ factory = SovietBarracks1, types = { "e1", "e4", "e4", "e1", "e1" }, delay = 3 },
-		{ factory = SovietWarFactory1, types = { "jeep", "1tnk", "1tnk", "jeep" }, delay = 3 },
-		{ factory = SovietHeliPad2, types = { "hind" }, delay = 6}
+		{ factory = SovietBarracks3, types = { "e1", "e4", "e4", "e1", "e1" }, delay = 1 },
+		{ factory = SovietWarFactory1, types = { "jeep", "jeep", "1tnk", "1tnk", "jeep" }, delay = 2 },
+		{ factory = SovietHeliPad2, types = { "hind", "hind" }, delay = 6}
 	}
 
 WorldLoaded = function()
 	GDI = Player.GetPlayer("Spain")
 	Coalition = Player.GetPlayer("Germany")
+	Turkey = Player.GetPlayer("Turkey")
 	KillObj = GDI.AddPrimaryObjective("Destroy Enemy Forces")
 	Camera.Position = Actor274.CenterPosition
 	Trigger.AfterDelay(DateTime.Seconds(1), SendStrikeFighters)
@@ -34,7 +42,7 @@ end
 
 BindActorTriggers = function(a)
 	a.AttackMove(CPos.New(31,92))
-
+	print("Produced: " .. a.Type)
 	if a.HasProperty("Hunt") then
 		Trigger.OnIdle(a, function(a)
 			if a.IsInWorld then
@@ -54,12 +62,13 @@ BindActorTriggers = function(a)
 end
 
 TurnOnAI = function()
+	print("In turn on AI")
 	Utils.Do(ProducedUnitTypes, function(production)
 		Trigger.OnProduction(production.factory, function(_, a) BindActorTriggers(a) end)
-		Trigger.AfterDelay(DateTime.Minutes(production.delay), function()
-			ProduceUnits(production)
-		end)
+		ProduceUnits(production)
 	end)
+
+	SendRandomForces()
 end
 
 
@@ -73,5 +82,23 @@ ProduceUnits = function(t)
 		end)
 		
 		Trigger.AfterDelay(DateTime.Minutes(t.delay), function() ProduceUnits(t) end)
+	end
+end
+
+SendRandomForces = function()
+	local attackData = Utils.Random(Points)
+	if attackData.withTrans then 
+		Reinforcements.ReinforceWithTransport(Turkey, attackData.trans, attackData.units, { attackData.point, attackData.landing }, { attackData.point }, function(trans, units)
+			Utils.Do(units, function(unit)
+				Trigger.OnAddedToWorld(unit, function(self)
+					unit.AttackMove(Actor309.Location)
+				end)
+				Trigger.OnIdle(unit, function() unit.Hunt() end)
+			end)
+		end)
+	else
+		Reinforcements.Reinforce(Turkey, attackData.units, { attackData.point, Actor309.Location }, 30, function(actor)
+			Trigger.OnIdle(actor, function() actor.Hunt() end)
+		end)
 	end
 end
