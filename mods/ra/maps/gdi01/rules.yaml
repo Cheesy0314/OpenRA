@@ -144,6 +144,29 @@ PHANT:
 		Type: Heavy
 	-AmmoPool:
 
+HPAD:
+	AirstrikePower@napalmstrike:
+		OrderName: AlliedAirstrike
+		Prerequisites: Aircraft.allies
+		Icon: parabombs
+		Description: Napalm Strike 
+		LongDesc: A Phantom II delivers a payload of\nnapalm to target.
+		OneShot: true
+		AllowMultiple: true
+		UnitType: phant.napalm
+		SelectTargetSpeechNotification: SelectTarget
+		QuantizedFacings: 8
+		DisplayBeacon: True
+		BeaconPoster: pbmbicon
+		CameraActor: camera
+		SquadSize: 3
+		CameraRemoveDelay: 150
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles
+		ChargeInterval: 3000
+		SquadOffset: 1792,1792,0
+
 PHANT.napalm:
 	Inherits: BADR.Bomber
 	Aircraft:
@@ -199,3 +222,5 @@ powerproxy.napalmstrike:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+		SquadSize: 6
+		SquadOffset: 1792,1792,0
