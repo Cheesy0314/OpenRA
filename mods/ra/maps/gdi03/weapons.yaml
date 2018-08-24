@@ -1,11 +1,13 @@
 PDW:
 	Inherits: ^LightMG
-	ReloadDelay: 10
+	ReloadDelay: 15
 	Range: 3c0
 	StartBurstReport: gun11.aud
 	Burst: 4
-	BurstDelays: 10
+	BurstDelays: 16
 	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 2500
 		Versus:
 			None: 110
 			Wood: 25

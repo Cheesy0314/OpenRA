@@ -3,17 +3,23 @@ World:
 		Scripts: gdi03.lua
 	MissionData:
 		Briefing: Your chopper has crashed in the snowy north of Russia due to freak electrical phenomenon.\n\nFind Allied outpost in area, maybe some of the locals can help...
-
+	MapBuildRadius:
+		AllyBuildRadiusCheckboxEnabled: true #can build in allies base
+		AllyBuildRadiusCheckboxLocked: true
+		BuildRadiusCheckboxEnabled: true #no build radius limitations
+		BuildRadiusCheckboxLocked: true
 PROC:
 	-FreeActor:
 
 GNRL:
 	Armament:
 		Weapon: PDW
-
-Player:
-	PlayerResources:
-		DefaultCash: 5000
+	RevealsShroud:
+		Range: 5c0
+E1UA:
+	Inherits: C3
+	RenderSprites:
+		Image: e1
 
 E2:
 	Buildable:
