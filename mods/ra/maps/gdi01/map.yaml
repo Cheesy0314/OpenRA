@@ -27,6 +27,7 @@ Players:
 		LockTeam: True
 		Allies: Germany
 		Enemies: Creeps, Turkey
+		Color: F6D679
 	PlayerReference@Germany:
 		Name: Germany
 		Playable: False

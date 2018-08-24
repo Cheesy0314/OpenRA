@@ -25,6 +25,7 @@ Players:
 		LockColor: True
 		LockTeam: True
 		Allies: England
+		Color: F6D679
 		Enemies: Creeps, USSR
 	PlayerReference@England:
 		Name: England
