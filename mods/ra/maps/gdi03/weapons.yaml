@@ -1,0 +1,15 @@
+PDW:
+	Inherits: ^LightMG
+	ReloadDelay: 10
+	Range: 3c0
+	StartBurstReport: gun11.aud
+	Burst: 4
+	BurstDelays: 10
+	Warhead@1Dam: SpreadDamage
+		Versus:
+			None: 110
+			Wood: 25
+			Light: 1
+			Heavy: 0
+			Concrete: 0
+		DeathTypes: Prone50Percent, TriggerProne, BulletDeath
