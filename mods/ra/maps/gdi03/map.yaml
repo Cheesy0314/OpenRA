@@ -375,7 +375,6 @@ Actors:
 		Owner: Creeps
 		Location: 20,15
 		Health: 25
-		Health: 25
 	Actor170: cycl
 		Owner: Creeps
 		Location: 20,14
@@ -439,16 +438,16 @@ Actors:
 	Actor190: afld.ukraine
 		Owner: Creeps
 		Location: 24,10
-		Health: 25
+		Health: 75
 	Actor191: afld
 		Owner: Creeps
 		Location: 24,12
-		Health: 25
+		Health: 27
 	Actor192: sam
 		Owner: Creeps
 		Location: 26,14
 		TurretFacing: 92
-		Health: 25
+		Health: 35
 	Actor193: sam
 		Owner: Creeps
 		Location: 22,14
@@ -473,18 +472,18 @@ Actors:
 	ConYard: fact
 		Owner: France
 		Location: 85,31
-		Health: 25
+		Health: 55
 	Radar: dome
 		Owner: France
 		Location: 89,32
-		Health: 25
+		Health: 65
 	Tents: tent
 		Owner: France
-		Health: 25
+		Health: 35
 		Location: 79,32
 	Actor204: weap
 		Owner: France
-		Health: 25
+		Health: 75
 		Location: 90,14
 	Actor205: tc05.husk
 		Owner: Neutral
@@ -546,15 +545,15 @@ Actors:
 	Actor224: sbag
 		Owner: France
 		Location: 80,31
-		Health: 25
+		Health: 45
 	Actor225: sbag
 		Owner: France
 		Location: 79,31
-		Health: 25
+		Health: 35
 	Actor226: sbag
 		Owner: France
 		Location: 81,31
-		Health: 25
+		Health: 15
 	Actor227: cycl
 		Owner: France
 		Location: 87,16
@@ -683,7 +682,7 @@ Actors:
 	Actor268: apwr
 		Owner: France
 		Location: 88,26
-		Health: 25
+		Health: 55
 	Actor269: cycl
 		Owner: France
 		Location: 94,21
@@ -704,7 +703,7 @@ Actors:
 		Location: 96,23
 	Actor275: fix
 		Owner: France
-		Health: 25
+		Health: 15
 		Location: 93,22
 	Actor276: cycl
 		Owner: France
@@ -734,12 +733,12 @@ Actors:
 	Actor284: agun
 		Owner: France
 		Location: 81,32
-		Health: 25
+		Health: 15
 		TurretFacing: 92
 	Actor285: agun
 		Owner: France
 		Location: 88,31
-		Health: 25
+		Health: 15
 		TurretFacing: 92
 	Actor287: brl3
 		Owner: France

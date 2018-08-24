@@ -1,8 +1,8 @@
 World:
-	LuaScripts:
+	LuaScript:
 		Scripts: gdi03.lua
 	MissionData:
-		Breifing: Your chopper has crashed in the snowy north of Russia due to freak electrical phenomenon.\n\nFind Allied outpost in area, maybe some of the locals can help...
+		Briefing: Your chopper has crashed in the snowy north of Russia due to freak electrical phenomenon.\n\nFind Allied outpost in area, maybe some of the locals can help...
 
 PROC:
 	-FreeActor:
@@ -99,88 +99,3 @@ HPAD:
 GAP:
 	Buildable:
 		Prerequisites: ~disabled
-
-PHANT:
-	Inherits: MIG
-	RenderSprites:
-		Image: mig
-	Buildable:
-		Prerequisites: ~disabled
-	Tooltip:
-		Name: Phantom II
-	Armament:
-		Weapon: TankBuster
-		LocalOffset: 0,-640,0, 0,640,0
-		LocalYaw: -40, 24
-		-PauseOnCondition:
-	Aircraft:
-		CruiseAltitude: 2900
-		InitialFacing: 192
-		TurnSpeed: 3
-		Speed: 350
-		RepulsionSpeed: 40
-		MaximumPitch: 56
-	Health:
-		HP: 200000
-	Armor:
-		Type: Heavy
-	-AmmoPool:
-
-PHANT.napalm:
-	Inherits: BADR.Bomber
-	Aircraft:
-		Speed: 300
-	AttackPlane:
-		FacingTolerance: 20
-	Armament:
-		Weapon: AirstrikeNapalm
-		LocalOffset: 0,-640,0, 0,640,0
-		LocalYaw: -40, 24
-	SmokeTrailWhenDamaged:
-		Offset: -853,0,171
-		Interval: 2
-	Aircraft:
-		CruiseAltitude: 3500
-		InitialFacing: 192
-		TurnSpeed: 6
-		Speed: 350
-		RepulsionSpeed: 40
-		MaximumPitch: 56
-	Tooltip:
-		Name: Phantom II Bomber
-	SpawnActorOnDeath:
-		Actor: MIG.Husk
-	Contrail@1:
-		Offset: -598,-683,0
-	Contrail@2:
-		Offset: -598,683,0
-	Health:
-		HP: 200000
-	Armor:
-		Type: Heavy
-	RenderSprites:
-		Image: mig
-	AmmoPool:
-		Ammo: 12
-
-powerproxy.napalmstrike:
-	AlwaysVisible:
-	AirstrikePower:
-		Icon: parabombs
-		Description: Napalm Strike (Single Use)
-		LongDesc: A fighter-bomber delivers a payload of napalm to designated position.
-		OneShot: true
-		AllowMultiple: true
-		UnitType: phant.napalm
-		SelectTargetSpeechNotification: SelectTarget
-		QuantizedFacings: 8
-		DisplayBeacon: True
-		BeaconPoster: pbmbicon
-		CameraActor: camera
-		CameraRemoveDelay: 150
-		ArrowSequence: arrow
-		ClockSequence: clock
-		CircleSequence: circles
-		SquadSize: 3
-		SquadOffset: 1792,1792,0
-
