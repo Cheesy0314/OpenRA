@@ -1,13 +1,33 @@
+HasBeenShot = false
+
+Transports = {
+	{ "truk", "truk" },
+	{ "truk", "jeep2" },
+	{ "jeep2", "5tnk" }
+}
+
+Paths = {
+	{ Actor191.Location, Actor194.Location },
+	{ Actor190.Location, Actor193.Location },
+	{ Actor194.Location, Actor191.Location },
+	{ Actor193.Location, Actor190.Location }
+}
+
 WorldLoaded = function()
 	GDI = Player.GetPlayer("Spain")
 	Iraq = Player.GetPlayer("Ukraine")
+	Allies = Player.GetPlayer("Allies")
 	Civilians = Player.GetPlayer("Neutral")
 	AssassinateObj = GDI.AddPrimaryObjective("Assassinate Saddam Hussein")
 	UserInterface.SetMissionText("Assassinate Saddam", GDI.Color)
-	Reinforcements.Reinforce(GDI, { 'sniper' }, { CPos.New(23,32), CPos.New(23,29) }, 20, function(actor)
-		Trigger.OnKilled(actor, function()
-			GDI.MarkFailedObjective(AssassinateObj)
-		end)
+	Reinforcements.Reinforce(GDI, { 'sniper', "medi" }, { CPos.New(23,32), CPos.New(23,29) }, 20, function(actor)
+		if actor.Type == "sniper" then
+			Trigger.OnKilled(actor, function()
+				if not HasBeenShot then
+					GDI.MarkFailedObjective(AssassinateObj)
+				end
+			end)
+		end
 	end)
 
 	ActivateTriggers()
@@ -17,16 +37,48 @@ ActivateTriggers = function()
 	Trigger.OnPassengerEntered(EscapeAPC, function(apc,passenger)
 		if passenger == SaddamHussein then
 			EscapeAPC.Move(CPos.New(1,5))
-			Trigger.AfterDelay(25, function()
+			Trigger.AfterDelay(10, function()
 				EscapeAPC.Destroy()
-				Trigger.AfterDelay(15, function() GDI.MarkCompletedObjective(AssassinateObj) end)
 			end)
 		end
 	end)
 
 	Trigger.OnDamaged(SaddamHussein, function(saddam, assassin)
 		saddam.EnterTransport(EscapeAPC)
+		HasBeenShot = true
+		Trigger.OnEnteredProximityTrigger(Actor191.CenterPosition, WDist.FromCells(1), function(actor, tid)
+			if actor.Owner == Allies then
+				actor.Destroy()
+			end
+		end)
+		Retreat()
 	end)
+	Trigger.AfterDelay(DateTime.Seconds(20), SendShippment)
+end
+
+Retreat = function()
+	local sniper = GDI.GetActorsByType("sniper")[1]
+	local medic = GDI.GetActorsByType("medi")[1]
+
+	if medic ~= nil and not medic.IsDead then
+		medic.Owner = Allies
+		medic.Move(Actor191.Location)
+	end
+
+	if not sniper.IsDead then
+		sniper.Owner = Allies
+		sniper.Move(Actor191.Location)
+	end
+
+	
+end
+
+SendShippment = function()
+	Reinforcements.Reinforce(Iraq, Utils.Random(Transports), Utils.Random(Paths), 30, function(actor)
+		Trigger.AfterDelay(10, function() actor.Destroy() end)
+	end)
+
+	Trigger.AfterDelay(DateTime.Seconds(20), SendShippment)
 end
 
 InitNotifications = function()

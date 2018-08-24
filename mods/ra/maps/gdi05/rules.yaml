@@ -15,3 +15,12 @@ GNRL:
 		Type: Heavy
 	Health:
 		HP: 100000
+JEEP2:
+	Inherits: TRUK
+	RenderSprites:
+		Image: jeep
+
+5TNK:
+	Inherits: TRUK
+	RenderSprites:
+		Image: apc
