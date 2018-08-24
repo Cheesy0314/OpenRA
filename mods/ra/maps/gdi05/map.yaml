@@ -23,7 +23,7 @@ Players:
 		Name: Ukraine
 		Faction: soviet
 		Color: FF8707
-		Allies: Neutral
+		Allies: Neutral, Allies
 		Enemies: Spain, Creeps
 	PlayerReference@Spain:
 		Name: Spain
@@ -35,6 +35,7 @@ Players:
 		LockColor: True
 		Color: F6D679
 		LockTeam: True
+		Allies: Allies
 		Enemies: Ukraine, Creeps
 	PlayerReference@Allies:
 		Name: Allies

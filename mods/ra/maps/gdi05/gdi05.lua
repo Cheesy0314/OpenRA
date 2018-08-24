@@ -49,6 +49,9 @@ ActivateTriggers = function()
 		Trigger.OnEnteredProximityTrigger(Actor191.CenterPosition, WDist.FromCells(1), function(actor, tid)
 			if actor.Owner == Allies then
 				actor.Destroy()
+				if actor.Type == "sniper" then
+					Trigger.AfterDelay(10, function() GDI.MarkCompletedObjective(AssassinateObj) end)
+				end
 			end
 		end)
 		Retreat()
