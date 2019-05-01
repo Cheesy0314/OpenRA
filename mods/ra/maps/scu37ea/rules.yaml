@@ -1,0 +1,112 @@
+World:
+	MissionData:
+		WinVideo: bmap.vqa
+		LossVideo: cronfail.vqa
+		Briefing: TO: Field Commander S7@FROM:Soviet Command@PRIORITY ONE@@We received this garbled transmission from a scout group sent into a suspected Allied test site:@@<TRANSMISSION BEGINS>@All... te.t area di..overed! Chonos... test g... crazy! Weapons... effected by... air units inop... Area unst.ble! Ch...osphere must be affect...@<TRANSMISSION LOST>@@ You are to investigate this. If the Chronosphere is indeed behind it, this is a perfect opportunity to capture it. See that it happens.
+	SmudgeLayer@SCORCH:
+		InitialSmudges:
+			58,70: sc6,0
+Player:
+	PlayerResources:
+		DefaultCash: 5000
+	MapBuildRadius:
+		BuildRadiusCheckboxEnabled: False
+
+1TNK: 
+	Valued:
+		Cost: 2000
+	Health:
+		HP: 90000
+	Armor:
+		Type: Heavy
+	Mobile:
+		Speed: 50
+		Locomotor: heavytracked
+	RevealsShroud:
+		Range: 7c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
+	Turreted:
+		TurnSpeed: 2
+	Armament@PRIMARY:
+		Weapon: 120mm
+
+3TNK:
+	Valued:
+		Cost: 1350
+	Health:
+		HP: 45000
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 99
+	Armament:
+		Weapon: TeslaZap2
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+4TNK:
+	Armament@Primary:
+		Weapon: FireballLauncher2
+
+E1:
+	Armament@Primary:
+		Weapon: Vulcan
+
+TTNK:
+	Buildable:
+		Prerequisistes: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+	-SpawnActorOnDeath:
+
+MGG:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+CTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+APC:
+	Buildable:
+		Prerequisites: ~vehicles.allies
+
+E3:
+	Buildable:
+		Prerequisites: ~infantry.allies
+
+V2RL:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+THF:
+	Buildable:
+		Prerequisites: ~infantry.allies

@@ -1,0 +1,33 @@
+World:
+	MissionData:
+		WinVideo: masasslt.vqa
+		LossVideo: nukestok.vqa
+		Briefing: The Soviets are planning an A-bomb strike on London. Their silos are located on an island that has only one beach access point, which is guarded. We could air lift in units, but SAM sites on nearby islands prevent this. Our only option is the Chronotank.@@Use the tank's ability to chronoshift itself to destroy the radar domes that control the SAM sites. Once dealt with, Tanya will arrive to soften the large island's defenses. With power down, an MCV will arrive to help you destroy the missile site.
+	LuaScript:
+		Scripts: scg44ea.lua
+
+LST.Insertion:
+	Inherits: LST
+	RejectsOrders:
+	-Selectable:
+	RenderSprites:
+		Image: lst
+	Interactable:
+
+powerproxy.paratanya:
+	Inherits: powerproxy.paratroopers
+	ParatroopersPower:
+		DropItems: E7
+
+powerproxy.tankshift:
+	AlwaysVisible:
+	ChronoshiftPower:
+		OrderName: Global Chronoshift
+		ChargeInterval: 0
+		Duration: 0
+		KillCargo: no
+CTNK:
+	PortableChrono:
+		ChargeDelay: 250
+		HasDistanceLimit: false
+		KillCargo: false

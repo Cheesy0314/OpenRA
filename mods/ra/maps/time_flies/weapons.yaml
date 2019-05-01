@@ -1,0 +1,5 @@
+APTusk:
+	ReloadDelay: 60
+	Range: 6c0
+	Warhead@1Dam: SpreadDamage
+		Damage: 4000
