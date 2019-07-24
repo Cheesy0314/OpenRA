@@ -1,0 +1,48 @@
+Raptor50Cal:
+	Inherits: ^SnipeWeapon
+	ReloadDelay: 20
+	Range: 8c0
+	Warhead@1Dam: SpreadDamage
+		Damage: 14000
+TowerMissile:
+	Inherits: ^AntiGroundMissile
+	ReloadDelay: 15
+	Range: 7c0
+	ValidTargets: Ground
+	Projectile: Missile
+		HorizontalRateOfTurn: 20
+		Speed: 298
+		RangeLimit: 8c409
+	Warhead@1Dam: SpreadDamage
+		Spread: 483
+		ValidTargets: Ground
+		Versus:
+			None: 52
+			Wood: 24
+			Light: 100
+			Heavy: 100
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+
+TowerAAMissile:
+	Inherits: ^AntiAirMissile
+	ReloadDelay: 15
+	Range: 8c0
+	ValidTargets: Air
+	Projectile: Missile
+		Image: MISSILE
+		HorizontalRateOfTurn: 20
+		Speed: 426
+		RangeLimit: 9c614
+		Inaccuracy: 0
+	Warhead@1Dam: SpreadDamage
+		Spread: 682
+		ValidTargets: Air
+		Versus:
+			None: 140
+			Wood: 140
+			Light: 140
+			Heavy: 104
+	-Warhead@2Smu:
+	Warhead@4EffAir: CreateEffect
+		Explosions: med_explosion_air
+		ImpactSounds: kaboom25.aud
