@@ -1,7 +1,28 @@
 Player:
 	PlayerResources:
-		DefaultCash: 2500
+		DefaultCash: 3000
+	Shroud:
+		FogCheckboxLocked: True
+		FogCheckboxEnabled: False
+		FogCheckboxVisible: False
+		ExploredMapCheckboxLocked: True
+		ExploredMapCheckboxEnabled: False
+		ExploredMapCheckboxVisible: False
 World:
+	CrateSpawner:
+		Maximum: 5
+		SpawnInterval: 125
+		WaterChance: 5
+		CheckboxEnabled: True
+		CheckboxLocked: True
+		CheckboxVisible: False
+	MapBuildRadius:
+		AllyBuildRadiusCheckboxLocked: True
+		AllyBuildRadiusCheckboxEnabled: False
+		AllyBuildRadiusCheckboxVisible: False
+		BuildRadiusCheckboxLocked: True
+		BuildRadiusCheckboxEnabled: False
+		BuildRadiusCheckboxVisible: False
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: Difficulty
@@ -139,21 +160,217 @@ E2:
 E7:
 	Buildable:
 		Prerequisites: ~disabled
-
 ARTY:
 	Buildable:
 		Prerequisites: ~vehicles.soviet
 AGUN:
 	Buildable:
-		Prerequisites: ~disabled;
+		Prerequisites: ~disabled
 GUN:
 	Armament@PRIMARY:
 		Weapon: TowerMissile
 	Armament@SECONDARY:
 		Weapon: TowerAAMissile
+PT:
+	Armament@Primary:
+		Weapon: 6Inch
+CA:
+	Buildable:
+		Prerequisites: ~disabled
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled
+DD2:
+	Inherits: DD
+	RenderSprites:
+		Image: dd
+	Armament@PRIMARY:
+		Weapon: Tomahawk
+	-Armament@SECONDARY:
+	Buildable:
+		Prerequisites: ~disabled
+DD:
+	Buildable:
+		Prerequisites: ~disabled
+HPAD:
+	AirstrikePower@parabombs:
+		OrderName: SpainParabombs
+		Prerequisites: ~hpad
+		Icon: parabombs
+		ChargeInterval: 4000
+		Description: Airstrike
+		LongDesc: A squadron of Fighter-Bombers drops\nnapalm on your target.
+		SelectTargetSpeechNotification: SelectTarget
+		CameraActor: camera
+		CameraRemoveDelay: 150
+		UnitType: mig.bomber
+		QuantizedFacings: 8
+		DisplayBeacon: true
+		BeaconPoster: pbmbicon
+		SquadSize: 3
+		SquadOffset: 1792,1792,0
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles
+		UseDirectionalTarget: True
+		DirectionArrowAnimation: paradirection
+		SupportPowerPaletteOrder: 40
+	ParatroopersPower@paratroopers2:
+		OrderName: CommandoDrop 
+		Prerequisites: aircraft.allies
+		Icon: paratroopers
+		ChargeInterval: 27500
+		Description: Commando Insertion
+		LongDesc: A Commando is delivered to the battlefield
+		DropItems: RAMBO
+		ReinforcementsArrivedSpeechNotification: ReinforcementsArrived
+		SelectTargetSpeechNotification: SelectTarget
+		AllowImpassableCells: false
+		QuantizedFacings: 8
+		CameraActor: camera.paradrop
+		DisplayBeacon: true
+		BeaconPoster: gnrlicon
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles
+		UseDirectionalTarget: True
+		DirectionArrowAnimation: paradirection
+		SupportPowerPaletteOrder: 80
+		UnitType: TRAN.para
+	ParatroopersPower@paratroopers:
+		OrderName: GDIParatroopers
+		Prerequisites: aircraft.allies
+		Icon: paratroopers
+		ChargeInterval: 7500
+		Description: Paratroopers
+		LongDesc: A Badger drops a squad of infantry\nanywhere on the map.
+		DropItems: E1R1, E1R1, MEDI, E3R1, E1R1
+		ReinforcementsArrivedSpeechNotification: ReinforcementsArrived
+		SelectTargetSpeechNotification: SelectTarget
+		AllowImpassableCells: false
+		QuantizedFacings: 8
+		CameraActor: camera.paradrop
+		DisplayBeacon: true
+		BeaconPoster: pinficon
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles
+		UseDirectionalTarget: True
+		DirectionArrowAnimation: paradirection
+		SupportPowerPaletteOrder: 50
+TRAN.Para:
+	Inherits: TRAN
+	Buildable:
+		Prerequisites: ~disabled
+	ParaDrop:
+		DropRange: 4c0
+		ChuteSound: chute1.aud
+	RenderSprites:
+		Image: tran
+	Health:
+		HP: 100000
+	Cargo:
+		MaxWeight: 10
+	-Selectable:
+	SelectionDecorations:
+		RenderSelectionBars: False
+	-Voiced:
+	Aircraft:
+		TurnSpeed: 5
+		Speed: 228
+		AltitudeVelocity: 0c58
+	Tooltip:
+		Name: Chinook
+	-EjectOnDeath:
+	RejectsOrders:
+	GivesExperience:
+		Experience: 1000
+	Interactable:
 
+MIG.Bomber:
+	Inherits: ^NeutralPlane
+	AttackBomber:
+	Armament:
+		Weapon: AirstrikeBomb
+	Health:
+		HP: 3000
+	Aircraft:
+		CruiseAltitude: 2560
+		TurnSpeed: 7
+		Speed: 375
+		Repulsable: False
+		MaximumPitch: 56
+	AmmoPool:
+		Ammo: 8
+	-Selectable:
+	SelectionDecorations:
+		RenderSelectionBars: False
+	-Voiced:
+	Tooltip:
+		Name: F-16
+	Contrail@1:
+		Offset: -725,683,0
+	Contrail@2:
+		Offset: -725,-683,0
+	SpawnActorOnDeath:
+		Actor: U2.Husk
+	SmokeTrailWhenDamaged:
+		Offset: -1c43,0,0
+		Interval: 2
+	EjectOnDeath:
+		PilotActor: PILOT
+		SuccessRate: 80
+		EjectOnGround: false
+		EjectInAir: true
+		AllowUnsuitableCell: true
+		ChuteSound: chute1.aud
+	-MapEditorData:
+	RejectsOrders:
+	RenderSprites:
+		Image: U2
+	GivesExperience:
+		Experience: 3000
+	Interactable:
+
+PILOT:
+	Inherits: GNRL
+	Armament@PRIMARY:
+		Weapon: SurvivalRifle
+	Tooltip:
+		Name: UNGDA Pilot
+		GenericName: Pilot
+	RenderSprites:
+		Image: GNRL
+	Voiced:
+		VoiceSet: GenericVoice
+	Mobile:
+		Voice: Action
+	AttackMove:
+		Voice: Action
+	AttackFrontal:
+		Voice: Action
+	Passenger:
+		Voice: Action
+	Guard:
+		Voice: Action
 MONEYCRATE:
 	GiveCashCrateAction:
 		Amount: 2000
 		SelectionShares: 1
 		UseCashTick: true
+HELI:
+	EjectOnDeath:
+		PilotActor: PILOT
+		SuccessRate: 50
+		EjectOnGround: false
+		EjectInAir: true
+		AllowUnsuitableCell: true
+		ChuteSound: chute1.aud
+MH60:
+	EjectOnDeath:
+		PilotActor: PILOT
+		SuccessRate: 40
+		EjectOnGround: false
+		EjectInAir: true
+		AllowUnsuitableCell: true
+		ChuteSound: chute1.aud
