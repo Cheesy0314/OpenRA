@@ -16,7 +16,7 @@ World:
 	LuaScript:
 		Scripts: zomboids.lua
 	MissionData:
-		Briefing: --INCOMING SECURE TRANSMISSION--\n\nThe invasion starts today, it seems the enemy is in disarray for some unknown reason and we will use that to our advantage. \n\nYour first objective is to construct a base once you make land fall, after that you wil send forces inland to wipe out enemy strong holds.\n\nGood luck Commander, the free world is counting on you.\n\n--END TRANSMISSION--\n
+		Briefing: --INCOMING SECURE TRANSMISSION--\n\nCommander, the invasion starts today. Intel reports unrest along the enemies lines and we will use that to our advantage. \n\nYour first objective is to establish a beachhead. I want our forces on the ground quick so we can prepare to make a push inland. Once you've cleared a path buld a forward base to lock down the area.\n\n We will have support from German Navy and Airforces. If all goes well we will be able to push inland within a few hours.\n\nGood luck Commander, the free world is counting on you.\n\n--END TRANSMISSION--\n
 
 PROC:
 	Buildable:
@@ -114,8 +114,6 @@ OILNC:
 		Name: Oil Derrick
 		GenericVisibility: None
 	FrozenUnderFog:
-	EditorTilesetFilter:
-		Categories: Tech building
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 630,-300,0, 420,512,0, -420,-512,0, -630,300,0
@@ -131,8 +129,11 @@ OILNC:
 		HP: 80000
 	RevealsShroud:
 		Range: 4c0
-	ExternalCapturable:
-	ExternalCapturableBar:
+	CaptureManager:
+	CapturableProgressBlink:
+	Capturable:
+		Types: building
+	CapturableProgressBar:
 	EngineerRepairable:
 	CashTrickler:
 		Interval: 375
@@ -159,7 +160,7 @@ BADR.napalm:
 	Inherits: BADR.Bomber
 	Aircraft:
 		Speed: 300
-	AttackPlane:
+	AttackAircraft:
 		FacingTolerance: 20
 	Armament:
 		Weapon: AirstrikeNapalm
