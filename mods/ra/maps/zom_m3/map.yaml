@@ -32,7 +32,7 @@ Players:
 		Faction: england
 		Color: F6D679
 		Allies: Spain, Germany
-		Enemies: BadGuy
+		Enemies: BadGuy, Soviet
 	PlayerReference@Germany:
 		Name: Germany
 		LockFaction: True
@@ -42,7 +42,7 @@ Players:
 		LockSpawn: True
 		LockTeam: True
 		Allies: Spain, Civilians
-		Enemies: BadGuy
+		Enemies: BadGuy, Soviet
 	PlayerReference@Spain:
 		Name: Spain
 		Playable: True
@@ -54,12 +54,17 @@ Players:
 		LockSpawn: True
 		LockTeam: True
 		Allies: Germany, Civilians
-		Enemies: BadGuy
+		Enemies: BadGuy, Soviet
 	PlayerReference@BadGuy:
 		Name: BadGuy
 		Faction: soviet
 		Color: 590505
-		Enemies: Spain, Germany, Civilians
+		Enemies: Spain, Germany, Civilians, Soviet
+	PlayerReference@Soviet:
+		Name: Soviet
+		Faction: soviet
+		Color: 590505
+		Enemies: Spain, Germany, Civilians, BadGuy
 
 
 Actors:

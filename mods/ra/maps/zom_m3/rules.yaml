@@ -1,8 +1,8 @@
 Player:
 	PlayerResources:
-		DefaultCash: 5000
+		DefaultCash: 6000
 	Shroud:
-		ExploredMapCheckboxEnabled: true
+		ExploredMapCheckboxEnabled: false
 		ExploredMapCheckboxLocked: true
 		FogCheckboxLocked: true
 		FogCheckboxEnabled: false
@@ -14,26 +14,10 @@ World:
 		BuildRadiusCheckboxEnabled: true #no build radius limitations
 		BuildRadiusCheckboxLocked: true
 	LuaScript:
-		Scripts: zom_m1.lua
+		Scripts: zomboids3.lua
 	MissionData:
-		Briefing: Tomorrow the invasion begins, but today we have work to do. A small monitoring station and naval base is located on south Edge Island, this threatens our operations for the landing. \n\nYour mission: cripple the air defenses off the coast, then we will drop off some forces for you to destroy the communications center.\n\nOnce the AA is out we will provide some air cover for you. \n\n Goodluck, we're counting on you.
+		Briefing: Commander, the news from the front is disturbing. The enemy faction is in disarray and this disease seems to be the cause.\n\nReports from Edge Island seem to indicate an incident at a Bio-Research facility which led to the outbreak. The situation grows worse, our lead science team was attacked by enemy forces; we lost contact with them hours ago.\n\nYour mission is simple, find the rescue team and bring back survivors. If none exist then retrieve any notes they left behind.\n\nWatch yourself Commander, we believe the infection is spreading thru contact with the diseased...\n\nGoodluck.
 
-FIX:
-	Buildable:
-		Prerequisites: ~disabled
-SYRD:
-	Buildable:
-		Prerequisites: ~disabled
-DOME:
-	Buildable:
-		-Prerequisites:
-		Prerequisites: ~techlevel.low, ~tent
-ATEK:
-	Buildable:
-		Prerequisites: ~disabled
-HPAD:
-	Buildable:
-		Prerequisites: ~disabled
 SPY:
 	Buildable:
 		Prerequisites: ~disabled
@@ -44,9 +28,6 @@ MECH:
 	Buildable:
 		Prerequisites: ~disabled
 MRJ:
-	Buildable:
-		Prerequisites: ~disabled
-APC:
 	Buildable:
 		Prerequisites: ~disabled
 STNK:
@@ -85,13 +66,6 @@ ARTY:
 MCV:
 	Buildable:
 		Prerequisites: ~disabled
-HBOX:
-	Buildable:
-		Prerequisites: ~disabled
-PBOX:
-	Buildable:
-		Prerequisites: ~disabled
-
 RMBO:
 	Inherits: ^Soldier
 	RenderSprites:
@@ -247,12 +221,3 @@ powerproxy.napalmstrike:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
-
-powerproxy.paras1:
-	Inherits: powerproxy.paratroopers
-	ParatroopersPower:
-		DropItems: RMBO,E1R1
-powerproxy.paras2:
-	Inherits: powerproxy.paratroopers
-	ParatroopersPower:
-		DropItems: JEEP,JEEP,1TNK,1TNK,JEEP
