@@ -2,7 +2,7 @@ MapFormat: 11
 
 RequiresMod: ra
 
-Title: Operation: Cleansing Flame
+Title: Svalbard Wars 3: Cleansing Flame
 
 Author: Chees0314
 
@@ -26,7 +26,44 @@ Players:
 		Name: Creeps
 		NonCombatant: True
 		Faction: england
+	PlayerReference@Civilians:
+		Name: Civilians
+		NonCombatant: True
+		Faction: england
+		Color: F6D679
+		Allies: Spain, Germany
+		Enemies: BadGuy
+	PlayerReference@Germany:
+		Name: Germany
+		LockFaction: True
+		Faction: allies
+		LockColor: True
+		Color: 00871B
+		LockSpawn: True
+		LockTeam: True
+		Allies: Spain, Civilians
+		Enemies: BadGuy
+	PlayerReference@Spain:
+		Name: Spain
+		Playable: True
+		Required: True
+		LockFaction: True
+		Faction: allies
+		LockColor: True
+		Color: 518599
+		LockSpawn: True
+		LockTeam: True
+		Allies: Germany, Civilians
+		Enemies: BadGuy
+	PlayerReference@BadGuy:
+		Name: BadGuy
+		Faction: soviet
+		Color: 590505
+		Enemies: Spain, Germany, Civilians
+
 
 Actors:
 
-Rules:
+Rules: ra|rules/campaign-rules.yaml, rules.yaml, ra|rules/campaign-tooltips.yaml
+
+Weapons: weapons.yaml
