@@ -1,0 +1,88 @@
+MapFormat: 11
+
+RequiresMod: ra
+
+Title: Midnight Strike
+
+Author: Cheesy0314
+
+Tileset: SNOW
+
+MapSize: 66,130
+
+Bounds: 1,1,64,128
+
+Visibility: MissionSelector
+
+Categories: Campaign
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: england
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: england
+	PlayerReference@Civilians:
+		Name: Civilians
+		NonCombatant: True
+		Color: F6D679
+		Faction: england
+		Allies: Spain, Germany
+		Enemies: BadGuy
+	PlayerReference@Germany:
+		Name: Germany
+		LockFaction: True
+		Faction: allies
+		LockColor: True
+		Color: 00871B
+		LockSpawn: True
+		LockTeam: True
+		Allies: Spain, Civilians
+		Enemies: BadGuy
+	PlayerReference@Spain:
+		Name: Spain
+		Playable: True
+		Required: True
+		LockColor: True
+		Color: 518599
+		LockSpawn: True
+		LockTeam: True
+		Faction: allies
+		LockFaction: True
+		Allies: Germany, Civilians
+		Enemies: BadGuy
+	PlayerReference@BadGuy:
+		Name: BadGuy
+		Faction: soviet
+		Color: 590505
+		eNEmies: Spain, Germany, Civilians
+
+Actors:
+	Actor0: tc04
+		Owner: Neutral
+		Location: 52,105
+	Actor1: tc02
+		Owner: Neutral
+		Location: 41,116
+	Actor2: tc03
+		Owner: Neutral
+		Location: 53,115
+	Actor3: tc01
+		Owner: Neutral
+		Location: 55,114
+	Actor4: t02
+		Owner: Neutral
+		Location: 55,106
+	Actor5: t05
+		Owner: Neutral
+		Location: 43,116
+
+Rules: ra|rules/campaign-rules.yaml, rules.yaml, ra|rules/campaign-tooltips.yaml
+
+Weapons: weapons.yaml
+
+Sequences: sequences.yaml
