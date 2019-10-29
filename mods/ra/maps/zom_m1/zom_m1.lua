@@ -2,6 +2,7 @@ ticks = 1
 passengers = 0
 MissionStarted = false
 MissionCompleted = false
+InitialForce = [""]
 
 InitNeedful = function()
         Trigger.OnObjectiveAdded(Spain, function(p, id)
