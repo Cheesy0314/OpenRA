@@ -87,7 +87,7 @@ SendZombies = function()
 						actor.EnterTransport(LST)
 					end)
 					passengers = #actors
-					Media.DisplayMessage("WAS ZUM TEUFEL IST DAS?", "Feldwebel Müller", Germany.Color)
+					Media.DisplayMessage("WAS ZUM TEUFEL IST DAS?", "Feldwebel Muller", Germany.Color)
 					Media.PlaySoundNotification(Spain, "ChatLine")
 				end)
 			end
@@ -128,7 +128,7 @@ SendZombies = function()
 		if (ticks == DateTime.Seconds(362)) then
 		
 			Media.PlaySoundNotification(Spain, "ChatLine")
-			Media.DisplayMessage("! WARNUNG! Eingehende Luftangriffe zur Ausrottung infizierter Bevölkerungszentren!","Kommando Luftwaffe",Germany.Color)
+			Media.DisplayMessage("! WARNUNG! Eingehende Luftangriffe zur Ausrottung infizierter Bevolkerungszentren!","Kommando Luftwaffe",Germany.Color)
 			Trigger.AfterDelay(DateTime.Seconds(5), function()
 				Media.PlaySpeechNotification(Spain, "AlliedReinforcementsArrived")
 				SendAirstrike(Actor198)
