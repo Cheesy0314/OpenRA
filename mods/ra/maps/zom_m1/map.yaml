@@ -1037,6 +1037,51 @@ Actors:
 		Owner: BadGuy
 		Location: 38,10
 		TurretFacing: 96
+	BadgerDropPoint3: waypoint
+		Owner: Neutral
+		Location: 59,35
+	Actor280: tsla
+		Owner: BadGuy
+		Location: 36,80
+	Actor285: tsla
+		Owner: BadGuy
+		Location: 41,80
+	Actor286: tsla
+		Owner: BadGuy
+		Location: 27,80
+	Actor287: tsla
+		Owner: BadGuy
+		Location: 22,80
+	Actor288: tsla
+		Owner: BadGuy
+		Location: 35,59
+	Actor289: tsla
+		Owner: BadGuy
+		Location: 26,59
+	Actor290: tsla
+		Owner: BadGuy
+		Location: 41,59
+	Actor291: tsla
+		Owner: BadGuy
+		Location: 22,59
+	Actor292: apwr
+		Owner: BadGuy
+		Location: 38,67
+	Actor293: apwr
+		Owner: BadGuy
+		Location: 22,67
+	Actor294: apwr
+		Owner: BadGuy
+		Location: 23,76
+	Actor295: apwr
+		Owner: BadGuy
+		Location: 38,77
+	Actor296: apwr
+		Owner: BadGuy
+		Location: 39,61
+	Actor297: apwr
+		Owner: BadGuy
+		Location: 22,61
 
 Rules: ra|rules/campaign-rules.yaml, rules.yaml, ra|rules/campaign-tooltips.yaml
 

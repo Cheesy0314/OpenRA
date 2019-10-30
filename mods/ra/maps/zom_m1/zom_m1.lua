@@ -7,21 +7,24 @@ MainBase = {Actor40,Actor41,Actor42,Actor43,Actor44,Actor45,Actor46,Actor47,Acto
 
 SendSabetourTeam = function()
 	Spain.MarkCompletedObjective(ClearAAPost)
+	Media.DisplayMessage("Next objective: disable power to base defenses", "Mission Command", Civilian.Color)
 	local lz = BadgerDropPoint3.Location
         Camera.Position = BadgerDropPoint3.CenterPosition
-	Actor.Create("flare",true,{Owner = Spain, Location = BadgerDropPoint3.Location})
-	Media.DisplayMessage("Next objective: disable power to base defenses", "Mission Command", Civilian.Color)
         Trigger.AfterDelay(45, function()
                 local transport = Actor.Create("badr", true, { CenterPosition = BadgerStartPoint.CenterPosition, Owner = Spain})
-                Utils.Do({"spy"}, function(type)
-                        local a = Actor.Create(type, false, { Owner = Spain })
-                        transport.LoadPassenger(a)
+		local a = Actor.Create("spy", false, { Owner = Spain })
+		a.DisguiseAsType("e1", Zombies)
+		Trigger.OnKilled(a, function()
+			if not Spain.IsObjectiveCompleted(Inflitrate) then
+				Spain.MarkFailedObjective(Inflitrate)
+			end
 		end)
+		transport.LoadPassenger(a)
+		transport.Paradrop(lz)
 	end)
-	transport.Paradrop(lz)
 	Trigger.OnInfiltrated(PowerBaseControl, function()
-		DestroyPowerbase()
-	end)
+                DestroyPowerbase()
+        end)
 end
 
 SendReinforcements = function() 
@@ -38,14 +41,14 @@ SendReinforcements = function()
 	end)
 end
 
-DestroyedPowerbase = function()
-	Utils.Do(BadGuy.GetActorsByType("apwr"), function(actor)
+DestroyPowerbase = function()
+	Utils.Do(Zombies.GetActorsByType("apwr"), function(actor)
 		actor.Kill()
 	end)
 	Trigger.AfterDelay(100, function()
 		Media.PlaySpeechNotification(Spain,"ObjectiveMet")
 		Spain.MarkCompletedObjective(Inflitrate)
-		Utils.Do(BadGuy.GetActorsByType("tsla"), function(actor)
+		Utils.Do(Zombies.GetActorsByType("tsla"), function(actor)
 			actor.Kill()
 		end)
 		Trigger.AfterDelay(30, function()
@@ -105,9 +108,8 @@ InitNeedful = function()
 	
 	Trigger.OnAllKilled(AABase, function() SendSabetourTeam() end)
 	Trigger.OnAllKilled(MainBase, function() Win() end)
-	Trigger.OnDiscovered(Actor253.CenterPosition,function(discoverer) 
+	Trigger.OnDiscovered(Actor253,function(discoverer) 
 		if discoverer.Owner == Spain then
-			GDI = Player.GetPlayer("GDI")
 			Reinforcements.ReinforceWithTransport(GDI, "tran", {"e1r1", "e1r1", "chan", "chan", "gnrl"}, {CPos.New(1,1), CPos.New(7,11)})
 			Trigger.AfterDelay(100, function()
 				Media.DisplayMessage("What the hell are UNBWC Choppers doing here?", "Cpl. Thompson", Spain.Color)
@@ -121,6 +123,7 @@ WorldLoaded = function()
         Germany = Player.GetPlayer("Germany")
         Zombies = Player.GetPlayer("BadGuy")
         Civilian = Player.GetPlayer("Civilians")
+	GDI = Player.GetPlayer("GDI")
 	InitNeedful()
 		
 	local lz = BadgerDropPoint1.Location
@@ -129,6 +132,13 @@ WorldLoaded = function()
 		local transport = Actor.Create("badr", true, { CenterPosition = BadgerStartPoint.CenterPosition, Owner = Spain})
 		Utils.Do(ParadropUnitTypes, function(type)
 			local a = Actor.Create(type, false, { Owner = Spain })
+			if a.Type == "rmbo" then
+				Trigger.OnKilled(a, function()
+					if not Spain.IsObjectiveCompleted(AABase) then
+						Spain.MarkFailedObjective(AABase)
+					end
+				end)
+			end
 			transport.LoadPassenger(a)
 		end)
 
