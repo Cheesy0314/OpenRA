@@ -59,6 +59,7 @@ end
 
 GiveAirstrike = function()
         Strike = Actor.Create("powerproxy.napalmstrike", true, {Owner = Spain})
+	Para = Actor.Create("powerproxy.paratroopers", true, {Owner = Spain})
 end
 
 SendAirstrike = function(actor)
@@ -108,8 +109,9 @@ InitNeedful = function()
 	
 	Trigger.OnAllKilled(AABase, function() SendSabetourTeam() end)
 	Trigger.OnAllKilled(MainBase, function() Win() end)
-	Trigger.OnDiscovered(Actor253,function(discoverer) 
+	Trigger.OnEnteredProximityTrigger(Actor253.CenterPosition, WDist.New(22), function(discoverer, trigID)
 		if discoverer.Owner == Spain then
+			Trigger.RemoveProximityTrigger(trigID)
 			Reinforcements.ReinforceWithTransport(GDI, "tran", {"e1r1", "e1r1", "chan", "chan", "gnrl"}, {CPos.New(1,1), CPos.New(7,11)})
 			Trigger.AfterDelay(100, function()
 				Media.DisplayMessage("What the hell are UNBWC Choppers doing here?", "Cpl. Thompson", Spain.Color)
