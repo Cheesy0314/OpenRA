@@ -29,7 +29,7 @@ SendHordeEast = function()
 end
 
 SpawnPillbox = function()
-	Actor.Create("pbox", true, {Owner = Civilians})
+	Actor.Create("pbox", true, {Owner = Civilians, Location = PillBoxSpawn.Location})
 end
 
 InitNeedful = function()
@@ -57,13 +57,14 @@ WorldLoaded = function()
         Spain = Player.GetPlayer("Spain")
         Germany = Player.GetPlayer("Germany")
         Zombies = Player.GetPlayer("BadGuy")
-        Civilian = Player.GetPlayer("Civilians")
+        Civilians = Player.GetPlayer("Civilians")
 	GDI = Player.GetPlayer("GDI")
         Soviet = Player.GetPlayer("Soviet")
-
+	Camera.Position = MainTrigger.CenterPosition
 	Escape = Spain.AddPrimaryObjective("Escape")
-	forces = Reinforcements.Reinforce(Spain, {"rmbo"}, {MapEdge.Location, Entry.Location})
-	Trigger.OnKilled(forces[1], function()
+	forces = Reinforcements.Reinforce(Spain, {"rmbo", "chan"}, {MapEdge.Location, Entry.Location})
+	Reinforcements.Reinforce(Civilians, {"chan", "chan", "e1r1","e1r1", "gnrl"}, {MapEdge.Location, Exit.Location})
+	Trigger.OnAnyKilled(forces, function()
 		Spain.MarkFailedObjective(Escape)
 	end)
 	Trigger.OnEnteredProximityTrigger(Exit.CenterPosition, WDist.New(3), function(actor, id)
