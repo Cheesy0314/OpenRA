@@ -1,28 +1,26 @@
 LandingForce = {"4tnk", "4tnk", "4tnk", "4tnk", "4tnk"}
-ParadropUnitTypes = {"rmbo","e1r1","e1r1"}
+ParadropUnitTypes = {"rmbo","e1r1","e1r1", "e3r1","e3r1"}
 ParadropUnitTypes2 = {"jeep","jeep","jeep","1tnk","1tnk"}
 AABase = {radar, SAM1, SAM2, SAM3, SAM4, SAM5, SAM6, AA1, AA2 }
 Beachhead = {Actor140,Actor141,Actor142,Actor143}
 MainBase = {Actor40,Actor41,Actor42,Actor43,Actor44,Actor45,Actor46,Actor47,Actor48,Actor49,Actor50,Actor51}
 
-SendSabetourTeam = function()
+SendHelo = function()
 	Spain.MarkCompletedObjective(ClearAAPost)
-	Media.DisplayMessage("Next objective: disable power to base defenses", "Mission Command", Civilian.Color)
 	local lz = BadgerDropPoint3.Location
-        Camera.Position = BadgerDropPoint3.CenterPosition
+	Actor.Create("flare", true, {Owner = Spain, CenterPosition = BadgerDropPoint3.CenterPosition})
         Trigger.AfterDelay(45, function()
-                local transport = Actor.Create("badr", true, { CenterPosition = BadgerStartPoint.CenterPosition, Owner = Spain})
-		local a = Actor.Create("spy", false, { Owner = Spain })
-		a.DisguiseAsType("e1", Zombies)
-		Trigger.OnKilled(a, function()
-			if not Spain.IsObjectiveCompleted(Inflitrate) then
-				Spain.MarkFailedObjective(Inflitrate)
-			end
+                local transport = Actor.Create("badr", true, { CenterPosition = WPos.New(0,0,210), Owner = Spain})
+		Utils.Do({"e1r1","e1r1","e3","e3","e3","e3","gnrl"}, function(soldier)
+			local a = Actor.Create(soldier, false, {Owner = Zombies})
+			transport.LoadPassenger(a)
 		end)
-		transport.LoadPassenger(a)
 		transport.Paradrop(lz)
 	end)
-	Trigger.OnInfiltrated(PowerBaseControl, function()
+	Reinforcements.Reinforce(Spain, {"tran"}, {BadgerStartPoint.Location, BadgerDropPoint1.Location})
+	Media.DisplayMessage("We have sent you a chopper, get your strike team to the flare and destroy that powerbase.", "Mission Command", Civilian.Color)
+	GiveAirstrike()
+	Trigger.OnKilled(PowerBaseControl, function()
                 DestroyPowerbase()
         end)
 end
@@ -35,7 +33,7 @@ SendReinforcements = function()
 	end)
 	Camera.Position = EndPointLST.CenterPosition
 	Trigger.OnAllKilled(Beachhead, function()
-		GiveAirstrike()
+		GiveParatroopers()
 		Media.PlaySpeechNotification(Spain, "ReinforcementsArrived")
 		Reinforcements.ReinforceWithTransport(Spain, "lst", LandingForce, {StartPointLST.Location, EndPointLST.Location},nil)
 	end)
@@ -59,6 +57,9 @@ end
 
 GiveAirstrike = function()
         Strike = Actor.Create("powerproxy.napalmstrike", true, {Owner = Spain})
+end
+
+GiveParatroopers = function()
 	Para = Actor.Create("powerproxy.paratroopers", true, {Owner = Spain})
 end
 
@@ -107,7 +108,7 @@ InitNeedful = function()
 	Inflitrate = Spain.AddPrimaryObjective("Disable power to defeses")
 	NavalYard = Spain.AddPrimaryObjective("Destroy naval yard")
 	
-	Trigger.OnAllKilled(AABase, function() SendSabetourTeam() end)
+	Trigger.OnAllKilled(AABase, function() SendHelo() end)
 	Trigger.OnAllKilled(MainBase, function() Win() end)
 	Trigger.OnEnteredProximityTrigger(Actor253.CenterPosition, WDist.New(22), function(discoverer, trigID)
 		if discoverer.Owner == Spain then
@@ -117,6 +118,9 @@ InitNeedful = function()
 				Media.DisplayMessage("What the hell are UNBWC Choppers doing here?", "Cpl. Thompson", Spain.Color)
 			end)
 		end
+	end)
+	Trigger.OnKilled(radar, function()
+		Media.DisplayMessage("We've lost communications with the island, send more troops to primary installation.", "Enemy Comms Officer", Zombies.Color)
 	end)
 end
 

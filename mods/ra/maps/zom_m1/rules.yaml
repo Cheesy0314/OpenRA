@@ -2,7 +2,7 @@ Player:
 	PlayerResources:
 		DefaultCash: 5000
 	Shroud:
-		ExploredMapCheckboxEnabled: true
+		ExploredMapCheckboxEnabled: false
 		ExploredMapCheckboxLocked: true
 		FogCheckboxLocked: true
 		FogCheckboxEnabled: false
@@ -11,7 +11,7 @@ World:
 	MapBuildRadius:
 		AllyBuildRadiusCheckboxEnabled: true #can build in allies base
 		AllyBuildRadiusCheckboxLocked: true
-		BuildRadiusCheckboxEnabled: true #no build radius limitations
+		BuildRadiusCheckboxEnabled: false #no build radius limitations
 		BuildRadiusCheckboxLocked: true
 	LuaScript:
 		Scripts: zom_m1.lua

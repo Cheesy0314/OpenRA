@@ -1,6 +1,6 @@
 Player:
 	PlayerResources:
-		DefaultCash: 5000
+		DefaultCash: 15000
 	Shroud:
 		ExploredMapCheckboxEnabled: true
 		ExploredMapCheckboxLocked: true
@@ -11,7 +11,7 @@ World:
 	MapBuildRadius:
 		AllyBuildRadiusCheckboxEnabled: true #can build in allies base
 		AllyBuildRadiusCheckboxLocked: true
-		BuildRadiusCheckboxEnabled: true #no build radius limitations
+		BuildRadiusCheckboxEnabled: false #no build radius limitations
 		BuildRadiusCheckboxLocked: true
 	LuaScript:
 		Scripts: zomboids.lua
@@ -83,6 +83,9 @@ E2:
 	Buildable:
 		Prerequisites: ~tent
 E7:
+	Buildable:
+		Prerequisites: ~disabled
+E6:
 	Buildable:
 		Prerequisites: ~disabled
 ARTY:

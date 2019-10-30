@@ -841,12 +841,12 @@ Actors:
 	Actor232: brik
 		Owner: BadGuy
 		Location: 43,18
-	Actor233: 4tnk
+	Actor233: 2tnk
 		Owner: BadGuy
 		Location: 45,18
 		Facing: 96
 		TurretFacing: 96
-	Actor234: 4tnk
+	Actor234: 2tnk
 		Owner: BadGuy
 		Location: 46,18
 		Facing: 96
