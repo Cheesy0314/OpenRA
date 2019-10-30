@@ -75,7 +75,7 @@ Players:
 Actors:
 	MapEdge: waypoint
 		Owner: Neutral
-		Location: 0,12
+		Location: 1,12
 	Entry: waypoint
 		Owner: Neutral
 		Location: 4,12
