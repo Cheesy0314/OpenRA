@@ -65,8 +65,7 @@ Players:
 		Name: BadGuy
 		Faction: soviet
 		Color: 590505
-		Allies: GDI
-		Enemies: Spain, Germany, Civilians
+		Enemies: Spain, Germany, Civilians, GDI
 
 Actors:
 	Actor0: tc04
