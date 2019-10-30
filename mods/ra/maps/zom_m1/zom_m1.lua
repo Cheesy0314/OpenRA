@@ -5,10 +5,28 @@ AABase = {radar, SAM1, SAM2, SAM3, SAM4, SAM5, SAM6, AA1, AA2 }
 Beachhead = {Actor140,Actor141,Actor142,Actor143}
 MainBase = {Actor40,Actor41,Actor42,Actor43,Actor44,Actor45,Actor46,Actor47,Actor48,Actor49,Actor50,Actor51}
 
-SendReinforcements = function() 
+SendSabetourTeam = function()
 	Spain.MarkCompletedObjective(ClearAAPost)
+	local lz = BadgerDropPoint3.Location
+        Camera.Position = BadgerDropPoint3.CenterPosition
+	Actor.Create("flare",true,{Owner = Spain, Location = BadgerDropPoint3.Location})
+	Media.DisplayMessage("Next objective: disable power to base defenses", "Mission Command", Civilian.Color)
+        Trigger.AfterDelay(45, function()
+                local transport = Actor.Create("badr", true, { CenterPosition = BadgerStartPoint.CenterPosition, Owner = Spain})
+                Utils.Do({"spy"}, function(type)
+                        local a = Actor.Create(type, false, { Owner = Spain })
+                        transport.LoadPassenger(a)
+		end)
+	end)
+	transport.Paradrop(lz)
+	Trigger.OnInfiltrated(PowerBaseControl, function()
+		DestroyPowerbase()
+	end)
+end
+
+SendReinforcements = function() 
 	Media.PlaySpeechNotification(Spain, "ObjectiveMet")
-	Media.DisplayMessage("Good work, AirCommand is sending in a strike to clear the beach for you.", "Misson Command", Civilian.Color)
+	Media.DisplayMessage("Good work the defenses have been lowered. AirCommand is sending in a strike to clear the beach for you.", "Misson Command", Civilian.Color)
 	Utils.Do(Beachhead, function(target) 
 		SendAirstrike(target)
 	end)
@@ -18,7 +36,22 @@ SendReinforcements = function()
 		Media.PlaySpeechNotification(Spain, "ReinforcementsArrived")
 		Reinforcements.ReinforceWithTransport(Spain, "lst", LandingForce, {StartPointLST.Location, EndPointLST.Location},nil)
 	end)
-	
+end
+
+DestroyedPowerbase = function()
+	Utils.Do(BadGuy.GetActorsByType("apwr"), function(actor)
+		actor.Kill()
+	end)
+	Trigger.AfterDelay(100, function()
+		Media.PlaySpeechNotification(Spain,"ObjectiveMet")
+		Spain.MarkCompletedObjective(Inflitrate)
+		Utils.Do(BadGuy.GetActorsByType("tsla"), function(actor)
+			actor.Kill()
+		end)
+		Trigger.AfterDelay(30, function()
+			SendReinforcements()
+		end)
+	end)
 end
 
 GiveAirstrike = function()
@@ -39,8 +72,10 @@ end
 
 
 Win = function() 
-	Spain.MarkCompletedObjective(NavalYard)
 	Media.PlaySpeechNotification(Spain, "ObjectiveMet")
+	Trigger.AfterDelay(DateTime.Seconds(1), function()
+		Spain.MarkCompletedObjective(NavalYard)
+	end)
 end
 
 InitNeedful = function()
@@ -65,10 +100,20 @@ InitNeedful = function()
         end)
 
 	ClearAAPost = Spain.AddPrimaryObjective("Destroy air defense")
+	Inflitrate = Spain.AddPrimaryObjective("Disable power to defeses")
 	NavalYard = Spain.AddPrimaryObjective("Destroy naval yard")
 	
-	Trigger.OnAllKilled(AABase, function() SendReinforcements() end)
+	Trigger.OnAllKilled(AABase, function() SendSabetourTeam() end)
 	Trigger.OnAllKilled(MainBase, function() Win() end)
+	Trigger.OnDiscovered(Actor253.CenterPosition,function(discoverer) 
+		if discoverer.Owner == Spain then
+			GDI = Player.GetPlayer("GDI")
+			Reinforcements.ReinforceWithTransport(GDI, "tran", {"e1r1", "e1r1", "chan", "chan", "gnrl"}, {CPos.New(1,1), CPos.New(7,11)})
+			Trigger.AfterDelay(100, function()
+				Media.DisplayMessage("What the hell are UNBWC Choppers doing here?", "Cpl. Thompson", Spain.Color)
+			end)
+		end
+	end)
 end
 
 WorldLoaded = function()

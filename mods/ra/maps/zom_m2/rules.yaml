@@ -156,10 +156,14 @@ OILNC:
 		Image: v19
 	SpawnActorOnDeath:
 		Actor: V19.Husk
+MIG:
+	Aircraft:
+		Speed: 300
+
 BADR.napalm:
 	Inherits: BADR.Bomber
 	Aircraft:
-		Speed: 300
+		Speed: 600
 	AttackAircraft:
 		FacingTolerance: 20
 	Armament:

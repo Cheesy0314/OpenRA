@@ -4,6 +4,7 @@ MissionStarted = false
 MissionCompleted = false
 HordeLight = {"zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie"}
 HordeHeavy = {"zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie"}
+HordeSuperHeavy = {"zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie"}
 BeginWaves = function()
 	Trigger.AfterDelay(DateTime.Minutes(1), function()
 		MissionStarted = true
@@ -87,7 +88,7 @@ SendZombies = function()
 						actor.EnterTransport(LST)
 					end)
 					passengers = #actors
-					Media.DisplayMessage("WAS ZUM TEUFEL IST DAS?", "Feldwebel Muller", Germany.Color)
+					Media.DisplayMessage("WHAT THE HELL IS THAT?", "Staff Sgt. Muller", Germany.Color)
 					Media.PlaySoundNotification(Spain, "ChatLine")
 				end)
 			end
@@ -128,7 +129,7 @@ SendZombies = function()
 		if (ticks == DateTime.Seconds(362)) then
 		
 			Media.PlaySoundNotification(Spain, "ChatLine")
-			Media.DisplayMessage("! WARNUNG! Eingehende Luftangriffe zur Ausrottung infizierter Bevolkerungszentren!","Kommando Luftwaffe",Germany.Color)
+			Media.DisplayMessage("TO ALL OPERATIONAL UNITS: WE HAVE BEGUN NAPALMING INFECTED CIVILIAN CENTERS! REMOVE FORCES FROM FORESTED AREAS IMMEDIATELY!", "German AirCommand", Germany.Color)
 			Trigger.AfterDelay(DateTime.Seconds(5), function()
 				Media.PlaySpeechNotification(Spain, "AlliedReinforcementsArrived")
 				SendAirstrike(Actor198)
@@ -149,7 +150,7 @@ SendZombies = function()
 				actor.AttackMove(Actor208.Location)
 				Trigger.OnIdle(actor,function() actor.Hunt() end)
 			end)
-			Reinforcements.Reinforce(Zombies, HordeHeavy, {  Actor196.Location - CVec.New(2,0), Actor205.Location}, 10, function(actor)
+			Reinforcements.Reinforce(Zombies, HordeSuperHeavy, {  Actor196.Location - CVec.New(2,0), Actor205.Location}, 10, function(actor)
 				actor.AttackMove(Actor208.Location)
 				Trigger.OnIdle(actor,function() actor.Hunt() end)
 			end)
@@ -234,7 +235,9 @@ WorldLoaded = function()
 	Camera.Position = Actor10.CenterPosition
 	Trigger.AfterDelay(DateTime.Seconds(2), function() Media.PlaySpeechNotification(Spain,"AlliedReinforcementsArrived")
 		firstWave = Reinforcements.ReinforceWithTransport(Civilian, "lst", {"2tnk","2tnk","jeep"}, {CPos.New(3,30), CPos.New(16,22)},nil)
-		
+		Trigger.OnKilled(firstWave[1], function()
+			Media.DisplayMessage("Command, First wave ineffective. We do not hold the beach, repeat, we do not hold the beach.", "ATF Baker-3 Actual", Civilian.Color)
+		end)
 		Trigger.OnAllKilled(firstWave[2], function()
 			Media.PlaySpeechNotification(Spain,"AlliedForcesFallen")
 			Trigger.AfterDelay(85, function()
@@ -244,6 +247,7 @@ WorldLoaded = function()
 
 			Trigger.OnAllKilled(Zombies.GetActorsByType("gun"), function() 
 				Media.PlaySpeechNotification(Spain, "ReinforcementsArrived")
+				Media.DisplayMessage("Hotel-2, prepare to make landfall", "Lt Willits", Spain.Color)
 				local reinf = Reinforcements.ReinforceWithTransport(Spain, "lst", {"mcv", "jeep", "jeep", "truk", "truk"}, {CPos.New(3,30), CPos.New(16,22)},nil)
 				Utils.Do(reinf[2], function(actor)
 					Trigger.OnAddedToWorld(actor, function(self) 

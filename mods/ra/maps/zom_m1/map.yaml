@@ -31,8 +31,14 @@ Players:
 		NonCombatant: True
 		Faction: england
 		Color: F6D679
-		Allies: Spain, Germany
+		Allies: Spain, Germany, GDI
 		Enemies: BadGuy
+	PlayerReference@GDI:
+		Name: GDI
+		Faction: england
+		Color: 3489EB
+		Allies: GDI
+		Enemies: BadGuy, Spain, Germany, Civilians, Neutral, Creeps
 	PlayerReference@Germany:
 		Name: Germany
 		LockFaction: True
@@ -41,7 +47,7 @@ Players:
 		Color: 00871B
 		LockSpawn: True
 		LockTeam: True
-		Allies: Spain, Civilians
+		Allies: Spain, Civilians, GDI
 		Enemies: BadGuy
 	PlayerReference@Spain:
 		Name: Spain
@@ -53,12 +59,13 @@ Players:
 		Color: 518599
 		LockSpawn: True
 		LockTeam: True
-		Allies: Germany, Civilians
+		Allies: Germany, Civilians, GDI
 		Enemies: BadGuy
 	PlayerReference@BadGuy:
 		Name: BadGuy
 		Faction: soviet
 		Color: 590505
+		Allies: GDI
 		Enemies: Spain, Germany, Civilians
 
 Actors:
@@ -128,9 +135,6 @@ Actors:
 	Actor18: apwr
 		Owner: BadGuy
 		Location: 40,6
-	Actor19: apwr
-		Owner: BadGuy
-		Location: 44,6
 	Actor20: apwr
 		Owner: BadGuy
 		Location: 48,6
@@ -735,9 +739,6 @@ Actors:
 	Actor197: brik
 		Owner: BadGuy
 		Location: 46,1
-	Actor198: brik
-		Owner: BadGuy
-		Location: 49,0
 	Actor199: brik
 		Owner: BadGuy
 		Location: 48,1
@@ -859,22 +860,6 @@ Actors:
 	Actor237: apwr
 		Owner: BadGuy
 		Location: 48,3
-	Actor238: dtrk
-		Owner: BadGuy
-		Location: 38,8
-		Facing: 96
-	Actor239: dtrk
-		Owner: BadGuy
-		Location: 38,4
-		Facing: 96
-	Actor240: dtrk
-		Owner: BadGuy
-		Location: 52,4
-		Facing: 96
-	Actor241: dtrk
-		Owner: BadGuy
-		Location: 52,8
-		Facing: 96
 	Actor242: dtrk
 		Owner: BadGuy
 		Location: 47,13
@@ -1033,6 +1018,25 @@ Actors:
 		Location: 6,10
 		SubCell: 3
 		Facing: 96
+	PowerBaseControl: miss
+		Owner: BadGuy
+		Location: 44,6
+	Actor281: agun
+		Owner: BadGuy
+		Location: 38,2
+		TurretFacing: 96
+	Actor282: agun
+		Owner: BadGuy
+		Location: 52,2
+		TurretFacing: 96
+	Actor283: agun
+		Owner: BadGuy
+		Location: 52,10
+		TurretFacing: 96
+	Actor284: agun
+		Owner: BadGuy
+		Location: 38,10
+		TurretFacing: 96
 
 Rules: ra|rules/campaign-rules.yaml, rules.yaml, ra|rules/campaign-tooltips.yaml
 
