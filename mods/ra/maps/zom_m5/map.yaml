@@ -702,7 +702,6 @@ Actors:
 		SubCell: 3
 		Stance: AttackAnything
 		Facing: 96
-		Stance: AttackAnything
 	Actor100: zombie
 		Owner: BadGuy
 		Location: 62,11
@@ -821,7 +820,6 @@ Actors:
 		SubCell: 3
 		Facing: 96
 		TurretFacing: 96
-		Stance: AttackAnything
 	Actor118: shok
 		Owner: Soviet
 		Location: 46,3

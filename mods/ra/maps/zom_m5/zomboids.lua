@@ -3,7 +3,8 @@ SmallHorde = {"zombie","zombie","zombie","zombie","zombie"}
 ticks = 1
 
 Tick = function()
-	if ticks = DateTime.Seconds(60) then
+	ticks = ticks + 1
+	if ticks == DateTime.Seconds(60) then
 		ticks = 1
 		SendHordeWest()
 		SendHordeEast()	
