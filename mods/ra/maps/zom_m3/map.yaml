@@ -14,7 +14,7 @@ Bounds: 1,1,128,64
 
 Visibility: MissionSelector
 
-Categories: Conquest
+Categories: Campaign
 
 Players:
 	PlayerReference@Neutral:

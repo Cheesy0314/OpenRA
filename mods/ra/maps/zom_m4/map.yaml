@@ -1,0 +1,79 @@
+MapFormat: 11
+
+RequiresMod: ra
+
+Title: Svalbard Wars 5: Escape
+
+Author: Cheesy314
+
+Tileset: INTERIOR
+
+MapSize: 66,34
+
+Bounds: 1,1,64,32
+
+Visibility: MissionSelector
+
+Categories: Campaign
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: england
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: england
+	PlayerReference@Civilians:
+		Name: Civilians
+		NonCombatant: True
+		Faction: england
+		Color: F6D679
+		Allies: Spain, Germany
+		Enemies: BadGuy, Soviet
+	PlayerReference@Germany:
+		Name: Germany
+		LockFaction: True
+		Faction: allies
+		LockColor: True
+		Color: 00871B
+		LockSpawn: True
+		LockTeam: True
+		Allies: Spain, Civilians
+		Enemies: BadGuy, Soviet
+	PlayerReference@Spain:
+		Name: Spain
+		Playable: True
+		Required: True
+		LockFaction: True
+		Faction: allies
+		LockColor: True
+		Color: 518599
+		LockSpawn: True
+		LockTeam: True
+		Allies: Germany, Civilians
+		Enemies: BadGuy, Soviet
+	PlayerReference@BadGuy:
+		Name: BadGuy
+		Faction: soviet
+		Color: 590505
+		Enemies: Spain, Germany, Civilians, Soviet, GDI
+	PlayerReference@Soviet:
+		Name: Soviet
+		Faction: soviet
+		Color: 590505
+		Enemies: Spain, Germany, Civilians, BadGuy, GDI
+	PlayerReference@GDI:
+		Name: GDI
+		Faction: england
+		Color: 3489EB
+		Allies: GDI
+		Enemies: BadGuy, Spain, Germany, Civilians, Neutral, Creeps, Soviet
+
+Actors:
+
+Rules: ra|rules/campaign-rules.yaml, rules.yaml, ra|rules/campaign-tooltips.yaml
+
+Weapons: weapons.yaml

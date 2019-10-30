@@ -88,14 +88,6 @@ SendAirstrike = function(actor)
         end)
 end
 
-
-Win = function() 
-	Media.PlaySpeechNotification(Spain, "ObjectiveMet")
-	Trigger.AfterDelay(DateTime.Seconds(1), function()
-		Spain.MarkCompletedObjective(NavalYard)
-	end)
-end
-
 InitNeedful = function()
         Trigger.OnObjectiveAdded(Spain, function(p, id)
                 Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
@@ -122,18 +114,10 @@ InitNeedful = function()
 	NavalYard = Spain.AddPrimaryObjective("Destroy naval yard")
 	
 	Trigger.OnAllKilled(AABase, function() SendHelo() end)
-	Trigger.OnAllKilled(MainBase, function() Win() end)
-	Trigger.OnEnteredProximityTrigger(Actor253.CenterPosition, WDist.New(22), function(discoverer, trigID)
-		if discoverer.Owner == Spain then
-			Trigger.RemoveProximityTrigger(trigID)
-			Reinforcements.ReinforceWithTransport(GDI, "tran", {"e1r1", "e1r1", "chan", "chan", "gnrl"}, {CPos.New(1,1), CPos.New(7,11)}, { CPos.New(7,11), CPos.New(1,1)})
-			Media.DisplayMessage("What the hell are BWC Troops doing here?", "Cpl. Thompson", Spain.Color)
-			Trigger.AfterDelay(100, function() Media.DisplayMessage("They're supposed to be on our side, why are they attacking us!", "Cpl. Thompson", Spain.Color)  end)
-		end
-	end)
+	Trigger.OnAllKilled(MainBase, function() SendPatrol() end)
 	Trigger.OnKilled(radar, function()
 		Media.DisplayMessage("We've lost communications with the island, send more troops to primary installation.", "Enemy Comms Officer", Zombies.Color)
-		Reinforcements.ReinforceWithTransport(BadGuys, "apc", {"e3r1","e3r1", "e3r1", "e1r1","e1r1"}, {CPos.New(1,60), CPos.New(20,60)}, {CPos.New(20,60),CPos.New(1,60)})
+		Reinforcements.ReinforceWithTransport(Zombies, "apc", {"e3r1","e3r1", "e3r1", "e1r1","e1r1"}, {CPos.New(1,60), CPos.New(20,60)}, {CPos.New(20,60),CPos.New(1,60)})
 	end)
 end
 
@@ -143,8 +127,8 @@ WorldLoaded = function()
         Zombies = Player.GetPlayer("BadGuy")
         Civilian = Player.GetPlayer("Civilians")
 	GDI = Player.GetPlayer("GDI")
+	Neutral = Player.GetPlayer("Neutral")
 	InitNeedful()
-		
 	local lz = BadgerDropPoint1.Location
 	Camera.Position = BadgerDropPoint1.CenterPosition
 	Trigger.AfterDelay(45, function()
@@ -162,5 +146,32 @@ WorldLoaded = function()
 		end)
 
 		transport.Paradrop(lz)
+	end)
+end
+
+SendPatrol = function()
+	Utils.Do(Spain.GetGroundAttackers(), function(a)
+		a.Owner = Germany
+	end)
+
+	Camera.Position = WPos.New(3,11,0)
+        local civForces = Reinforcements.ReinforceWithTransport(Civilian, "jeep", {"e1r1","e1r1"}, {CPos.New(1,8), CPos.New(7,11)})
+	FinalForces = civForces[2]	
+	FinalForces[3] = civForces[1]	
+	Trigger.OnAllKilled(FinalForces, function()
+		Trigger.AfterDelay(DateTime.Seconds(10), function() 
+                	Spain.MarkCompletedObjective(NavalYard)
 		end)
+	end)
+        Media.DisplayMessage("Command, my team has arrived at the research facility... something seems off here", "Sgt. Duffy", Civilian.Color)
+        Trigger.AfterDelay(DateTime.Seconds(8), function()
+                Reinforcements.ReinforceWithTransport(GDI, "tran", {"gdif", "gdif","gdif","gdif", "chan", "chan", "rmbo"}, {CPos.New(2,2), CPos.New(7,11)}, { CPos.New(7,11), CPos.New(2,2)})
+                Media.DisplayMessage("What the hell are BWC Troops doing here?", "Cpl. Thompson", Civilian.Color)
+                Trigger.AfterDelay(100, function() Media.DisplayMessage("They're supposed to be on our side, why are they attacking us!", "Cpl. Thompson", Civilian.Color)
+
+                        Utils.Do(Neutral.GetActorsByType("zombie"), function(z)
+                                z.Owner = Zombies
+                        end)
+                end)
+        end)
 end

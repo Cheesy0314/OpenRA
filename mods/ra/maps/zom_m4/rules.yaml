@@ -18,85 +18,13 @@ World:
 	MissionData:
 		Briefing: Tomorrow the invasion begins, but today we have work to do. A small monitoring station and naval base is located on south Edge Island, this threatens our operations for the landing. \n\nYour mission: cripple the air defenses off the coast, then we will drop off some forces for you to destroy the communications center.\n\nOnce the AA is out we will provide some air cover for you. \n\n Goodluck, we're counting on you.
 
-FIX:
-	Buildable:
-		Prerequisites: ~disabled
-SYRD:
-	Buildable:
-		Prerequisites: ~disabled
-DOME:
-	Buildable:
-		-Prerequisites:
-		Prerequisites: ~techlevel.low, ~tent
-ATEK:
-	Buildable:
-		Prerequisites: ~disabled
-HPAD:
-	Buildable:
-		Prerequisites: ~disabled
-SPY:
-	Buildable:
-		Prerequisites: ~disabled
-SPY.England:
-	Buildable:
-		Prerequisites: ~disabled
-MECH:
-	Buildable:
-		Prerequisites: ~disabled
-MRJ:
-	Buildable:
-		Prerequisites: ~disabled
-APC:
-	Buildable:
-		Prerequisites: ~disabled
-STNK:
-	Buildable:
-		Prerequisites: ~disabled
-TRUK:
-	Buildable:
-		Prerequisites: ~disabled
-SPY:
-	Buildable:
-		Prerequisites: ~disabled
-SNIPER:
-	Buildable:
-		Prerequisites: ~disabled
-MGG:
-	Buildable:
-		Prerequisites: ~disabled
-1TNK:
-	Buildable:
-		Prerequisites: ~tent
-2TNK:
-	Buildable:
-		Prerequisites: ~disabled
-E3:
-	Buildable:
-		Prerequisites: ~tent
-E2:
-	Buildable:
-		Prerequisites: ~tent
-E7:
-	Buildable:
-		Prerequisites: ~disabled
-ARTY:
-	Buildable:
-		Prerequisites: ~disabled
-MCV:
-	Buildable:
-		Prerequisites: ~disabled
-HBOX:
-	Buildable:
-		Prerequisites: ~disabled
-PBOX:
-	Buildable:
-		Prerequisites: ~disabled
 GDIF:
 	Inherits: E4
 	RenderSprites:
 		Image: E4
 	Tooltip:
-		Name: UNGDA Trooper
+		Name: GDI Flame Trooper
+		GenericName: Heavy Flame Trooper
 	Buildable:
 		Prerequisites: ~disabled
 	Valued:
@@ -113,7 +41,7 @@ RMBO:
 	RenderSprites:
 		Image: GNRL
 	Tooltip:
-		Name: Commando
+		Name: Commandeer
 	Voiced:
 		VoiceSet: StavrosVoice
 	Buildable:
@@ -121,7 +49,7 @@ RMBO:
 		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 120
 		Prerequisites: ~tent, atek
-		Description: Elite commando infantry. Armed with\Sniper rifle and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft\n  Special Ability: Destroy Building with C4
+		Description: The Commander (That's you). Armed with\Sniper rifle and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft\n  Special Ability: Destroy Building with C4
 	Valued:
 		Cost: 1200
 	UpdatesPlayerStatistics:
@@ -161,64 +89,6 @@ RMBO:
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
-OILNC:
-	Inherits: OILB
-	Huntable:
-	HitShape:
-		UseTargetableCellsOffsets: true
-		Type: Rectangle
-			TopLeft: -512, -512
-			BottomRight: 512, 512
-	Health:
-		HP: 40000
-	Armor:
-		Type: Wood
-	Tooltip:
-		Name: Oil Derrick
-		GenericVisibility: None
-	FrozenUnderFog:
-	HitShape:
-		UseTargetableCellsOffsets: false
-		TargetableOffsets: 0,0,0, 630,-300,0, 420,512,0, -420,-512,0, -630,300,0
-	Selectable:
-		Priority: 0
-		Bounds: 48,48
-	OwnerLostAction:
-		Action: ChangeOwner
-	Building:
-		Footprint: x
-		Dimensions: 1,1
-	Health:
-		HP: 80000
-	RevealsShroud:
-		Range: 4c0
-	CaptureManager:
-	CapturableProgressBlink:
-	Capturable:
-		Types: building
-	CapturableProgressBar:
-	EngineerRepairable:
-	CashTrickler:
-		Interval: 375
-		Amount: 300
-	Tooltip:
-		Name: Oil Derrick
-	TooltipDescription@ally:
-		Description: Provides additional funds.
-		ValidStances: Ally
-	TooltipDescription@other:
-		Description: Capture to receive additional funds.
-		ValidStances: Neutral, Enemy
-	Explodes:
-		Weapon: BarrelExplode
-	GpsDot:
-		String: Oil
-	GivesCashOnCapture:
-		Amount: 100
-	RenderSprites:
-		Image: v19
-	SpawnActorOnDeath:
-		Actor: V19.Husk
 BADR.napalm:
 	Inherits: BADR.Bomber
 	Aircraft:
