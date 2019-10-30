@@ -1,14 +1,17 @@
 LargeHorde = {"zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie"}
 SmallHorde = {"zombie","zombie","zombie","zombie","zombie"}
 ticks = 1
+BeginMission = false
 
 Tick = function()
+	if BeginMission then
 	ticks = ticks + 1
-	if ticks == DateTime.Seconds(60) then
+	if ticks == DateTime.Seconds(30) then
 		ticks = 1
 		SendHordeWest()
 		SendHordeEast()	
 		SendHordeSouth()
+	end
 	end
 end
 
@@ -62,10 +65,27 @@ WorldLoaded = function()
         Soviet = Player.GetPlayer("Soviet")
 	Camera.Position = MainTrigger.CenterPosition
 	Escape = Spain.AddPrimaryObjective("Escape")
-	forces = Reinforcements.Reinforce(Spain, {"rmbo", "chan"}, {MapEdge.Location, Entry.Location})
-	Reinforcements.Reinforce(Civilians, {"chan", "chan", "e1r1","e1r1", "gnrl"}, {MapEdge.Location, Exit.Location})
-	Trigger.OnAnyKilled(forces, function()
-		Spain.MarkFailedObjective(Escape)
+	CivForDie = Reinforcements.Reinforce(Civilians, {"chan", "e3r1", "e1r1","e1r1", "e6"}, {MapEdge.Location, Exit.Location})
+	Media.DisplayMessage("WE HAVE TO GET OUT OF HERE!", "Scientist", Civilians.Color)
+	Trigger.OnAnyKilled(CivForDie, function(killed)
+		Camera.Position = killed.CenterPosition
+		Trigger.AfterDelay(DateTime.Seconds(5), function()
+		Camera.Position = MainTrigger.CenterPosition
+		forces = Reinforcements.Reinforce(Spain, {"rmbo", "chan"}, {MapEdge.Location, Entry.Location})
+		Trigger.OnAnyKilled(forces, function()
+			Spain.MarkFailedObjective(Escape)
+		end)
+      		Media.DisplayMessage("Commander, the team is down the corridor, we will cover your retreat. GO NOW!", "Soldier Heinrich", Germany.Color)
+        	Trigger.AfterDelay(DateTime.Seconds(8), function()
+        	        SendHordeWest()
+                	SendHordeSouth()
+        	end)
+		end)
+	end)
+	Trigger.OnEnteredProximityTrigger(MainTrigger.CenterPosition, WDist.New(7), function(actor, id)
+		if actor.Owner == Spain then
+			BeginMission = true
+		end
 	end)
 	Trigger.OnEnteredProximityTrigger(Exit.CenterPosition, WDist.New(3), function(actor, id)
 		if actor.Owner == Spain then
@@ -77,12 +97,7 @@ WorldLoaded = function()
                 if actor.Owner == Spain then
 			SpawnPillbox()
 			Trigger.RemoveProximityTrigger(id)
-			Media.DisplayMessage("AUTOMATED DEFENSE TURRET ACTIVATED", "Speaker System", Civilian.Color)
+			Media.DisplayMessage("AUTOMATED DEFENSE TURRET ACTIVATED", "Speaker System", Civilians.Color)
                 end
-        end)
-	Media.DisplayMessage("Commander, the team is down the corridor, we will cover your retreat. GO NOW!", "Soldier Heinrich", Germany.Color)
-	Trigger.AfterDelay(DateTime.Seconds(10), function()
-		SendHordeWest()
-		SendHordeEast()
 	end)
 end

@@ -19,9 +19,9 @@ World:
 		Briefing: --TRANSMISSION RECORDING--\n\nMission Command, the base has been overrun. We have fled through the constructed tunnels, but resistance has been heavy. I have lost most of the men with me, but I have managed to contact some local forces waiting near the exit. \n\nThe shambling dead are closing in, but I have vital information about the epidemic that I must return with.\n\nCommander G5, Coalition Forces\n\n--TRANSMISSION SENT--
 
 GDIF:
-	Inherits: SHOK
+	Inherits: E2
 	RenderSprites:
-		Image: SHOK
+		Image: E4 
 	Tooltip:
 		Name: GDI Zone Trooper
 		GenericName: Heavy Trooper
