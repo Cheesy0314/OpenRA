@@ -91,9 +91,6 @@ HBOX:
 PBOX:
 	Buildable:
 		Prerequisites: ~disabled
-MISS:
-	Targetable:
-		TargetTypes: Ground, Water, Structure, WaterStructure, C4, DetonateAttack, SpyInfiltrate
 
 RMBO:
 	Inherits: ^Soldier
