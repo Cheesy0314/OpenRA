@@ -34,10 +34,8 @@ Escape = function()
 	Media.DisplayMessage("Sir, we need to get out of here! There's an escape tunnel under the command center, we need to get there now.", "Virologist Smith", Spain.Color)
 	Reinforcements.Reinforce(Spain, {"chan","gnrl"}, {CPos.New(15,11) , CPos.New(20,10)}, 25, function(a)
 		a.Destroy()
-		if a.Type == "chan" then
-			Spain.MarkObjectiveCompleted(Survive)
-		end
 	end)
+	Trigger.AfterDelay(DateTime.Seconds(65), function() Spain.MarkCompletedObjective(Survive) end)
 end
 
 SendAllZed = function()
