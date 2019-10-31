@@ -49,6 +49,26 @@ end
 
 Tick = function()
 	ticks = ticks + 1
+
+	if ticks == DateTime.Seconds(45) then
+		Media.DisplayMessage("Incoming Infected", "Early Warning System", Civilians.Color)
+	elseif ticks == DateTime.Minutes(5) then
+		Media.PlaySpeechNotification(Spain, "TenMinutesRemaining")
+	elseif ticks == DateTime.Minutes(9) then
+		Media.DisplayMessage("Incoming Horde of Infected", "Early Warning System", Civilians.Color)
+        elseif ticks == DateTime.Minutes(10) then
+                Media.PlaySpeechNotification(Spain, "WarningFiveMinutesRemaining")
+        elseif ticks == DateTime.Minutes(11) then
+                Media.PlaySpeechNotification(Spain, "WarningFourMinutesRemaining")
+        elseif ticks == DateTime.Minutes(12) then
+                Media.PlaySpeechNotification(Spain, "WarningThreeMinutesRemaining")
+        elseif ticks == DateTime.Minutes(13) then
+                Media.PlaySpeechNotification(Spain, "WarningTwoMinutesRemaining")
+	elseif ticks == DateTime.Minutes(14) then
+		Media.PlaySpeechNotification(Spain, "WarningOneMinuteRemaining")
+		Media.DisplayMessage("WARNING: MASSIVE INFECTED POPULATION INBOUND!", "Early Warning System", Civilians.Color)
+	end
+
 	if ticks > DateTime.Seconds(60) and (ticks % DateTime.Seconds(30)) == 0  and ticks < DateTime.Minutes(5) then
                 local v = attackVectors[Utils.RandomInteger(1,8)]
 		Reinforcements.Reinforce(Zombies, smallHorde, {v}, 25, function(a) a.AttackMove(AttackPoint) end)
@@ -78,12 +98,28 @@ WorldLoaded = function()
         Spain = Player.GetPlayer("Spain")
         Germany = Player.GetPlayer("Germany")
         Zombies = Player.GetPlayer("BadGuy")
-        Civilian = Player.GetPlayer("Civilians")
+        Civilians = Player.GetPlayer("Civilians")
         InitNeedful()
-	Trigger.AfterDelay(25, function()
+	Survive = Spain.AddPrimaryObjective("Protect Bio-Lab and Forward Command")
+
+	local reqStruct = {Actor154, Actor179}
+	Trigger.OnAnyKilled(reqStruct, function()
+		Spain.MarkFailedObjective(Survive)
+	end)
+	Media.PlaySpeechNotification(Spain, "MissionTimerInitialised")
+	Trigger.AfterDelay(DateTime.Seconds(8), function()
 		Actor104.Kill()
 		Actor98.Kill()
 		Media.DisplayMessage("Sir, we couldn't repair the refinery. The reactor in the ConYard went critical and we lost that too.", "Engineer Stevens", Spain.Color)
 	end)
+	
+	Trigger.OnDamaged(Actor179, function()
+		Media.PlaySpeechNotification(Spain, "CommandCenterAttack")
+		Media.DisplayMessage("Forward Command under attack", "EVA", Civilians.Color)
+	end)
 
+	Trigger.OnDamaged(Actor154, function()
+                Media.PlaySpeechNotification(Spain, "CommandCenterAttack")
+		Media.DisplayMessage("Bio Research Lab under attack", "EVA", Civilians.Color)
+        end)
 end
