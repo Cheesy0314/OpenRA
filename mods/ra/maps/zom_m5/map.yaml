@@ -813,14 +813,14 @@ Actors:
 		SubCell: 3
 		Facing: 96
 		TurretFacing: 96
-	Actor117: shok 
+	Actor117: e1r1 
 		Stance: AttackAnything
 		Owner: Soviet
 		Location: 49,4
 		SubCell: 3
 		Facing: 96
 		TurretFacing: 96
-	Actor118: shok
+	Actor118: e1r1
 		Owner: Soviet
 		Location: 46,3
 		SubCell: 3
