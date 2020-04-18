@@ -84,8 +84,6 @@ Packages:
 	yr|bits/units
 	yr|data
 	yr|uibits
-	yr|bits
-	yr|uibits
 
 MapFolders:
 	yr|maps: System

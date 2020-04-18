@@ -71,11 +71,15 @@ namespace OpenRA
 				}
 
 				package = new Folder(path);
-				if (package.Contains("mod.yaml"))
+				if (package.Contains("mod.yaml")) 
+				{
+					Console.WriteLine(id + " has mod.yaml");
 					return new Manifest(id, package);
+				}
 			}
 			catch (Exception e)
 			{
+				Console.WriteLine("Load mod '{0}': {1}".F(path, e));
 				Log.Write("debug", "Load mod '{0}': {1}".F(path, e));
 			}
 
@@ -94,8 +98,10 @@ namespace OpenRA
 			foreach (var pair in candidates)
 			{
 				var mod = LoadMod(pair.First, pair.Second);
-				if (mod != null)
+				if (mod != null) {
+					Console.WriteLine(pair.First + " is not null");
 					ret[pair.First] = mod;
+				}
 			}
 
 			return ret;
