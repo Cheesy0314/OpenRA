@@ -1,0 +1,17 @@
+World:
+	LuaScript:
+		Scripts: allies01.lua
+	MissionData:
+		Briefing: Take back NYC...
+
+ghost:
+	Armament@secondary:
+		Weapon: stalgren
+	Buildable:
+		Prerequisites: radar, ~gapile
+		Description: Elite commando infantry, armed with\na sub machine gun and C4.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft\nSpecial Ability: Destroy Buildings and Vehicles with C4
+
+nasam:
+	Armament:
+		Weapon: patriot
+		LocalOffset: 500,0,900

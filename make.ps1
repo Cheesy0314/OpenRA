@@ -83,7 +83,7 @@ function Version-Command
 	if ($version -ne $null)
 	{
 		$version | out-file ".\VERSION"
-		$mods = @("mods/ra/mod.yaml", "mods/cnc/mod.yaml", "mods/d2k/mod.yaml", "mods/ts/mod.yaml", "mods/modcontent/mod.yaml", "mods/all/mod.yaml")
+		$mods = @("mods/ra/mod.yaml", "mods/cnc/mod.yaml", "mods/d2k/mod.yaml", "mods/ts/mod.yaml", "mods/modcontent/mod.yaml", "mods/all/mod.yaml", "mods/yr/mod.yaml")
 		foreach ($mod in $mods)
 		{
 			$replacement = (gc $mod) -Replace "Version:.*", ("Version: {0}" -f $version)
@@ -138,6 +138,8 @@ function Test-Command
 	./OpenRA.Utility.exe cnc --check-yaml
 	Write-Host "Testing Red Alert mod MiniYAML..." -ForegroundColor Cyan
 	./OpenRA.Utility.exe ra --check-yaml
+        Write-Host "Testing Red Alert 2: Yuri's Revenge mod MiniYAML..." -ForegroundColor Cyan
+        ./OpenRA.Utility.exe ra --check-yaml
 }
 
 function Check-Command

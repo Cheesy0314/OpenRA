@@ -1,0 +1,12 @@
+World:
+	LuaScript:
+		Scripts: battle.lua
+	MissionData:
+		Briefing: There is a terrorist cell allied with the Soviets in NYC, we've staged a base on a small platofrm outside the city.\n\nTake the city back one block at a time!
+
+ghost:
+	Buildable:
+		Prerequisites: ~gapile, radar
+tnkd:
+	Buildable:
+		Prerequisites: ~gaweap, radar

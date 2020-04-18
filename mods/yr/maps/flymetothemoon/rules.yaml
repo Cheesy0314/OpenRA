@@ -1,0 +1,11 @@
+World:
+	LuaScript:
+		Scripts: game.lua
+	MissionData:
+		Briefing: What wonders await upon the moon?
+
+lunr:
+	Buildable:
+		Queue: Infantry
+		Prerequisites: garadr, ~napile
+		BuildPaletteOrder: 20

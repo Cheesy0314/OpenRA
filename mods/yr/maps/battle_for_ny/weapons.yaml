@@ -1,0 +1,17 @@
+sabot:
+	Warhead@1Dam: SpreadDamage
+		Damage: 200
+		Versus:
+			None: 2
+			Flak: 2
+			Plate: 2
+			Light: 100
+			Medium: 140
+			Heavy: 200
+
+sabotE:
+	Warhead@1Dam: SpreadDamage
+		Damage: 275
+		Versus:
+			Medium: 150
+			Drone: 100

@@ -1,0 +1,44 @@
+stalgren:
+	Inherits: ^LargeBullet
+	ValidTargets: Vehicle, Ship, Water
+	Range: 2c0
+	ReloadDelay: 40
+	Report: vtadatta.wav, vtadattb.wav, vtadattc.wav
+	Projectile: Bullet
+		Speed: 800
+		Image: 120mm
+	Warhead@1Dam: SpreadDamage
+		Spread: 100
+		Damage: 20000
+		Versus:
+			None: 0
+			Flak: 0
+			Plate: 0
+			Light: 50
+			Medium: 100
+			Heavy: 100
+			Wood: 100
+			Steel: 100
+			Concrete: 100
+			Drone: 100
+			Rocket: 100
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: elite_explosion
+		ImpactSounds: gexpapoa.wav
+	Warhead@3EffWater: CreateEffect
+		Explosions: large_watersplash
+		ImpactSounds: gexpwala.wav
+
+MP5:
+	ValidTargets: Infantry
+MP5E:
+	ValidTargets: Infantry
+
+patriot:
+	Inherits: HoverMissile
+	ValidTargets: Air
+	Warhead@1Dam: SpreadDamage
+		ValidTargets: Air
+		Damage: 100
+		Speed: 440

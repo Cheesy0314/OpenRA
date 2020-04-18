@@ -46,6 +46,10 @@
     <StartAction>Project</StartAction>
     <StartArguments>Game.Mod=ts</StartArguments>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(RunConfiguration)' == 'Yuris Revenge'">
+    <StartAction>Project</StartAction>
+    <StartArguments>Game.Mod=yr</StartArguments>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Open.Nat">
       <HintPath>..\thirdparty\download\Open.Nat.dll</HintPath>
