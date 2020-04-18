@@ -156,7 +156,7 @@ ModelSequences:
 	yr|sequences/voxels.yaml
 
 TileSets:
-	yr|tilesets/temperate.yaml
+	yr|tilesets/temperat.yaml
 	yr|tilesets/snow.yaml
 	yr|tilesets/lunar.yaml
 	yr|tilesets/desert.yaml
@@ -234,7 +234,7 @@ Voices:
 	yr|audio/voices.yaml
 
 Notifications:
-	yr|notifications.yaml
+	yr|audio/notifications.yaml
 
 Music:
 	yr|audio/music.yaml
