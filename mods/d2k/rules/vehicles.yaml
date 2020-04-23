@@ -1,6 +1,6 @@
 mcv:
 	Inherits: ^Tank
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Prerequisites: repair_pad, upgrade.heavy, ~techlevel.medium
 		Queue: Armor
@@ -14,7 +14,6 @@ mcv:
 		Name: Mobile Construction Vehicle
 	Selectable:
 		Class: mcv
-		Priority: 3
 		DecorationBounds: 42,42
 	Health:
 		HP: 45000
@@ -42,7 +41,6 @@ mcv:
 		EffectiveOwnerFromOwner: true
 	AttractsWorms:
 		Intensity: 700
-	SelectionDecorations:
 	SelfHealing:
 		Step: 50
 		Delay: 3
@@ -51,7 +49,7 @@ mcv:
 
 harvester:
 	Inherits: ^Tank
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableEconomicUnit
 	Buildable:
 		Queue: Armor
 		Prerequisites: refinery
@@ -65,10 +63,8 @@ harvester:
 		Name: Spice Harvester
 	Selectable:
 		Class: harvester
-		Priority: 7
 		DecorationBounds: 42,42
 	Harvester:
-		PipCount: 7
 		Capacity: 28
 		HarvestFacings: 8
 		Resources: Spice
@@ -96,12 +92,16 @@ harvester:
 	WithDockingAnimation:
 	AttractsWorms:
 		Intensity: 700
-	SelectionDecorations:
 	SelfHealing:
 		Step: 50
 		Delay: 3
 		HealIfBelow: 50
 	-RevealOnFire:
+	WithHarvesterPipsDecoration:
+		Position: BottomLeft
+		Margin: 1, 4
+		RequiresSelection: true
+		PipCount: 7
 
 trike:
 	Inherits: ^Vehicle
@@ -385,7 +385,6 @@ devastator:
 		GrantsCondition: meltdown
 	AttractsWorms:
 		Intensity: 700
-	SelectionDecorations:
 	SelfHealing:
 		Step: 50
 		Delay: 3

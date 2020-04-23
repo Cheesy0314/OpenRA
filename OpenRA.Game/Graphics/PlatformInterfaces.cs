@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,7 +17,7 @@ namespace OpenRA
 {
 	public interface IPlatform
 	{
-		IPlatformWindow CreateWindow(Size size, WindowMode windowMode, int batchSize);
+		IPlatformWindow CreateWindow(Size size, WindowMode windowMode, float scaleModifier, int batchSize, int videoDisplay);
 		ISoundEngine CreateSound(string device);
 		IFont CreateFont(byte[] data);
 	}
@@ -32,18 +32,25 @@ namespace OpenRA
 		Subtractive,
 		Multiply,
 		Multiplicative,
-		DoubleMultiplicative
+		DoubleMultiplicative,
+		LowAdditive,
+		Screen,
+		Translucent
 	}
 
 	public interface IPlatformWindow : IDisposable
 	{
 		IGraphicsContext Context { get; }
 
-		Size WindowSize { get; }
-		float WindowScale { get; }
+		Size NativeWindowSize { get; }
+		Size EffectiveWindowSize { get; }
+		float NativeWindowScale { get; }
+		float EffectiveWindowScale { get; }
 		Size SurfaceSize { get; }
+		int DisplayCount { get; }
+		int CurrentDisplay { get; }
 
-		event Action<float, float> OnWindowScaleChanged;
+		event Action<float, float, float, float> OnWindowScaleChanged;
 
 		void PumpInput(IInputHandler inputHandler);
 		string GetClipboardText();
@@ -52,9 +59,10 @@ namespace OpenRA
 		void GrabWindowMouseFocus();
 		void ReleaseWindowMouseFocus();
 
-		IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot);
+		IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot, bool pixelDouble);
 		void SetHardwareCursor(IHardwareCursor cursor);
 		void SetRelativeMouseMode(bool mode);
+		void SetScaleModifier(float scale);
 	}
 
 	public interface IGraphicsContext : IDisposable
@@ -73,6 +81,7 @@ namespace OpenRA
 		void DisableDepthBuffer();
 		void ClearDepthBuffer();
 		void SetBlendMode(BlendMode mode);
+		void SetVSyncEnabled(bool enabled);
 		string GLVersion { get; }
 	}
 
@@ -111,6 +120,8 @@ namespace OpenRA
 	{
 		void Bind();
 		void Unbind();
+		void EnableScissor(Rectangle rect);
+		void DisableScissor();
 		ITexture Texture { get; }
 	}
 

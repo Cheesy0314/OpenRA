@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -39,6 +39,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("It will try to pivot to face the enemy if stance is not HoldFire.")]
 		public readonly bool AllowTurning = true;
+
+		[Desc("Scan for new targets when idle.")]
+		public readonly bool ScanOnIdle = true;
 
 		[Desc("Set to a value >1 to override weapons maximum range for this.")]
 		public readonly int ScanRadius = -1;
@@ -127,6 +130,9 @@ namespace OpenRA.Mods.Common.Traits
 	public class AutoTarget : ConditionalTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync, INotifyOwnerChanged
 	{
 		public readonly IEnumerable<AttackBase> ActiveAttackBases;
+
+		readonly bool allowMovement;
+
 		[Sync]
 		int nextScanTime = 0;
 
@@ -187,6 +193,8 @@ namespace OpenRA.Mods.Common.Traits
 				stance = self.Owner.IsBot || !self.Owner.Playable ? info.InitialStanceAI : info.InitialStance;
 
 			PredictedStance = stance;
+
+			allowMovement = Info.AllowMovement && self.TraitOrDefault<IMove>() != null;
 		}
 
 		protected override void Created(Actor self)
@@ -243,6 +251,11 @@ namespace OpenRA.Mods.Common.Traits
 					attacker = passenger.Transport;
 			}
 
+			// Don't fire at an invisible enemy when we can't move to reveal it
+			var allowMove = allowMovement && Stance > UnitStance.Defend;
+			if (!allowMove && !attacker.CanBeViewedByPlayer(self.Owner))
+				return;
+
 			// Not a lot we can do about things we can't hurt... although maybe we should automatically run away?
 			var attackerAsTarget = Target.FromActor(attacker);
 			if (!ActiveAttackBases.Any(a => a.HasAnyValidWeapons(attackerAsTarget)))
@@ -254,16 +267,15 @@ namespace OpenRA.Mods.Common.Traits
 
 			Aggressor = attacker;
 
-			var allowMove = Info.AllowMovement && Stance > UnitStance.Defend;
 			Attack(self, Target.FromActor(Aggressor), allowMove);
 		}
 
 		void INotifyIdle.TickIdle(Actor self)
 		{
-			if (IsTraitDisabled || Stance < UnitStance.Defend)
+			if (IsTraitDisabled || !Info.ScanOnIdle || Stance < UnitStance.Defend)
 				return;
 
-			var allowMove = Info.AllowMovement && Stance > UnitStance.Defend;
+			var allowMove = allowMovement && Stance > UnitStance.Defend;
 			var allowTurn = Info.AllowTurning && Stance > UnitStance.HoldFire;
 			ScanAndAttack(self, allowMove, allowTurn);
 		}
@@ -281,11 +293,11 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (nextScanTime <= 0 && ActiveAttackBases.Any())
 			{
-				nextScanTime = self.World.SharedRandom.Next(Info.MinimumScanTimeInterval, Info.MaximumScanTimeInterval);
-
 				foreach (var dat in disableAutoTarget)
 					if (dat.DisableAutoTarget(self))
 						return Target.Invalid;
+
+				nextScanTime = self.World.SharedRandom.Next(Info.MinimumScanTimeInterval, Info.MaximumScanTimeInterval);
 
 				foreach (var ab in ActiveAttackBases)
 				{
@@ -312,12 +324,12 @@ namespace OpenRA.Mods.Common.Traits
 		void Attack(Actor self, Target target, bool allowMove)
 		{
 			foreach (var ab in ActiveAttackBases)
-				ab.AttackTarget(target, false, allowMove);
+				ab.AttackTarget(target, AttackSource.AutoTarget, false, allowMove);
 		}
 
 		public bool HasValidTargetPriority(Actor self, Player owner, BitSet<TargetableType> targetTypes)
 		{
-			if (Stance <= UnitStance.ReturnFire)
+			if (owner == null || Stance <= UnitStance.ReturnFire)
 				return false;
 
 			return activeTargetPriorities.Any(ati =>

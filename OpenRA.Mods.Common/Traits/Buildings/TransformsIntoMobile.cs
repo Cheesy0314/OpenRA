@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -158,8 +158,12 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			readonly TransformsIntoMobile mobile;
 			readonly bool rejectMove;
-			public bool TargetOverridesSelection(TargetModifiers modifiers)
+			public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers)
 			{
+				// Always prioritise orders over selecting other peoples actors or own actors that are already selected
+				if (target.Type == TargetType.Actor && (target.Actor.Owner != self.Owner || self.World.Selection.Contains(target.Actor)))
+					return true;
+
 				return modifiers.HasModifier(TargetModifiers.ForceMove);
 			}
 

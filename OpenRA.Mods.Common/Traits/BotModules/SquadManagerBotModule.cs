@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -126,11 +126,18 @@ namespace OpenRA.Mods.Common.Traits
 				&& !a.GetEnabledTargetTypes().IsEmpty;
 		}
 
+		protected override void Created(Actor self)
+		{
+			// Special case handling is required for the Player actor.
+			// Created is called before Player.PlayerActor is assigned,
+			// so we must query player traits from self, which refers
+			// for bot modules always to the Player actor.
+			notifyPositionsUpdated = self.TraitsImplementing<IBotPositionsUpdated>().ToArray();
+			notifyIdleBaseUnits = self.TraitsImplementing<IBotNotifyIdleBaseUnits>().ToArray();
+		}
+
 		protected override void TraitEnabled(Actor self)
 		{
-			notifyPositionsUpdated = Player.PlayerActor.TraitsImplementing<IBotPositionsUpdated>().ToArray();
-			notifyIdleBaseUnits = Player.PlayerActor.TraitsImplementing<IBotNotifyIdleBaseUnits>().ToArray();
-
 			// Avoid all AIs trying to rush in the same tick, randomize their initial rush a little.
 			var smallFractionOfRushInterval = Info.RushInterval / 20;
 			rushTicks = World.LocalRandom.Next(Info.RushInterval - smallFractionOfRushInterval, Info.RushInterval + smallFractionOfRushInterval);
@@ -263,7 +270,7 @@ namespace OpenRA.Mods.Common.Traits
 				var attackForce = RegisterNewSquad(bot, SquadType.Assault);
 
 				foreach (var a in unitsHangingAroundTheBase)
-					if (!a.Info.HasTraitInfo<AircraftInfo>())
+					if (!a.Info.HasTraitInfo<AircraftInfo>() && !Info.NavalUnitsTypes.Contains(a.Info.Name))
 						attackForce.Units.Add(a);
 
 				unitsHangingAroundTheBase.Clear();
@@ -279,7 +286,7 @@ namespace OpenRA.Mods.Common.Traits
 			// TODO: This should use common names & ExcludeFromSquads instead of hardcoding TraitInfo checks
 			var ownUnits = activeUnits
 				.Where(unit => unit.IsIdle && unit.Info.HasTraitInfo<AttackBaseInfo>()
-					&& !unit.Info.HasTraitInfo<AircraftInfo>() && !unit.Info.HasTraitInfo<HarvesterInfo>()).ToList();
+					&& !unit.Info.HasTraitInfo<AircraftInfo>() && !Info.NavalUnitsTypes.Contains(unit.Info.Name) && !unit.Info.HasTraitInfo<HarvesterInfo>()).ToList();
 
 			if (!allEnemyBaseBuilder.Any() || ownUnits.Count < Info.SquadSize)
 				return;
@@ -288,7 +295,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				// Don't rush enemy aircraft!
 				var enemies = World.FindActorsInCircle(b.CenterPosition, WDist.FromCells(Info.RushAttackScanRadius))
-					.Where(unit => IsEnemyUnit(unit) && unit.Info.HasTraitInfo<AttackBaseInfo>() && !unit.Info.HasTraitInfo<AircraftInfo>()).ToList();
+					.Where(unit => IsEnemyUnit(unit) && unit.Info.HasTraitInfo<AttackBaseInfo>() && !unit.Info.HasTraitInfo<AircraftInfo>() && !Info.NavalUnitsTypes.Contains(unit.Info.Name)).ToList();
 
 				if (AttackOrFleeFuzzy.Rush.CanAttack(ownUnits, enemies))
 				{

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					self.QueueActivity(move.MoveWithinRange(order.Target, WDist.FromCells(maxDistance.Value), targetLineColor: Color.LawnGreen));
 
 				self.QueueActivity(new Teleport(self, cell, maxDistance, Info.KillCargo, Info.FlashScreen, Info.ChronoshiftSound));
-				self.QueueActivity(move.MoveTo(cell, 5, Color.LawnGreen));
+				self.QueueActivity(move.MoveTo(cell, 5, targetLineColor: Color.LawnGreen));
 				self.ShowTargetLines();
 			}
 		}
@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public string OrderID { get { return "PortableChronoTeleport"; } }
 		public int OrderPriority { get { return 5; } }
 		public bool IsQueued { get; protected set; }
-		public bool TargetOverridesSelection(TargetModifiers modifiers) { return true; }
+		public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 
 		public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 		{

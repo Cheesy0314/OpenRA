@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -21,6 +21,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	public enum AttackSource { Default, AutoTarget, AttackMove }
+
 	public abstract class AttackBaseInfo : PausableConditionalTraitInfo
 	{
 		[Desc("Armament names")]
@@ -199,11 +201,10 @@ namespace OpenRA.Mods.Common.Traits
 				if (!order.Target.IsValidFor(self))
 					return;
 
-				AttackTarget(order.Target, order.Queued, true, forceAttack, Info.TargetLineColor);
+				AttackTarget(order.Target, AttackSource.Default, order.Queued, true, forceAttack, Info.TargetLineColor);
 				self.ShowTargetLines();
 			}
-
-			if (order.OrderString == "Stop")
+			else if (order.OrderString == "Stop")
 				OnStopOrder(self);
 		}
 
@@ -224,7 +225,7 @@ namespace OpenRA.Mods.Common.Traits
 			return order.OrderString == attackOrderName || order.OrderString == forceAttackOrderName ? Info.Voice : null;
 		}
 
-		public abstract Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null);
+		public abstract Activity GetAttackActivity(Actor self, AttackSource source, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null);
 
 		public bool HasAnyValidWeapons(Target t, bool checkForCenterTargetingWeapons = false)
 		{
@@ -391,7 +392,7 @@ namespace OpenRA.Mods.Common.Traits
 				&& a.Weapon.IsValidAgainst(t, self.World, self));
 		}
 
-		public void AttackTarget(Target target, bool queued, bool allowMove, bool forceAttack = false, Color? targetLineColor = null)
+		public void AttackTarget(Target target, AttackSource source, bool queued, bool allowMove, bool forceAttack = false, Color? targetLineColor = null)
 		{
 			if (IsTraitDisabled)
 				return;
@@ -399,7 +400,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!target.IsValidFor(self))
 				return;
 
-			var activity = GetAttackActivity(self, target, allowMove, forceAttack, targetLineColor);
+			var activity = GetAttackActivity(self, source, target, allowMove, forceAttack, targetLineColor);
 			self.QueueActivity(queued, activity);
 			OnResolveAttackOrder(self, activity, target, queued, forceAttack);
 		}
@@ -436,7 +437,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public string OrderID { get; private set; }
 			public int OrderPriority { get; private set; }
-			public bool TargetOverridesSelection(TargetModifiers modifiers) { return true; }
+			public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 
 			bool CanTargetActor(Actor self, Target target, ref TargetModifiers modifiers, ref string cursor)
 			{

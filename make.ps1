@@ -21,6 +21,13 @@ function All-Command
 	{
 		Write-Host "Build succeeded." -ForegroundColor Green
 	}
+
+	if (!(Test-Path "IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP") -Or (((get-date) - (get-item "IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP").LastWriteTime) -gt (new-timespan -days 30)))
+	{
+		echo "Downloading IP2Location GeoIP database."
+		$target = Join-Path $pwd.ToString() "IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP"
+		(New-Object System.Net.WebClient).DownloadFile("https://download.ip2location.com/lite/IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP", $target)
+	}
 }
 
 function Clean-Command 
@@ -99,7 +106,6 @@ function Dependencies-Command
 	cd thirdparty
 	./fetch-thirdparty-deps.ps1
 	cp download/*.dll ..
-	cp download/GeoLite2-Country.mmdb.gz ..
 	cp download/windows/*.dll ..
 	cd ..
 	Write-Host "Dependencies copied." -ForegroundColor Cyan

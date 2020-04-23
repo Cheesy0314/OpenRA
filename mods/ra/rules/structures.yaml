@@ -22,6 +22,7 @@ MSLO:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 6c0
 		RequiresCondition: !disabled
 		RevealGeneratedShroud: False
@@ -79,7 +80,6 @@ GAP:
 	Selectable:
 		Bounds: 24,24
 		DecorationBounds: 24,48,0,-12
-	SelectionDecorations:
 	WithSpriteBody:
 		PauseOnCondition: disabled
 	Health:
@@ -87,6 +87,7 @@ GAP:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -112,6 +113,7 @@ GAP:
 
 SPEN:
 	Inherits: ^Building
+	Inherits@PRIMARY: ^PrimaryBuilding
 	Selectable:
 		Bounds: 72,48
 	InfiltrateForSupportPower:
@@ -141,6 +143,7 @@ SPEN:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -195,9 +198,6 @@ SPEN:
 		ProductionTypes: Ship
 	Production:
 		Produces: Ship, Submarine
-	PrimaryBuilding:
-		PrimaryCondition: primary
-		SelectionNotification: PrimaryBuildingSelected
 	-SpawnActorsOnSell:
 	RepairsUnits:
 		HpPerStep: 1000
@@ -240,13 +240,6 @@ SPEN:
 	ProvidesPrerequisite@buildingname:
 	MapEditorData:
 		ExcludeTilesets: INTERIOR
-	WithDecoration@primary:
-		RequiresSelection: true
-		Image: pips
-		Sequence: tag-primary
-		ReferencePoint: Top
-		ZOffset: 256
-		RequiresCondition: primary
 	HitShape:
 		Type: Rectangle
 			TopLeft: -1536, -598
@@ -259,6 +252,7 @@ SPEN:
 
 SYRD:
 	Inherits: ^Building
+	Inherits@PRIMARY: ^PrimaryBuilding
 	Selectable:
 		Bounds: 72,48
 	InfiltrateForSupportPower:
@@ -287,6 +281,7 @@ SYRD:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -317,9 +312,6 @@ SYRD:
 		ProductionTypes: Ship, Boat
 	Production:
 		Produces: Ship, Boat
-	PrimaryBuilding:
-		PrimaryCondition: primary
-		SelectionNotification: PrimaryBuildingSelected
 	-SpawnActorsOnSell:
 	RepairsUnits:
 		HpPerStep: 1000
@@ -368,13 +360,6 @@ SYRD:
 	ProvidesPrerequisite@buildingname:
 	MapEditorData:
 		ExcludeTilesets: INTERIOR
-	WithDecoration@primary:
-		RequiresSelection: true
-		Image: pips
-		Sequence: tag-primary
-		ReferencePoint: Top
-		ZOffset: 256
-		RequiresCondition: primary
 	HitShape:
 		TargetableOffsets: 768,0,0, 768,-1024,0, 768,1024,0
 		Type: Rectangle
@@ -406,12 +391,12 @@ IRON:
 	Selectable:
 		Bounds: 48,28,0,2
 		DecorationBounds: 50,50,0,-12
-	SelectionDecorations:
 	Health:
 		HP: 100000
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 6c0
 		RequiresCondition: !disabled
 		RevealGeneratedShroud: False
@@ -468,6 +453,7 @@ PDOX:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 6c0
 		RequiresCondition: !disabled
 		RevealGeneratedShroud: False
@@ -541,12 +527,12 @@ TSLA:
 	Selectable:
 		Bounds: 24,24
 		DecorationBounds: 24,40,0,-8
-	SelectionDecorations:
 	Health:
 		HP: 40000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		MinRange: 6c0
 		Range: 8c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -586,12 +572,12 @@ AGUN:
 	Selectable:
 		Bounds: 24,24
 		DecorationBounds: 24,32,0,-4
-	SelectionDecorations:
 	Health:
 		HP: 40000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -647,6 +633,7 @@ DOME:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 6c0
 		Range: 10c0
 		RequiresCondition: !disabled
 		RevealGeneratedShroud: False
@@ -670,6 +657,7 @@ DOME:
 PBOX:
 	Inherits: ^Defense
 	Inherits@AUTOTARGET: ^AutoTargetAll
+	Inherits@CARGOPIPS: ^CargoPips
 	Tooltip:
 		Name: Pillbox
 	Building:
@@ -687,6 +675,7 @@ PBOX:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -698,10 +687,14 @@ PBOX:
 	-QuantizeFacingsFromSequence:
 	BodyOrientation:
 		QuantizedFacings: 8
+	EngineerRepairable:
+		RequiresCondition: damaged
+	GrantConditionOnDamageState@DAMAGED:
+		Condition: damaged
+		ValidDamageStates: Light, Medium, Heavy, Critical
 	Cargo:
 		Types: Infantry
 		MaxWeight: 1
-		PipCount: 1
 		InitialUnits: e1
 	-SpawnActorsOnSell:
 	AttackGarrisoned:
@@ -720,6 +713,7 @@ PBOX:
 HBOX:
 	Inherits: ^Defense
 	Inherits@AUTOTARGET: ^AutoTargetAll
+	Inherits@CARGOPIPS: ^CargoPips
 	Tooltip:
 		Name: Camo Pillbox
 	Building:
@@ -737,6 +731,7 @@ HBOX:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -754,10 +749,14 @@ HBOX:
 	-QuantizeFacingsFromSequence:
 	BodyOrientation:
 		QuantizedFacings: 8
+	EngineerRepairable:
+		RequiresCondition: damaged
+	GrantConditionOnDamageState@DAMAGED:
+		Condition: damaged
+		ValidDamageStates: Light, Medium, Heavy, Critical
 	Cargo:
 		Types: Infantry
 		MaxWeight: 1
-		PipCount: 1
 		InitialUnits: e1
 	-SpawnActorsOnSell:
 	DetectCloaked:
@@ -792,6 +791,7 @@ GUN:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 7c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -835,6 +835,7 @@ FTUR:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -889,6 +890,7 @@ SAM:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 8c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -941,10 +943,11 @@ ATEK:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
-		Range: 6c0
+		Range: 4c0
 	WithBuildingBib:
 	GpsPower:
 		PauseOnCondition: disabled
@@ -965,6 +968,7 @@ ATEK:
 WEAP:
 	Inherits: ^Building
 	Inherits@shape: ^3x2Shape
+	Inherits@PRIMARY: ^PrimaryBuilding
 	Selectable:
 		Bounds: 72,48
 	Buildable:
@@ -985,6 +989,7 @@ WEAP:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -1054,9 +1059,6 @@ WEAP:
 	ProvidesPrerequisite@ukrainianstructure:
 		RequiresPrerequisites: structures.ukraine
 		Prerequisite: vehicles.ukraine
-	PrimaryBuilding:
-		PrimaryCondition: primary
-		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 		ProductionType: Vehicle
 	Power:
@@ -1067,13 +1069,6 @@ WEAP:
 	InfiltrateForSupportPower:
 		Proxy: vehicles.upgraded
 		Types: SpyInfiltrate
-	WithDecoration@primary:
-		RequiresSelection: true
-		Image: pips
-		Sequence: tag-primary
-		ReferencePoint: Top
-		ZOffset: 256
-		RequiresCondition: primary
 	-ActorPreviewPlaceBuildingPreview:
 	SequencePlaceBuildingPreview:
 		Sequence: place
@@ -1124,6 +1119,7 @@ FACT:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -1155,6 +1151,8 @@ FACT:
 		RequiresCondition: factundeploy
 		RepairActors: fix
 		RequiresForceMove: true
+	TransformsIntoTransforms:
+		RequiresCondition: factundeploy && build-incomplete
 	Sellable:
 		RequiresCondition: !build-incomplete && !chrono-vortex && !being-captured && !being-demolished
 	GrantConditionOnPrerequisite@GLOBALFACTUNDEPLOY:
@@ -1207,7 +1205,6 @@ PROC:
 	Selectable:
 		Bounds: 72,50,0,4
 		DecorationBounds: 72,70,0,-2
-	SelectionDecorations:
 	Targetable:
 		TargetTypes: Ground, Structure, C4, DetonateAttack, ThiefInfiltrate, SpyInfiltrate
 	Health:
@@ -1215,6 +1212,7 @@ PROC:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -1223,9 +1221,7 @@ PROC:
 		DockAngle: 64
 		DockOffset: 1,2
 	StoresResources:
-		PipCount: 17
 		Capacity: 2000
-	DrawLineToTarget:
 	CustomSellValue:
 		Value: 300
 	FreeActor:
@@ -1235,7 +1231,7 @@ PROC:
 	InfiltrateForCash:
 		Percentage: 50
 		Types: SpyInfiltrate, ThiefInfiltrate
-		Notification: CreditsStolen
+		InfiltratedNotification: CreditsStolen
 	WithBuildingBib:
 	WithIdleOverlay@TOP:
 		RequiresCondition: !build-incomplete
@@ -1264,6 +1260,12 @@ PROC:
 	SequencePlaceBuildingPreview:
 		Sequence: idle
 		SequencePalette: placebuilding
+	WithResourceStoragePipsDecoration:
+		Position: BottomLeft
+		Margin: 4, 3
+		RequiresSelection: true
+		PipCount: 17
+		FullSequence: pip-yellow
 
 SILO:
 	Inherits: ^Building
@@ -1291,14 +1293,13 @@ SILO:
 	InfiltrateForCash:
 		Percentage: 50
 		Types: ThiefInfiltrate
-		Notification: CreditsStolen
+		InfiltratedNotification: CreditsStolen
 	WithBuildingBib:
 		HasMinibib: true
 	-WithSpriteBody:
 	WithResourceLevelSpriteBody:
 		Sequence: stages
 	StoresResources:
-		PipCount: 5
 		Capacity: 3000
 	-SpawnActorsOnSell:
 	Power:
@@ -1306,10 +1307,17 @@ SILO:
 	Explodes:
 		Weapon: SmallBuildingExplode
 		EmptyWeapon: SmallBuildingExplode
+	WithResourceStoragePipsDecoration:
+		Position: BottomLeft
+		Margin: 4, 3
+		RequiresSelection: true
+		PipCount: 5
+		FullSequence: pip-yellow
 
 HPAD:
 	Inherits: ^Building
 	Inherits@shape: ^2x2Shape
+	Inherits@PRIMARY: ^PrimaryBuilding
 	Selectable:
 		Bounds: 48,48
 	HitShape:
@@ -1333,6 +1341,7 @@ HPAD:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -1351,9 +1360,6 @@ HPAD:
 	Reservable:
 	ProductionBar:
 		ProductionType: Aircraft
-	PrimaryBuilding:
-		PrimaryCondition: primary
-		SelectionNotification: PrimaryBuildingSelected
 	Power:
 		Amount: -10
 	ProvidesPrerequisite@allies:
@@ -1392,17 +1398,11 @@ HPAD:
 	InfiltrateForSupportPower:
 		Proxy: aircraft.upgraded
 		Types: SpyInfiltrate
-	WithDecoration@primary:
-		RequiresSelection: true
-		Image: pips
-		Sequence: tag-primary
-		ReferencePoint: Top
-		ZOffset: 256
-		RequiresCondition: primary
 
 AFLD:
 	Inherits: ^Building
 	Inherits@shape: ^3x2Shape
+	Inherits@PRIMARY: ^PrimaryBuilding
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 420,0,0, 420,-1024,0, 420,1024,0, -777,0,0, -777,-1024,0, -777,1024,0
@@ -1426,6 +1426,7 @@ AFLD:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -1529,9 +1530,6 @@ AFLD:
 	ProductionBar:
 		ProductionType: Aircraft
 	SupportPowerChargeBar:
-	PrimaryBuilding:
-		PrimaryCondition: primary
-		SelectionNotification: PrimaryBuildingSelected
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
@@ -1541,13 +1539,6 @@ AFLD:
 	InfiltrateForSupportPower:
 		Proxy: aircraft.upgraded
 		Types: SpyInfiltrate
-	WithDecoration@primary:
-		RequiresSelection: true
-		Image: pips
-		Sequence: tag-primary
-		ReferencePoint: Top
-		ZOffset: 256
-		RequiresCondition: primary
 	WithResupplyAnimation:
 		RequiresCondition: !build-incomplete
 
@@ -1623,7 +1614,6 @@ APWR:
 	Selectable:
 		Bounds: 72,48
 		DecorationBounds: 72,68,0,-10
-	SelectionDecorations:
 	Health:
 		HP: 70000
 	Armor:
@@ -1667,6 +1657,7 @@ STEK:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -1679,6 +1670,7 @@ STEK:
 BARR:
 	Inherits: ^Building
 	Inherits@shape: ^2x2Shape
+	Inherits@PRIMARY: ^PrimaryBuilding
 	Selectable:
 		Bounds: 48,48
 	HitShape:
@@ -1702,6 +1694,7 @@ BARR:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -1722,9 +1715,6 @@ BARR:
 		Produces: Infantry, Soldier
 	GrantExternalConditionToProduced:
 		Condition: produced
-	PrimaryBuilding:
-		PrimaryCondition: primary
-		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 		ProductionType: Infantry
 	ProvidesPrerequisite:
@@ -1761,16 +1751,10 @@ BARR:
 		Types: SpyInfiltrate
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, SpyInfiltrate
-	WithDecoration@primary:
-		RequiresSelection: true
-		Image: pips
-		Sequence: tag-primary
-		ReferencePoint: Top
-		ZOffset: 256
-		RequiresCondition: primary
 
 KENN:
 	Inherits: ^Building
+	Inherits@PRIMARY: ^PrimaryBuilding
 	Selectable:
 		Bounds: 24,24
 	Buildable:
@@ -1792,39 +1776,62 @@ KENN:
 	WithBuildingBib:
 		HasMinibib: True
 	RallyPoint:
-		Offset: 0,2
+	Exit@0:
+		RequiresCondition: !being-captured
+		SpawnOffset: -280,400,0
+		ExitCell: -1,1
+		ProductionTypes: Dog, Infantry
+		Priority: 3
 	Exit@1:
 		RequiresCondition: !being-captured
 		SpawnOffset: -280,400,0
 		ExitCell: 0,1
 		ProductionTypes: Dog, Infantry
+		Priority: 2
 	Exit@2:
 		RequiresCondition: !being-captured
 		SpawnOffset: -280,400,0
 		ExitCell: -1,0
 		ProductionTypes: Dog, Infantry
+		Priority: 2
+	Exit@fallback1:
+		RequiresCondition: !being-captured
+		SpawnOffset: -280,400,0
+		ExitCell: -1,-1
+		ProductionTypes: Dog, Infantry
+	Exit@fallback2:
+		RequiresCondition: !being-captured
+		SpawnOffset: -280,400,0
+		ExitCell: 0,-1
+		ProductionTypes: Dog, Infantry
+	Exit@fallback3:
+		RequiresCondition: !being-captured
+		SpawnOffset: -280,400,0
+		ExitCell: 1,-1
+		ProductionTypes: Dog, Infantry
+	Exit@fallback4:
+		RequiresCondition: !being-captured
+		SpawnOffset: -280,400,0
+		ExitCell: 1,0
+		ProductionTypes: Dog, Infantry
+	Exit@fallback5:
+		RequiresCondition: !being-captured
+		SpawnOffset: -280,400,0
+		ExitCell: 1,1
+		ProductionTypes: Dog, Infantry
 	Production:
 		Produces: Infantry, Dog
-	PrimaryBuilding:
-		PrimaryCondition: primary
-		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 		ProductionType: Infantry
 	-SpawnActorsOnSell:
 	Power:
 		Amount: -10
 	ProvidesPrerequisite@buildingname:
-	WithDecoration@primary:
-		RequiresSelection: true
-		Image: pips
-		Sequence: tag-primary
-		ReferencePoint: Top
-		ZOffset: 256
-		RequiresCondition: primary
 
 TENT:
 	Inherits: ^Building
 	Inherits@shape: ^2x2Shape
+	Inherits@PRIMARY: ^PrimaryBuilding
 	Selectable:
 		Bounds: 48,48
 	HitShape:
@@ -1848,6 +1855,7 @@ TENT:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -1868,9 +1876,6 @@ TENT:
 		Produces: Infantry, Soldier
 	GrantExternalConditionToProduced:
 		Condition: produced
-	PrimaryBuilding:
-		PrimaryCondition: primary
-		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 		ProductionType: Infantry
 	ProvidesPrerequisite@barracks:
@@ -1913,13 +1918,6 @@ TENT:
 		Types: SpyInfiltrate
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, SpyInfiltrate
-	WithDecoration@primary:
-		RequiresSelection: true
-		Image: pips
-		Sequence: tag-primary
-		ReferencePoint: Top
-		ZOffset: 256
-		RequiresCondition: primary
 
 FIX:
 	Inherits: ^Building
@@ -1933,17 +1931,17 @@ FIX:
 	Tooltip:
 		Name: Service Depot
 	Building:
-		Footprint: _=_ xxx _=_
+		Footprint: _+_ +++ _+_
 		Dimensions: 3,3
 	Selectable:
 		Bounds: 68,34,0,3
 		DecorationBounds: 72,48
-	SelectionDecorations:
 	Health:
 		HP: 80000
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:

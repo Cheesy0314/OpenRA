@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,9 +15,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	[Desc("Attach this to the player actor. When attached, enables all actors possessing the LevelupWhenCreated ",
+	[Desc("Attach this to the player actor. When attached, enables all actors possessing the ProducibleWithLevel ",
 		"trait to have their production queue icons render with an overlay defined in this trait. ",
-		"The icon change occurs when LevelupWhenCreated.Prerequisites are met.")]
+		"The icon change occurs when ProducibleWithLevel.Prerequisites are met.")]
 	public class VeteranProductionIconOverlayInfo : ITraitInfo, Requires<TechTreeInfo>
 	{
 		[FieldLoader.Require]
@@ -31,10 +31,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[PaletteReference]
 		[Desc("Palette to render the sprite in. Reference the world actor's PaletteFrom* traits.")]
 		public readonly string Palette = "chrome";
-
-		[Desc("Point on the production icon's used as reference for offsetting the overlay. ",
-			"Possible values are combinations of Center, Top, Bottom, Left, Right.")]
-		public readonly ReferencePoints ReferencePoint = ReferencePoints.Top | ReferencePoints.Left;
 
 		public object Create(ActorInitializer init) { return new VeteranProductionIconOverlay(init, this); }
 	}
@@ -77,18 +73,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 		string IProductionIconOverlay.Palette { get { return info.Palette; } }
 		float2 IProductionIconOverlay.Offset(float2 iconSize)
 		{
-			float x = 0;
-			float y = 0;
-			if (info.ReferencePoint.HasFlag(ReferencePoints.Top))
-				y -= iconSize.Y / 2 - sprite.Size.Y / 2;
-			else if (info.ReferencePoint.HasFlag(ReferencePoints.Bottom))
-				y += iconSize.Y / 2 - sprite.Size.Y / 2;
-
-			if (info.ReferencePoint.HasFlag(ReferencePoints.Left))
-				x -= iconSize.X / 2 - sprite.Size.X / 2;
-			else if (info.ReferencePoint.HasFlag(ReferencePoints.Right))
-				x += iconSize.X / 2 - sprite.Size.X / 2;
-
+			var x = (sprite.Size.X - iconSize.X) / 2;
+			var y = (sprite.Size.Y - iconSize.Y) / 2;
 			return new float2(x, y);
 		}
 

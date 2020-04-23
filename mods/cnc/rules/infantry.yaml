@@ -162,7 +162,7 @@ E5:
 
 E6:
 	Inherits: ^Soldier
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableSupportUnit
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -179,7 +179,7 @@ E6:
 	Health:
 		HP: 3000
 	Passenger:
-		PipType: Yellow
+		CustomPipType: yellow
 	EngineerRepair:
 	RepairsBridges:
 	CaptureManager:
@@ -190,8 +190,6 @@ E6:
 	Captures@CAPTURES:
 		CaptureTypes: building, husk
 		PlayerExperience: 50
-	Selectable:
-		Priority: 5
 	-AttackFrontal:
 
 RMBO:
@@ -220,7 +218,7 @@ RMBO:
 	Health:
 		HP: 15000
 	Passenger:
-		PipType: Red
+		CustomPipType: red
 		Voice: Move
 	RevealsShroud:
 		Range: 6c0
@@ -279,7 +277,6 @@ TREX:
 	Selectable:
 		Bounds: 48,36,2,1
 		DecorationBounds: 52,38
-	SelectionDecorations:
 	Buildable:
 		Description: Bipedal carnivore with a massive skull
 
@@ -289,7 +286,6 @@ TRIC:
 		Name: Triceratops
 	Armament:
 		Weapon: horn
-	SelectionDecorations:
 	Buildable:
 		Description: Quadruped with large bony frill and three horns
 	Selectable:

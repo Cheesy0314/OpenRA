@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -244,6 +244,7 @@ namespace OpenRA.Mods.Common.Orders
 			var plugInfo = activeVariant.PlugInfo;
 			var lineBuildInfo = activeVariant.LineBuildInfo;
 			var preview = activeVariant.Preview;
+			var owner = queue.Actor.Owner;
 
 			if (plugInfo != null)
 			{
@@ -252,7 +253,7 @@ namespace OpenRA.Mods.Common.Orders
 
 				footprint.Add(topLeft, MakeCellType(AcceptsPlug(topLeft, plugInfo)));
 			}
-			else if (lineBuildInfo != null)
+			else if (lineBuildInfo != null && owner.Shroud.IsExplored(topLeft))
 			{
 				// Linebuild for walls.
 				if (buildingInfo.Dimensions.X != 1 || buildingInfo.Dimensions.Y != 1)
@@ -260,7 +261,7 @@ namespace OpenRA.Mods.Common.Orders
 
 				if (!Game.GetModifierKeys().HasModifier(Modifiers.Shift))
 				{
-					foreach (var t in BuildingUtils.GetLineBuildCells(world, topLeft, actorInfo, buildingInfo))
+					foreach (var t in BuildingUtils.GetLineBuildCells(world, topLeft, actorInfo, buildingInfo, owner))
 					{
 						var lineBuildable = world.IsCellBuildable(t.First, actorInfo, buildingInfo);
 						var lineCloseEnough = buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, actorInfo, t.First);
@@ -276,7 +277,7 @@ namespace OpenRA.Mods.Common.Orders
 			{
 				var isCloseEnough = buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, actorInfo, topLeft);
 				foreach (var t in buildingInfo.Tiles(topLeft))
-					footprint.Add(t, MakeCellType(isCloseEnough && world.IsCellBuildable(t, actorInfo, buildingInfo) && (resourceLayer == null || resourceLayer.GetResource(t) == null)));
+					footprint.Add(t, MakeCellType(isCloseEnough && world.IsCellBuildable(t, actorInfo, buildingInfo) && (resourceLayer == null || resourceLayer.GetResourceType(t) == null)));
 			}
 
 			return preview != null ? preview.Render(wr, topLeft, footprint) : Enumerable.Empty<IRenderable>();

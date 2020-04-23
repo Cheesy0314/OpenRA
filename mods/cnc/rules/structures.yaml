@@ -37,6 +37,8 @@ FACT:
 		RequiresCondition: factundeploy
 		RepairActors: fix
 		RequiresForceMove: true
+	TransformsIntoTransforms:
+		RequiresCondition: factundeploy && build-incomplete
 	GrantConditionOnPrerequisite@GLOBALFACTUNDEPLOY:
 		Condition: factundeploy
 		Prerequisites: global-factundeploy
@@ -198,6 +200,7 @@ NUK2:
 
 PROC:
 	Inherits: ^BaseBuilding
+	Inherits@RESOURCES: ^StoresResources
 	HitShape:
 		Type: Rectangle
 			TopLeft: -1536, -512
@@ -231,8 +234,6 @@ PROC:
 		DragLength: 12
 		TickRate: 15
 	StoresResources:
-		PipColor: Green
-		PipCount: 10
 		Capacity: 1000
 	Selectable:
 		Bounds: 72,56
@@ -249,11 +250,11 @@ PROC:
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
 
 SILO:
 	Inherits: ^BaseBuilding
 	Inherits@shape: ^2x1Shape
+	Inherits@RESOURCES: ^StoresResources
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -277,15 +278,12 @@ SILO:
 	WithResourceLevelSpriteBody:
 		Sequence: stages
 	StoresResources:
-		PipCount: 10
-		PipColor: Green
 		Capacity: 3000
 	-SpawnActorsOnSell:
 	Power:
 		Amount: -10
 	MustBeDestroyed:
 		RequiredForShortGame: false
-	SelectionDecorations:
 	-AcceptsDeliveredCash:
 	Selectable:
 		Bounds: 48,24
@@ -376,7 +374,6 @@ HAND:
 		Range: 5c0
 	WithBuildingBib:
 	RallyPoint:
-		Offset: 1,2
 	Exit@1:
 		SpawnOffset: 512,1024,0
 		ExitCell: 1,2
@@ -401,7 +398,6 @@ HAND:
 	Selectable:
 		Bounds: 48,48
 		DecorationBounds: 48,68,0,-10
-	SelectionDecorations:
 
 AFLD:
 	Inherits: ^BaseBuilding
@@ -424,7 +420,7 @@ AFLD:
 		Queue: Building.Nod
 		Description: Provides a dropzone\nfor vehicle reinforcements
 	Building:
-		Footprint: XXXX xxxx ====
+		Footprint: XXX+ xxx+ ====
 		Dimensions: 4,3
 		LocalCenterOffset: 0,-512,0
 	Health:
@@ -432,12 +428,12 @@ AFLD:
 	RevealsShroud:
 		Range: 7c0
 	RallyPoint:
-		Offset: 4,2
 	Exit@1:
 		SpawnOffset: -1024,0,0
 		ExitCell: 3,1
 	ProductionAirdrop:
 		Produces: Vehicle.Nod
+		ActorType: c17
 	WithBuildingBib:
 	WithIdleOverlay@DISH:
 		RequiresCondition: !build-incomplete
@@ -486,7 +482,6 @@ WEAP:
 	Selectable:
 		Bounds: 72,48
 		DecorationBounds: 72,64,0,-16
-	SelectionDecorations:
 	Health:
 		HP: 110000
 	RevealsShroud:
@@ -496,7 +491,6 @@ WEAP:
 		RequiresCondition: !build-incomplete
 		Sequence: build-top
 	RallyPoint:
-		Offset: 0,2
 	Exit@1:
 		SpawnOffset: -512,-512,0
 		ExitCell: 0,1
@@ -618,7 +612,6 @@ HQ:
 	Selectable:
 		Bounds: 48,40,0,9
 		DecorationBounds: 48,53,0,-4
-	SelectionDecorations:
 	WithSpriteBody:
 		PauseOnCondition: lowpower
 	Health:
@@ -677,12 +670,11 @@ FIX:
 		Queue: Building.GDI, Building.Nod
 		Description: Repairs vehicles
 	Building:
-		Footprint: _X_ xxx _X_
+		Footprint: _+_ +++ _+_
 		Dimensions: 3,3
 	Selectable:
 		Bounds: 64,34,0,3
 		DecorationBounds: 72,48
-	SelectionDecorations:
 	Health:
 		HP: 80000
 	RevealsShroud:
@@ -728,7 +720,6 @@ EYE:
 	Selectable:
 		Bounds: 48,40,0,9
 		DecorationBounds: 48,53,0,-4
-	SelectionDecorations:
 	WithSpriteBody:
 		PauseOnCondition: lowpower
 	Health:
@@ -788,7 +779,6 @@ TMPL:
 	Selectable:
 		Bounds: 72,48
 		DecorationBounds: 72,68,0,-12
-	SelectionDecorations:
 	Health:
 		HP: 210000
 	RevealsShroud:
@@ -950,7 +940,6 @@ OBLI:
 	Selectable:
 		Bounds: 24,24
 		DecorationBounds: 22,44,0,-10
-	SelectionDecorations:
 	Health:
 		HP: 75000
 	Armor:
@@ -1038,7 +1027,6 @@ ATWR:
 	Selectable:
 		Bounds: 24,24
 		DecorationBounds: 22,48,0,-12
-	SelectionDecorations:
 	Health:
 		HP: 55000
 	Armor:

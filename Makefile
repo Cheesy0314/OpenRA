@@ -40,7 +40,7 @@
 WHITELISTED_OPENRA_ASSEMBLIES = OpenRA.Game.exe OpenRA.Utility.exe OpenRA.Platforms.Default.dll OpenRA.Mods.Common.dll OpenRA.Mods.Cnc.dll OpenRA.Mods.D2k.dll OpenRA.Game.dll
 
 # These are explicitly shipped alongside our core files by the packaging script
-WHITELISTED_THIRDPARTY_ASSEMBLIES = ICSharpCode.SharpZipLib.dll FuzzyLogicLibrary.dll MaxMind.Db.dll Eluant.dll rix0rrr.BeaconLib.dll Open.Nat.dll SDL2-CS.dll OpenAL-CS.dll 
+WHITELISTED_THIRDPARTY_ASSEMBLIES = ICSharpCode.SharpZipLib.dll FuzzyLogicLibrary.dll Eluant.dll rix0rrr.BeaconLib.dll Open.Nat.dll SDL2-CS.dll OpenAL-CS.dll
 
 # These are shipped in our custom minimal mono runtime and also available in the full system-installed .NET/mono stack
 # This list *must* be kept in sync with the files packaged by the AppImageSupport and OpenRALauncherOSX repositories
@@ -157,10 +157,11 @@ ifeq ($(WIN32), $(filter $(WIN32),true yes y on 1))
 else
 	@$(MSBUILD) -t:build -p:Configuration=Release
 endif
+	@./fetch-geoip.sh
 
 clean:
 	@ $(MSBUILD) -t:clean
-	@-$(RM_F) *.config
+	@-$(RM_F) *.config IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP
 	@-$(RM_F) *.exe *.dll *.dylib ./OpenRA*/*.dll *.pdb mods/**/*.dll mods/**/*.pdb *.resources
 	@-$(RM_RF) ./*/bin ./*/obj
 	@-$(RM_RF) ./thirdparty/download
@@ -173,30 +174,26 @@ cli-dependencies:
 	@ $(CP_R) thirdparty/download/*.dll.config .
 	@ test -f OpenRA.Game/obj/project.assets.json || $(MSBUILD) -t:restore
 
-linux-dependencies: cli-dependencies geoip-dependencies linux-native-dependencies
+linux-dependencies: cli-dependencies linux-native-dependencies
 
 linux-native-dependencies:
 	@./thirdparty/configure-native-deps.sh
 
-windows-dependencies: cli-dependencies geoip-dependencies
+windows-dependencies: cli-dependencies
 ifeq ($(WIN32), $(filter $(WIN32),true yes y on 1))
 	@./thirdparty/fetch-thirdparty-deps-windows.sh x86
 else
 	@./thirdparty/fetch-thirdparty-deps-windows.sh x64
 endif
 
-osx-dependencies: cli-dependencies geoip-dependencies
+osx-dependencies: cli-dependencies
 	@./thirdparty/fetch-thirdparty-deps-osx.sh
 	@ $(CP_R) thirdparty/download/osx/*.dylib .
 	@ $(CP_R) thirdparty/download/osx/*.dll.config .
 
-geoip-dependencies:
-	@./thirdparty/fetch-geoip-db.sh
-	@ $(CP) thirdparty/download/GeoLite2-Country.mmdb.gz .
-
 dependencies: $(os-dependencies)
 
-all-dependencies: cli-dependencies windows-dependencies osx-dependencies geoip-dependencies
+all-dependencies: cli-dependencies windows-dependencies osx-dependencies
 
 version: VERSION mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/ts/mod.yaml mods/modcontent/mod.yaml mods/all/mod.yaml
 	@echo "$(VERSION)" > VERSION
@@ -219,10 +216,10 @@ install-engine:
 	@$(INSTALL_PROGRAM) OpenRA.Platforms.Default.dll "$(DATA_INSTALL_DIR)"
 
 	@$(INSTALL_DATA) OpenRA.Platforms.Default.dll.config "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_DATA) "GeoLite2-Country.mmdb.gz" "$(DATA_INSTALL_DIR)/GeoLite2-Country.mmdb.gz"
 	@$(INSTALL_DATA) VERSION "$(DATA_INSTALL_DIR)/VERSION"
 	@$(INSTALL_DATA) AUTHORS "$(DATA_INSTALL_DIR)/AUTHORS"
 	@$(INSTALL_DATA) COPYING "$(DATA_INSTALL_DIR)/COPYING"
+	@$(INSTALL_DATA) IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP "$(DATA_INSTALL_DIR)/IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP"
 
 	@$(CP_R) glsl "$(DATA_INSTALL_DIR)"
 	@$(CP_R) lua "$(DATA_INSTALL_DIR)"
@@ -232,7 +229,6 @@ install-engine:
 	@$(INSTALL_PROGRAM) ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) FuzzyLogicLibrary.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) Open.Nat.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) MaxMind.Db.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) rix0rrr.BeaconLib.dll "$(DATA_INSTALL_DIR)"
 
 install-common-mod-files:
@@ -387,4 +383,4 @@ help:
 
 .SUFFIXES:
 
-.PHONY: check-scripts check nunit test all core clean distclean cli-dependencies linux-dependencies linux-native-dependencies windows-dependencies osx-dependencies geoip-dependencies dependencies all-dependencies version install install-linux-shortcuts install-engine install-common-mod-files install-default-mods install-core install-linux-icons install-linux-desktop install-linux-mime install-linux-appdata install-man-page install-linux-scripts uninstall help
+.PHONY: check-scripts check nunit test all core clean distclean cli-dependencies linux-dependencies linux-native-dependencies windows-dependencies osx-dependencies dependencies all-dependencies version install install-linux-shortcuts install-engine install-common-mod-files install-default-mods install-core install-linux-icons install-linux-desktop install-linux-mime install-linux-appdata install-man-page install-linux-scripts uninstall help

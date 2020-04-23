@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -52,10 +52,7 @@ namespace OpenRA.Orders
 
 			// HACK: This is required by the hacky player actions-per-minute calculation
 			// TODO: Reimplement APM properly and then remove this
-			yield return new Order("CreateGroup", actorsInvolved.First().Owner.PlayerActor, false)
-			{
-				TargetString = actorsInvolved.Select(a => a.ActorID).JoinWith(",")
-			};
+			yield return new Order("CreateGroup", actorsInvolved.First().Owner.PlayerActor, false, actorsInvolved.ToArray());
 
 			foreach (var o in orders)
 				yield return CheckSameOrder(o.Order, o.Trait.IssueOrder(o.Actor, o.Order, o.Target, mi.Modifiers.HasModifier(Modifiers.Shift)));
@@ -68,21 +65,27 @@ namespace OpenRA.Orders
 
 		public virtual string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
-			var useSelect = false;
 			var target = TargetForInput(world, cell, worldPixel, mi);
 			var actorsAt = world.ActorMap.GetActorsAt(cell).ToList();
 
-			if (target.Type == TargetType.Actor && target.Actor.Info.HasTraitInfo<SelectableInfo>() &&
-					(mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any()))
-				useSelect = true;
+			bool useSelect;
+			if (Game.Settings.Game.UseClassicMouseStyle && !InputOverridesSelection(world, worldPixel, mi))
+				useSelect = target.Type == TargetType.Actor && target.Actor.Info.HasTraitInfo<ISelectableInfo>();
+			else
+			{
+				var ordersWithCursor = world.Selection.Actors
+					.Select(a => OrderForUnit(a, target, actorsAt, cell, mi))
+					.Where(o => o != null && o.Cursor != null);
 
-			var ordersWithCursor = world.Selection.Actors
-				.Select(a => OrderForUnit(a, target, actorsAt, cell, mi))
-				.Where(o => o != null && o.Cursor != null);
+				var cursorOrder = ordersWithCursor.MaxByOrDefault(o => o.Order.OrderPriority);
+				if (cursorOrder != null)
+					return cursorOrder.Cursor;
 
-			var cursorOrder = ordersWithCursor.MaxByOrDefault(o => o.Order.OrderPriority);
+				useSelect = target.Type == TargetType.Actor && target.Actor.Info.HasTraitInfo<ISelectableInfo>() &&
+				    (mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any());
+			}
 
-			return cursorOrder != null ? cursorOrder.Cursor : (useSelect ? "select" : "default");
+			return useSelect ? "select" : "default";
 		}
 
 		public void Deactivate() { }
@@ -90,10 +93,10 @@ namespace OpenRA.Orders
 		bool IOrderGenerator.HandleKeyPress(KeyInput e) { return false; }
 
 		// Used for classic mouse orders, determines whether or not action at xy is move or select
-		public virtual bool InputOverridesSelection(WorldRenderer wr, World world, int2 xy, MouseInput mi)
+		public virtual bool InputOverridesSelection(World world, int2 xy, MouseInput mi)
 		{
 			var actor = world.ScreenMap.ActorsAtMouse(xy)
-				.Where(a => !a.Actor.IsDead)
+				.Where(a => !a.Actor.IsDead && a.Actor.Info.HasTraitInfo<ISelectableInfo>() && (a.Actor.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(a.Actor)))
 				.WithHighestSelectionPriority(xy, mi.Modifiers);
 
 			if (actor == null)
@@ -102,22 +105,19 @@ namespace OpenRA.Orders
 			var target = Target.FromActor(actor);
 			var cell = world.Map.CellContaining(target.CenterPosition);
 			var actorsAt = world.ActorMap.GetActorsAt(cell).ToList();
-			var underCursor = world.Selection.Actors
-				.Select(a => new ActorBoundsPair(a, a.MouseBounds(wr)))
-				.WithHighestSelectionPriority(xy, mi.Modifiers);
 
-			var o = OrderForUnit(underCursor, target, actorsAt, cell, mi);
-			if (o != null)
+			var modifiers = TargetModifiers.None;
+			if (mi.Modifiers.HasModifier(Modifiers.Ctrl))
+				modifiers |= TargetModifiers.ForceAttack;
+			if (mi.Modifiers.HasModifier(Modifiers.Shift))
+				modifiers |= TargetModifiers.ForceQueue;
+			if (mi.Modifiers.HasModifier(Modifiers.Alt))
+				modifiers |= TargetModifiers.ForceMove;
+
+			foreach (var a in world.Selection.Actors)
 			{
-				var modifiers = TargetModifiers.None;
-				if (mi.Modifiers.HasModifier(Modifiers.Ctrl))
-					modifiers |= TargetModifiers.ForceAttack;
-				if (mi.Modifiers.HasModifier(Modifiers.Shift))
-					modifiers |= TargetModifiers.ForceQueue;
-				if (mi.Modifiers.HasModifier(Modifiers.Alt))
-					modifiers |= TargetModifiers.ForceMove;
-
-				if (o.Order.TargetOverridesSelection(modifiers))
+				var o = OrderForUnit(a, target, actorsAt, cell, mi);
+				if (o != null && o.Order.TargetOverridesSelection(a, target, actorsAt, cell, modifiers))
 					return true;
 			}
 

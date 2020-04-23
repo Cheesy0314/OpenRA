@@ -1,6 +1,6 @@
 MCV:
 	Inherits: ^Vehicle
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableSupportUnit
 	Valued:
 		Cost: 3500
 	Tooltip:
@@ -13,7 +13,6 @@ MCV:
 		BuildDurationModifier: 40
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Selectable:
-		Priority: 4
 		DecorationBounds: 36,36
 	Mobile:
 		Speed: 71
@@ -39,12 +38,11 @@ MCV:
 		Actor: MCV.Husk
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
-	SelectionDecorations:
 
 HARV:
 	Inherits: ^Tank
 	Inherits@CLOAK: ^AcceptsCloakCrate
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableEconomicUnit
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -58,11 +56,9 @@ HARV:
 		BuildDurationModifier: 40
 		Description: Collects Tiberium for processing.\n  Unarmed
 	Selectable:
-		Priority: 7
 		DecorationBounds: 36,36
 	Harvester:
 		Resources: Tiberium, BlueTiberium
-		PipCount: 7
 		Capacity: 20
 		BaleLoadDelay: 12
 		BaleUnloadDelay: 6
@@ -88,13 +84,21 @@ HARV:
 	Explodes:
 		RequiresCondition: !no-tiberium
 		Weapon: TiberiumExplosion
-	SelectionDecorations:
+	WithHarvesterPipsDecoration:
+		Position: BottomLeft
+		Margin: 4, 3
+		RequiresSelection: true
+		PipCount: 7
+		ResourceSequences:
+			Tiberium: pip-green
+			BlueTiberium: pip-blue
 
 APC:
 	Inherits: ^Tank
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
 	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
+	Inherits@TRANSPORT: ^Transport
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -141,7 +145,6 @@ APC:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
-		PipCount: 5
 		LoadingCondition: notmobile
 	SpawnActorOnDeath:
 		Actor: APC.Husk
@@ -443,7 +446,6 @@ MTNK:
 		Actor: MTNK.Husk
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
-	SelectionDecorations:
 	Selectable:
 		DecorationBounds: 28,28
 
@@ -502,7 +504,6 @@ HTNK:
 		Actor: HTNK.Husk
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
-	SelectionDecorations:
 	Selectable:
 		DecorationBounds: 34,34,0,-3
 
@@ -590,7 +591,6 @@ MLRS:
 		LocalOffset: 0,-171,0, 0,171,0
 	AmmoPool:
 		Ammo: 2
-		PipCount: 0
 		AmmoCondition: ammo
 	AttackTurreted:
 	WithSpriteTurret:
@@ -683,7 +683,7 @@ MHQ:
 
 TRUCK:
 	Inherits: ^Vehicle
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Queue: Vehicle.GDI, Vehicle.Nod
 		BuildPaletteOrder: 35
@@ -693,8 +693,6 @@ TRUCK:
 		Cost: 500
 	Tooltip:
 		Name: Supply Truck
-	Selectable:
-		Priority: 6
 	Health:
 		HP: 11000
 	Armor:

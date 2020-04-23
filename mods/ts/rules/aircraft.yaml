@@ -1,6 +1,7 @@
 DPOD:
 	Inherits: ^Aircraft
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@CARGOPIPS: ^CargoPips
 	Valued:
 		Cost: 10
 	Tooltip:
@@ -17,7 +18,6 @@ DPOD:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 1
-		PipCount: 1
 		UnloadVoice: Move
 		EjectOnDeath: true
 	Armament:
@@ -26,13 +26,18 @@ DPOD:
 		Voice: Attack
 	AmmoPool:
 		Ammo: 5
-		PipCount: 5
-		PipType: Ammo
-		PipTypeEmpty: AmmoEmpty
 	-SpawnActorOnDeath:
+	WithAmmoPipsDecoration:
+		Position: BottomLeft
+		RequiresSelection: true
+		Margin: 4, 5
+		FullSequence: pip-ammo
+		EmptySequence: pip-ammoempty
+		Palette: pips
 
 DSHP:
 	Inherits: ^Aircraft
+	Inherits@CARGOPIPS: ^CargoPips
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -60,17 +65,15 @@ DSHP:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
-		PipCount: 5
 		UnloadVoice: Move
 		EjectOnDeath: true
 	SpawnActorOnDeath:
 		Actor: DSHP.Husk
 
 ORCA:
-	Inherits: ^Aircraft
+	Inherits: ^EMPableAircraft
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
-	Inherits@EMPDISABLE: ^EmpDisable
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -110,21 +113,28 @@ ORCA:
 		AttackType: Hover
 	AmmoPool:
 		Ammo: 5
-		PipCount: 5
-		PipType: Ammo
-		PipTypeEmpty: AmmoEmpty
 		AmmoCondition: ammo
 	RenderSprites:
 	SpawnActorOnDeath:
 		Actor: ORCA.Husk
+		RequiresCondition: !empdisable
+	SpawnActorOnDeath@EMP:
+		Actor: ORCA.Husk.EMP
+		RequiresCondition: empdisable
 	Rearmable:
 		RearmActors: gahpad, nahpad
+	WithAmmoPipsDecoration:
+		Position: BottomLeft
+		RequiresSelection: true
+		Margin: 4, 5
+		FullSequence: pip-ammo
+		EmptySequence: pip-ammoempty
+		Palette: pips
 
 ORCAB:
-	Inherits: ^Aircraft
+	Inherits: ^EMPableAircraft
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
-	Inherits@EMPDISABLE: ^EmpDisable
 	Valued:
 		Cost: 1600
 	Tooltip:
@@ -164,22 +174,32 @@ ORCAB:
 		PauseOnCondition: empdisable
 	AmmoPool:
 		Ammo: 10
-		PipCount: 2
 		ReloadCount: 5
 		ReloadDelay: 200
-		PipType: Ammo
-		PipTypeEmpty: AmmoEmpty
 		AmmoCondition: ammo
 	RenderSprites:
 	Hovers@CRUISING:
 		RequiresCondition: cruising
 	SpawnActorOnDeath:
 		Actor: ORCAB.Husk
+		RequiresCondition: !empdisable
+	SpawnActorOnDeath@EMP:
+		Actor: ORCAB.Husk.EMP
+		RequiresCondition: empdisable
 	Rearmable:
 		RearmActors: gahpad, nahpad
+	WithAmmoPipsDecoration:
+		Position: BottomLeft
+		RequiresSelection: true
+		Margin: 4, 5
+		PipCount: 2
+		FullSequence: pip-ammo
+		EmptySequence: pip-ammoempty
+		Palette: pips
 
 ORCATRAN:
-	Inherits: ^Aircraft
+	Inherits: ^EMPableAircraft
+	Inherits@CARGOPIPS: ^CargoPips
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -210,15 +230,18 @@ ORCATRAN:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
-		PipCount: 5
 		UnloadVoice: Move
 		EjectOnDeath: true
 		AfterUnloadDelay: 40
 	SpawnActorOnDeath:
 		Actor: ORCATRAN.Husk
+		RequiresCondition: !empdisable
+	SpawnActorOnDeath@EMP:
+		Actor: ORCATRAN.Husk.EMP
+		RequiresCondition: empdisable
 
 TRNSPORT:
-	Inherits: ^Aircraft
+	Inherits: ^EMPableAircraft
 	Valued:
 		Cost: 750
 	Tooltip:
@@ -253,12 +276,15 @@ TRNSPORT:
 		Bounds: 44,32,0,-8
 	SpawnActorOnDeath:
 		Actor: TRNSPORT.Husk
+		RequiresCondition: !empdisable
+	SpawnActorOnDeath@EMP:
+		Actor: TRNSPORT.Husk.EMP
+		RequiresCondition: empdisable
 
 SCRIN:
-	Inherits: ^Aircraft
+	Inherits: ^EMPableAircraft
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
-	Inherits@EMPDISABLE: ^EmpDisable
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -278,7 +304,6 @@ SCRIN:
 		CruiseAltitude: 5c0
 		TurnSpeed: 3
 		Speed: 168
-		AirborneCondition: airborne
 		TakeoffSounds: dropup1.aud
 		LandingSounds: dropdwn1.aud
 		CanHover: false
@@ -300,23 +325,31 @@ SCRIN:
 		PauseOnCondition: empdisable
 	AmmoPool:
 		Ammo: 15
-		PipCount: 3
 		ReloadCount: 5
-		PipType: Ammo
-		PipTypeEmpty: AmmoEmpty
 		AmmoCondition: ammo
 	RenderSprites:
 	DeathSounds:
 	SpawnActorOnDeath:
 		Actor: SCRIN.Husk
+		RequiresCondition: !empdisable
+	SpawnActorOnDeath@EMP:
+		Actor: SCRIN.Husk.EMP
+		RequiresCondition: empdisable
 	Rearmable:
 		RearmActors: gahpad, nahpad
+	WithAmmoPipsDecoration:
+		Position: BottomLeft
+		RequiresSelection: true
+		Margin: 4, 5
+		PipCount: 3
+		FullSequence: pip-ammo
+		EmptySequence: pip-ammoempty
+		Palette: pips
 
 APACHE:
-	Inherits: ^Aircraft
+	Inherits: ^EMPableAircraft
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
-	Inherits@EMPDISABLE: ^EmpDisable
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -353,9 +386,6 @@ APACHE:
 		AttackType: Hover
 	AmmoPool:
 		Ammo: 12
-		PipCount: 4
-		PipType: Ammo
-		PipTypeEmpty: AmmoEmpty
 		AmmoCondition: ammo
 	WithIdleOverlay@ROTORAIR:
 		Offset: 85,0,598
@@ -368,8 +398,20 @@ APACHE:
 	RenderSprites:
 	SpawnActorOnDeath:
 		Actor: APACHE.Husk
+		RequiresCondition: !empdisable
+	SpawnActorOnDeath@EMP:
+		Actor: APACHE.Husk.EMP
+		RequiresCondition: empdisable
 	Rearmable:
 		RearmActors: gahpad, nahpad
+	WithAmmoPipsDecoration:
+		Position: BottomLeft
+		RequiresSelection: true
+		Margin: 4, 5
+		PipCount: 4
+		FullSequence: pip-ammo
+		EmptySequence: pip-ammoempty
+		Palette: pips
 
 HUNTER:
 	Inherits@2: ^ExistsInWorld
@@ -408,12 +450,9 @@ HUNTER:
 	Hovers@CRUISING:
 		RequiresCondition: cruising
 	QuantizeFacingsFromSequence:
-	DrawLineToTarget:
 	AppearsOnRadar:
 		UseLocation: true
 	Interactable:
-	SelectionDecorations:
-		Palette: pips
 	HitShape:
 	MapEditorData:
 		Categories: System

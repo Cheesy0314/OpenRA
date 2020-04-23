@@ -86,12 +86,14 @@ FCOM:
 		Description: Capture to give buildable area.
 		ValidStances: Neutral, Enemy
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
 	WithBuildingBib:
 	CaptureManager:
+		BeingCapturedCondition: being-captured
 	Capturable:
 		Types: building
 	CapturableProgressBar:
@@ -99,6 +101,7 @@ FCOM:
 	GivesBuildableArea:
 		AreaTypes: building
 	BaseProvider:
+		PauseOnCondition: being-captured
 		Range: 8c0
 	EngineerRepairable:
 	Power:
@@ -314,8 +317,6 @@ V19.Husk:
 		StartSequence: fire-start
 		Sequence: fire-loop
 	-Selectable:
-	SelectionDecorations:
-		RenderSelectionBars: False
 	-Targetable:
 	-Demolishable:
 	-HitShape:
@@ -327,8 +328,6 @@ V19.Husk:
 BARL:
 	Inherits: ^TechBuilding
 	-Selectable:
-	SelectionDecorations:
-		RenderSelectionBars: False
 	Health:
 		HP: 1000
 	Explodes:
@@ -351,8 +350,6 @@ BARL:
 BRL3:
 	Inherits: ^TechBuilding
 	-Selectable:
-	SelectionDecorations:
-		RenderSelectionBars: False
 	Health:
 		HP: 1000
 	Explodes:
@@ -399,6 +396,7 @@ MISS:
 	Health:
 		HP: 60000
 	RevealsShroud:
+		MinRange: 6c0
 		Range: 10c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -883,7 +881,6 @@ WINDMILL:
 	Selectable:
 		Bounds: 24,24,0,-14
 		DecorationBounds: 36,36,0,-14
-	SelectionDecorations:
 	Tooltip:
 		Name: Windmill
 	Building:

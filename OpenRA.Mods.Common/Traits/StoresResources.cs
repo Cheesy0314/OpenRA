@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -22,16 +22,10 @@ namespace OpenRA.Mods.Common.Traits
 		[FieldLoader.Require]
 		public readonly int Capacity = 0;
 
-		[FieldLoader.Require]
-		[Desc("Number of little squares used to display how filled unit is.")]
-		public readonly int PipCount = 0;
-
-		public readonly PipType PipColor = PipType.Yellow;
-
 		public object Create(ActorInitializer init) { return new StoresResources(init.Self, this); }
 	}
 
-	public class StoresResources : IPips, INotifyOwnerChanged, INotifyCapture, IStoreResources, ISync, INotifyKilled, INotifyAddedToWorld, INotifyRemovedFromWorld
+	public class StoresResources : INotifyOwnerChanged, INotifyCapture, IStoreResources, ISync, INotifyKilled, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		readonly StoresResourcesInfo info;
 		PlayerResources player;
@@ -63,13 +57,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Lose the stored resources
 			player.TakeResources(Stored);
-		}
-
-		IEnumerable<PipType> IPips.GetPips(Actor self)
-		{
-			return Enumerable.Range(0, info.PipCount).Select(i =>
-				player.Resources * info.PipCount > i * player.ResourceCapacity
-				? info.PipColor : PipType.Transparent);
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -50,9 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled || self.Owner.WinState == WinState.Lost || !self.World.Map.Contains(self.Location))
 				return;
 
-			var r = self.World.SharedRandom.Next(1, 100);
-
-			if (r <= 100 - Info.SuccessRate)
+			if (self.World.SharedRandom.Next(100) >= Info.SuccessRate)
 				return;
 
 			var cp = self.CenterPosition;
@@ -60,48 +58,47 @@ namespace OpenRA.Mods.Common.Traits
 			if ((inAir && !Info.EjectInAir) || (!inAir && !Info.EjectOnGround))
 				return;
 
-			var pilot = self.World.CreateActor(false, Info.PilotActor.ToLowerInvariant(),
-				new TypeDictionary { new OwnerInit(self.Owner), new LocationInit(self.Location) });
-
-			var pilotPositionable = pilot.TraitOrDefault<IPositionable>();
-			var pilotCell = self.Location;
-			var pilotSubCell = pilotPositionable.GetAvailableSubCell(pilotCell);
-			if (pilotSubCell == SubCell.Invalid)
+			self.World.AddFrameEndTask(w =>
 			{
 				if (!Info.AllowUnsuitableCell)
 				{
-					pilot.Dispose();
-					return;
+					var pilotInfo = self.World.Map.Rules.Actors[Info.PilotActor.ToLowerInvariant()];
+					var pilotPositionable = pilotInfo.TraitInfo<IPositionableInfo>();
+					if (!pilotPositionable.CanEnterCell(self.World, null, self.Location))
+						return;
 				}
 
-				pilotSubCell = SubCell.Any;
-			}
-
-			if (inAir)
-			{
-				self.World.AddFrameEndTask(w =>
+				var td = new TypeDictionary
 				{
-					pilotPositionable.SetPosition(pilot, pilotCell, pilotSubCell);
-					var dropPosition = pilot.CenterPosition + new WVec(0, 0, self.CenterPosition.Z - pilot.CenterPosition.Z);
-					pilotPositionable.SetVisualPosition(pilot, dropPosition);
+					new OwnerInit(self.Owner),
+					new LocationInit(self.Location),
+				};
 
-					w.Add(pilot);
-				});
-
-				Game.Sound.Play(SoundType.World, Info.ChuteSound, cp);
-			}
-			else
-			{
-				self.World.AddFrameEndTask(w =>
+				// If airborne, offset the spawn location so the pilot doesn't drop on another infantry's head
+				var spawnPos = cp;
+				if (inAir)
 				{
-					w.Add(pilot);
-					pilotPositionable.SetPosition(pilot, pilotCell, pilotSubCell);
+					var subCell = self.World.ActorMap.FreeSubCell(self.Location);
+					if (subCell != SubCell.Invalid)
+					{
+						td.Add(new SubCellInit(subCell));
+						spawnPos = self.World.Map.CenterOfSubCell(self.Location, subCell) + new WVec(0, 0, spawnPos.Z);
+					}
+				}
 
+				td.Add(new CenterPositionInit(spawnPos));
+
+				var pilot = self.World.CreateActor(true, Info.PilotActor.ToLowerInvariant(), td);
+
+				if (!inAir)
+				{
 					var pilotMobile = pilot.TraitOrDefault<Mobile>();
 					if (pilotMobile != null)
 						pilotMobile.Nudge(pilot);
-				});
-			}
+				}
+				else
+					Game.Sound.Play(SoundType.World, Info.ChuteSound, cp);
+			});
 		}
 	}
 }

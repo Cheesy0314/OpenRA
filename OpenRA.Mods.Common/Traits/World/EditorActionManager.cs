@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -29,6 +29,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		int nextId;
 
+		public bool Modified;
+
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			Add(new OpenMapAction());
@@ -36,6 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Add(IEditorAction editorAction)
 		{
+			Modified = true;
 			editorAction.Execute();
 
 			if (undoStack.Count > 0)
@@ -54,6 +57,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!HasUndos())
 				return;
+
+			Modified = true;
 
 			var editorAction = undoStack.Pop();
 			undoStack.Peek().Status = EditorActionStatus.Active;
@@ -80,6 +85,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!HasRedos())
 				return;
+
+			Modified = true;
 
 			var editorAction = redoStack.Pop();
 
@@ -113,6 +120,12 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			while (undoStack.Peek().Id != id)
 				Redo();
+		}
+
+		public bool HasUnsavedItems()
+		{
+			// Modified and last action isn't the OpenMapAction (+ no redos)
+			return Modified && !(undoStack.Peek().Action is OpenMapAction && !HasRedos());
 		}
 	}
 

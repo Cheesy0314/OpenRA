@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -24,9 +25,6 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("The maximum sum of Passenger.Weight that this actor can support.")]
 		public readonly int MaxWeight = 0;
-
-		[Desc("Number of pips to display when this actor is selected.")]
-		public readonly int PipCount = 0;
 
 		[Desc("`Passenger.CargoType`s that can be loaded into this actor.")]
 		public readonly HashSet<string> Types = new HashSet<string>();
@@ -87,8 +85,8 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new Cargo(init, this); }
 	}
 
-	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyCreated, INotifyKilled,
-		INotifyOwnerChanged, INotifyAddedToWorld, ITick, INotifySold, INotifyActorDisposing, IIssueDeployOrder,
+	public class Cargo : IIssueOrder, IResolveOrder, IOrderVoice, INotifyCreated, INotifyKilled,
+		INotifyOwnerChanged, INotifySold, INotifyActorDisposing, IIssueDeployOrder,
 		ITransformActorInitModifier
 	{
 		public readonly CargoInfo Info;
@@ -106,9 +104,15 @@ namespace OpenRA.Mods.Common.Traits
 		int loadingToken = ConditionManager.InvalidConditionToken;
 		Stack<int> loadedTokens = new Stack<int>();
 		bool takeOffAfterLoad;
+		bool initialised;
 
-		CPos currentCell;
-		public IEnumerable<CPos> CurrentAdjacentCells { get; private set; }
+		readonly CachedTransform<CPos, IEnumerable<CPos>> currentAdjacentCells;
+
+		public IEnumerable<CPos> CurrentAdjacentCells
+		{
+			get { return currentAdjacentCells.Update(self.Location); }
+		}
+
 		public IEnumerable<Actor> Passengers { get { return cargo; } }
 		public int PassengerCount { get { return cargo.Count; } }
 
@@ -120,6 +124,11 @@ namespace OpenRA.Mods.Common.Traits
 			self = init.Self;
 			Info = info;
 			checkTerrainType = info.UnloadTerrainTypes.Count > 0;
+
+			currentAdjacentCells = new CachedTransform<CPos, IEnumerable<CPos>>(loc =>
+			{
+				return Util.AdjacentCells(self.World, Target.FromActor(self)).Where(c => loc != c);
+			});
 
 			if (init.Contains<RuntimeCargoInit>())
 			{
@@ -171,6 +180,23 @@ namespace OpenRA.Mods.Common.Traits
 				if (!string.IsNullOrEmpty(Info.LoadedCondition))
 					loadedTokens.Push(conditionManager.GrantCondition(self, Info.LoadedCondition));
 			}
+
+			// Defer notifications until we are certain all traits on the transport are initialised
+			self.World.AddFrameEndTask(w =>
+			{
+				foreach (var c in cargo)
+				{
+					c.Trait<Passenger>().Transport = self;
+
+					foreach (var nec in c.TraitsImplementing<INotifyEnteredCargo>())
+						nec.OnEnteredCargo(c, self);
+
+					foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
+						npe.OnPassengerEntered(self, c);
+				}
+
+				initialised = true;
+			});
 		}
 
 		static int GetWeight(Actor a) { return a.Info.TraitInfo<PassengerInfo>().Weight; }
@@ -197,7 +223,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new Order("Unload", self, queued);
 		}
 
-		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self) { return true; }
+		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self, bool queued) { return true; }
 
 		public void ResolveOrder(Actor self, Order order)
 		{
@@ -208,11 +234,6 @@ namespace OpenRA.Mods.Common.Traits
 
 				self.QueueActivity(order.Queued, new UnloadCargo(self, Info.LoadRange));
 			}
-		}
-
-		IEnumerable<CPos> GetAdjacentCells()
-		{
-			return Util.AdjacentCells(self.World, Target.FromActor(self)).Where(c => self.Location != c);
 		}
 
 		public bool CanUnload(BlockedByActor check = BlockedByActor.None)
@@ -267,10 +288,10 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		// Prepare for transport pickup
-		bool LockForPickup(Actor self)
+		void LockForPickup(Actor self)
 		{
 			if (state == State.Locked)
-				return false;
+				return;
 
 			state = State.Locked;
 
@@ -284,7 +305,6 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			self.QueueActivity(new WaitFor(() => state != State.Locked, false));
-			return true;
 		}
 
 		void ReleaseLock(Actor self)
@@ -299,14 +319,6 @@ namespace OpenRA.Mods.Common.Traits
 				self.QueueActivity(new TakeOff(self));
 
 			takeOffAfterLoad = false;
-		}
-
-		public string CursorForOrder(Actor self, Order order)
-		{
-			if (order.OrderString != "Unload")
-				return null;
-
-			return CanUnload() ? Info.UnloadCursor : Info.UnloadBlockedCursor;
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -364,30 +376,6 @@ namespace OpenRA.Mods.Common.Traits
 				t.TurretFacing = facing.Value.Facing + Info.PassengerFacing;
 		}
 
-		public IEnumerable<PipType> GetPips(Actor self)
-		{
-			var numPips = Info.PipCount;
-
-			for (var i = 0; i < numPips; i++)
-				yield return GetPipAt(i);
-		}
-
-		PipType GetPipAt(int i)
-		{
-			var n = i * Info.MaxWeight / Info.PipCount;
-
-			foreach (var c in cargo)
-			{
-				var pi = c.Info.TraitInfo<PassengerInfo>();
-				if (n < pi.Weight)
-					return pi.PipType;
-				else
-					n -= pi.Weight;
-			}
-
-			return PipType.Transparent;
-		}
-
 		public void Load(Actor self, Actor a)
 		{
 			cargo.Add(a);
@@ -403,18 +391,17 @@ namespace OpenRA.Mods.Common.Traits
 					loadingToken = conditionManager.RevokeCondition(self, loadingToken);
 			}
 
-			// If not initialized then this will be notified in the first tick
-			if (initialized)
+			// Don't initialise (effectively twice) if this runs before the FrameEndTask from Created
+			if (initialised)
 			{
+				a.Trait<Passenger>().Transport = self;
+
 				foreach (var nec in a.TraitsImplementing<INotifyEnteredCargo>())
 					nec.OnEnteredCargo(a, self);
 
 				foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
 					npe.OnPassengerEntered(self, a);
 			}
-
-			var p = a.Trait<Passenger>();
-			p.Transport = self;
 
 			string passengerCondition;
 			if (conditionManager != null && Info.PassengerConditions.TryGetValue(a.Info.Name, out passengerCondition))
@@ -488,41 +475,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var p in Passengers)
 				p.ChangeOwner(newOwner);
-		}
-
-		void INotifyAddedToWorld.AddedToWorld(Actor self)
-		{
-			// Force location update to avoid issues when initial spawn is outside map
-			currentCell = self.Location;
-			CurrentAdjacentCells = GetAdjacentCells();
-		}
-
-		bool initialized;
-		void ITick.Tick(Actor self)
-		{
-			// Notify initial cargo load
-			if (!initialized)
-			{
-				foreach (var c in cargo)
-				{
-					c.Trait<Passenger>().Transport = self;
-
-					foreach (var nec in c.TraitsImplementing<INotifyEnteredCargo>())
-						nec.OnEnteredCargo(c, self);
-
-					foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
-						npe.OnPassengerEntered(self, c);
-				}
-
-				initialized = true;
-			}
-
-			var cell = self.World.Map.CellContaining(self.CenterPosition);
-			if (currentCell != cell)
-			{
-				currentCell = cell;
-				CurrentAdjacentCells = GetAdjacentCells();
-			}
 		}
 
 		void ITransformActorInitModifier.ModifyTransformActorInit(Actor self, TypeDictionary init)

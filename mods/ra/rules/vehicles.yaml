@@ -20,6 +20,7 @@ V2RL:
 	Mobile:
 		Speed: 85
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -39,7 +40,6 @@ V2RL:
 		RequiresCondition: reloading
 		Sequence: empty-idle
 		Name: reloading
-	SelectionDecorations:
 	Explodes:
 		Weapon: V2Explode
 	ProducibleWithLevel:
@@ -70,6 +70,7 @@ V2RL:
 	Mobile:
 		Speed: 118
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -113,6 +114,7 @@ V2RL:
 	Mobile:
 		Speed: 85
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -130,7 +132,6 @@ V2RL:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: 2TNK.Husk
-	SelectionDecorations:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	Selectable:
@@ -159,6 +160,7 @@ V2RL:
 	Mobile:
 		Speed: 71
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -176,7 +178,6 @@ V2RL:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: 3TNK.Husk
-	SelectionDecorations:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	Selectable:
@@ -206,6 +207,7 @@ V2RL:
 		Speed: 50
 		Locomotor: heavytracked
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -235,7 +237,6 @@ V2RL:
 		Delay: 3
 		HealIfBelow: 50
 		DamageCooldown: 150
-	SelectionDecorations:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	Selectable:
@@ -265,6 +266,7 @@ ARTY:
 		Speed: 85
 		Locomotor: lighttracked
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -286,7 +288,7 @@ ARTY:
 
 HARV:
 	Inherits: ^Vehicle
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableEconomicUnit
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 110
@@ -298,9 +300,7 @@ HARV:
 		Name: Ore Truck
 		GenericName: Harvester
 	Selectable:
-		Priority: 7
 		DecorationBounds: 42,42
-	SelectionDecorations:
 	Harvester:
 		Capacity: 20
 		Resources: Ore,Gems
@@ -337,10 +337,18 @@ HARV:
 	WithHarvesterSpriteBody:
 		ImageByFullness: harvempty, harvhalf, harv
 	-WithFacingSpriteBody:
+	WithHarvesterPipsDecoration:
+		Position: BottomLeft
+		Margin: 4, 3
+		RequiresSelection: true
+		PipCount: 7
+		ResourceSequences:
+			Ore: pip-yellow
+			Gems: pip-red
 
 MCV:
 	Inherits: ^Vehicle
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 210
@@ -352,9 +360,7 @@ MCV:
 	Tooltip:
 		Name: Mobile Construction Vehicle
 	Selectable:
-		Priority: 4
 		DecorationBounds: 42,42
-	SelectionDecorations:
 	Health:
 		HP: 60000
 	Armor:
@@ -382,6 +388,7 @@ JEEP:
 	Inherits: ^Vehicle
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@CARGOPIPS: ^CargoPips
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 130
@@ -402,6 +409,7 @@ JEEP:
 		Speed: 170
 		PauseOnCondition: notmobile || being-captured
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 8c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -419,7 +427,6 @@ JEEP:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 1
-		PipCount: 1
 		LoadingCondition: notmobile
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
@@ -428,6 +435,7 @@ APC:
 	Inherits: ^TrackedVehicle
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@CARGOPIPS: ^CargoPips
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 120
@@ -447,6 +455,7 @@ APC:
 		Speed: 142
 		PauseOnCondition: notmobile || being-captured
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -460,14 +469,13 @@ APC:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
-		PipCount: 5
 		LoadingCondition: notmobile
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
 MNLY:
 	Inherits: ^TrackedVehicle
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 310
@@ -479,8 +487,6 @@ MNLY:
 		Name: Minelayer
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
-	Selectable:
-		Priority: 5
 	Health:
 		HP: 30000
 	Armor:
@@ -488,12 +494,14 @@ MNLY:
 	Mobile:
 		Speed: 128
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
 	Minelayer:
 		Mine: MINV
+		TileUnknownName: build-valid
 	MineImmune:
 	AmmoPool:
 		Ammo: 5
@@ -508,10 +516,12 @@ MNLY:
 		Image: MNLY
 	Rearmable:
 		RearmActors: fix
+	Targetable:
+		TargetTypes: Ground, Vehicle, Mine
 
 TRUK:
 	Inherits: ^Vehicle
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 410
@@ -521,8 +531,6 @@ TRUK:
 		Cost: 500
 	Tooltip:
 		Name: Supply Truck
-	Selectable:
-		Priority: 6
 	Health:
 		HP: 11000
 	Armor:
@@ -560,6 +568,7 @@ MGG:
 		Offset: -299,0,171
 		Sequence: spinner
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -630,6 +639,7 @@ TTNK:
 	Mobile:
 		Speed: 99
 	RevealsShroud:
+		MinRange: 6c0
 		Range: 7c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -641,7 +651,6 @@ TTNK:
 	Turreted:
 	WithIdleOverlay@SPINNER:
 		Sequence: spinner
-	SelectionDecorations:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	Selectable:
@@ -670,6 +679,7 @@ FTRK:
 		TurnSpeed: 10
 		Speed: 118
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -690,7 +700,6 @@ FTRK:
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
-	SelectionDecorations:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	Selectable:
@@ -751,15 +760,15 @@ CTNK:
 		GenericName: Tank
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
-	SelectionDecorations:
 	Health:
-		HP: 45000
+		HP: 40000
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 113
+		Speed: 96
 		Locomotor: heavywheeled
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -805,11 +814,11 @@ QTNK:
 	Chronoshiftable:
 		RequiresCondition: !deployed && !being-captured
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	SelectionDecorations:
 	MadTank:
 		DeployedCondition: deployed
 	WithRangeCircle:
@@ -824,6 +833,7 @@ STNK:
 	Inherits: ^Vehicle
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@CARGOPIPS: ^CargoPips
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 330
@@ -844,6 +854,7 @@ STNK:
 		Locomotor: heavywheeled
 		PauseOnCondition: notmobile || being-captured
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 7c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -852,7 +863,7 @@ STNK:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire
 	Armament:
-		Weapon: APTusk
+		Weapon: APTusk.stnk
 		LocalOffset: 192,0,176
 	Turreted:
 		TurnSpeed: 5
@@ -860,8 +871,7 @@ STNK:
 	WithSpriteTurret:
 	Cargo:
 		Types: Infantry
-		MaxWeight: 4
-		PipCount: 4
+		MaxWeight: 5
 		LoadingCondition: notmobile
 	Cloak:
 		InitialDelay: 125

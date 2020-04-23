@@ -123,30 +123,30 @@
 		Image: rank
 		Sequence: rank-veteran-1
 		Palette: effect
-		ReferencePoint: Bottom, Right
+		Position: BottomRight
+		Margin: 5, 6
 		RequiresCondition: rank-veteran == 1
-		ZOffset: 256
 	WithDecoration@RANK-2:
 		Image: rank
 		Sequence: rank-veteran-2
 		Palette: effect
-		ReferencePoint: Bottom, Right
+		Position: BottomRight
+		Margin: 5, 6
 		RequiresCondition: rank-veteran == 2
-		ZOffset: 256
 	WithDecoration@RANK-3:
 		Image: rank
 		Sequence: rank-veteran-3
 		Palette: effect
-		ReferencePoint: Bottom, Right
+		Position: BottomRight
+		Margin: 5, 6
 		RequiresCondition: rank-veteran == 3
-		ZOffset: 256
 	WithDecoration@RANK-ELITE:
 		Image: rank
 		Sequence: rank-elite
 		Palette: effect
-		ReferencePoint: Bottom, Right
+		Position: BottomRight
+		Margin: 5, 6
 		RequiresCondition: rank-elite
-		ZOffset: 256
 
 ^InfantryExperienceHospitalHazmatOverrides:
 	WithDecoration@RANK-1:
@@ -242,26 +242,35 @@
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
 
-^FlatSelectionMode:
-	Selectable:
-		PriorityModifiers: Ctrl
+^Transport:
+	Cargo:
+	WithCargoPipsDecoration:
+		Position: BottomLeft
+		Margin: 4, 3
+		RequiresSelection: true
+		CustomPipSequences:
+			gray: pip-gray
+			yellow: pip-yellow
+			red: pip-red
 
-^LowPrioritySelectionMode:
-	Selectable:
-		PriorityModifiers: Ctrl, Alt
+^StoresResources:
+	StoresResources:
+	WithResourceStoragePipsDecoration:
+		Position: BottomLeft
+		Margin: 4, 3
+		RequiresSelection: true
+		PipCount: 10
 
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
-	Inherits@SELECTION_MODE: ^FlatSelectionMode
+	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
 	Mobile:
 		Locomotor: wheeled
 		TurnSpeed: 5
-	SelectionDecorations:
-	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 24,24
 	Targetable:
@@ -273,7 +282,6 @@
 	ActorLostNotification:
 	HiddenUnderFog:
 	AttackMove:
-	DrawLineToTarget:
 	WithDamageOverlay:
 	WithFacingSpriteBody:
 	Explodes:
@@ -303,7 +311,7 @@
 ^Helicopter:
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
-	Inherits@SELECTION_MODE: ^FlatSelectionMode
+	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -315,8 +323,6 @@
 	Targetable@AIRBORNE:
 		TargetTypes: Air
 		RequiresCondition: airborne
-	SelectionDecorations:
-	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 24,24
 	Repairable:
@@ -338,7 +344,6 @@
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode
 	AttackMove:
-	DrawLineToTarget:
 	Guard:
 	Guardable:
 	Tooltip:
@@ -363,7 +368,7 @@
 ^Infantry:
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
-	Inherits@SELECTION_MODE: ^FlatSelectionMode
+	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -375,8 +380,6 @@
 		Range: 5c0
 	Mobile:
 		Locomotor: foot
-	SelectionDecorations:
-	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 18,18,0,-6
 		DecorationBounds: 12,17,0,-6
@@ -396,7 +399,6 @@
 			TiberiumDeath: 6
 		CrushedSequence: die-crushed
 	AttackMove:
-	DrawLineToTarget:
 	Passenger:
 		CargoType: Infantry
 	HiddenUnderFog:
@@ -418,7 +420,8 @@
 	WithDecoration@HAZMAT:
 		Image: pips
 		Sequence: pip-hazmat
-		ReferencePoint: Bottom, Right
+		Position: BottomRight
+		Margin: 5, 6
 		RequiresCondition: hazmatsuits
 	ActorLostNotification:
 	SpawnActorOnDeath:
@@ -450,7 +453,8 @@
 	WithDecoration@REDCROSS:
 		Image: pips
 		Sequence: pip-heal
-		ReferencePoint: Bottom, Right
+		Position: BottomRight
+		Margin: 5, 6
 		RequiresCondition: hospitalheal
 		BlinkInterval: 32
 		BlinkPattern: On, Off
@@ -504,7 +508,7 @@
 	RevealsShroud:
 		Range: 2c0
 	Passenger:
-		PipType: Gray
+		CustomPipType: gray
 	ActorLostNotification:
 		Notification: CivilianKilled
 		NotifyAll: true
@@ -530,7 +534,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
-	Inherits@SELECTION_MODE: ^FlatSelectionMode
+	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -552,8 +556,6 @@
 		Locomotor: critter
 		Speed: 113
 		Voice: Move
-	SelectionDecorations:
-	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 24,24
 	Targetable:
@@ -573,7 +575,6 @@
 		Voice: Attack
 	AttackFrontal:
 		Voice: Attack
-	DrawLineToTarget:
 	DeathSounds:
 	Voiced:
 		VoiceSet: DinoVoice
@@ -587,7 +588,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
-	Inherits@SELECTION_MODE: ^FlatSelectionMode
+	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
 	Health:
 		HP: 30000
@@ -599,8 +600,6 @@
 		Voice: Move
 		Speed: 71
 		Locomotor: critter
-	SelectionDecorations:
-	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 24,24
 	Targetable:
@@ -609,7 +608,6 @@
 		ScanRadius: 5
 	AttackMove:
 		Voice: Attack
-	DrawLineToTarget:
 	HiddenUnderFog:
 	Valued:
 		Cost: 1000
@@ -668,19 +666,15 @@
 ^Ship:
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
-	Inherits@SELECTION_MODE: ^FlatSelectionMode
+	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
-	SelectionDecorations:
-	WithSpriteControlGroupDecoration:
-	Selectable:
 	Targetable:
 		TargetTypes: Ground, Water
 	HiddenUnderFog:
 	ActorLostNotification:
 	AttackMove:
-	DrawLineToTarget:
 	WithDamageOverlay:
 	Explodes:
 		Weapon: UnitExplodeShip
@@ -699,13 +693,10 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Inherits@shape: ^1x1Shape
+	Inherits@selection: ^SelectableBuilding
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
-	SelectionDecorations:
-	WithSpriteControlGroupDecoration:
-	Selectable:
-		Priority: 3
 	Targetable:
 		TargetTypes: Ground, C4, Structure
 	Armor:
@@ -781,7 +772,7 @@
 	WithBuildingRepairDecoration:
 		Image: allyrepair
 		Sequence: repair
-		ReferencePoint: Center
+		Position: Center
 		Palette: player
 		IsPlayerPalette: True
 
@@ -838,14 +829,13 @@
 	WithBuildingRepairDecoration:
 		Image: allyrepair
 		Sequence: repair
-		ReferencePoint: Center
+		Position: Center
 		Palette: player
 		IsPlayerPalette: True
 
 ^CivField:
 	Inherits: ^CivBuilding
 	-Selectable:
-	-SelectionDecorations:
 	Interactable:
 	Tooltip:
 		GenericName: Field
@@ -1096,7 +1086,6 @@
 		VTOL: true
 		CanSlide: True
 	FallsToEarth:
-		Spins: True
 		Moves: False
 		Explosion: HeliCrash
 	Tooltip:
@@ -1150,6 +1139,7 @@
 
 ^Defense:
 	Inherits: ^BaseBuilding
+	Inherits@selection: ^SelectableCombatBuilding
 	RenderRangeCircle:
 	RenderDetectionCircle:
 	-GivesBuildableArea:
@@ -1169,3 +1159,38 @@
 	WithColoredOverlay@IDISABLE:
 		RequiresCondition: lowpower
 		Palette: disabled
+
+^Selectable:
+	Selectable:
+	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
+		Margin: -2, 0
+	DrawLineToTarget:
+
+^SelectableCombatUnit:
+	Inherits@selectiondecorations: ^Selectable
+	Selectable:
+		Priority: 10
+		PriorityModifiers: Ctrl
+
+^SelectableSupportUnit:
+	Inherits@selectiondecorations: ^Selectable
+	Selectable:
+		Priority: 8
+		PriorityModifiers: Ctrl, Alt
+
+^SelectableEconomicUnit:
+	Inherits@selectiondecorations: ^Selectable
+	Selectable:
+		Priority: 6
+		PriorityModifiers: Ctrl, Alt
+
+^SelectableCombatBuilding:
+	Inherits@selectiondecorations: ^Selectable
+	Selectable:
+		Priority: 4
+
+^SelectableBuilding:
+	Inherits@selectiondecorations: ^Selectable
+	Selectable:
+		Priority: 2

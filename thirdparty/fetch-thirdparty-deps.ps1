@@ -19,14 +19,6 @@ if (!(Test-Path "ICSharpCode.SharpZipLib.dll"))
 	rmdir SharpZipLib -Recurse
 }
 
-if (!(Test-Path "MaxMind.Db.dll"))
-{
-	echo "Fetching MaxMind.Db from NuGet."
-	./nuget.exe install MaxMind.Db -Version 2.0.0 -ExcludeVersion -Verbosity quiet -Source nuget.org
-	cp MaxMind.Db/lib/net45/MaxMind.Db.* .
-	rmdir MaxMind.Db -Recurse
-}
-
 if (!(Test-Path "nunit.framework.dll"))
 {
 	echo "Fetching NUnit from NuGet."
@@ -40,7 +32,7 @@ if (!(Test-Path "windows/SDL2.dll"))
 	echo "Fetching SDL2 from libsdl.org"
 	
 	# Download zip:
-	$zipFileName = "SDL2-2.0.5-win32-x64.zip"
+	$zipFileName = "SDL2-2.0.10-win32-x64.zip"
 	$target = Join-Path $pwd.ToString() $zipFileName
 	(New-Object System.Net.WebClient).DownloadFile("https://www.libsdl.org/release/" + $zipFileName, $target)
 	
@@ -102,13 +94,6 @@ if (!(Test-Path "rix0rrr.BeaconLib.dll"))
 	./nuget.exe install rix0rrr.BeaconLib -Version 1.0.1 -ExcludeVersion -Verbosity quiet -Source nuget.org
 	cp rix0rrr.BeaconLib/lib/net40/rix0rrr.BeaconLib.dll .
 	rmdir rix0rrr.BeaconLib -Recurse
-}
-
-if (!(Test-Path "GeoLite2-Country.mmdb.gz") -Or (((get-date) - (get-item "GeoLite2-Country.mmdb.gz").LastWriteTime) -gt (new-timespan -days 30)))
-{
-	echo "Updating GeoIP country database from MaxMind."
-	$target = Join-Path $pwd.ToString() "GeoLite2-Country.mmdb.gz"
-	(New-Object System.Net.WebClient).DownloadFile("http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.mmdb.gz", $target)
 }
 
 [Net.ServicePointManager]::SecurityProtocol = 'Tls12'

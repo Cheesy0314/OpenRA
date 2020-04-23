@@ -1,4 +1,4 @@
-; Copyright 2007-2019 OpenRA developers (see AUTHORS)
+; Copyright 2007-2020 OpenRA developers (see AUTHORS)
 ; This file is part of OpenRA.
 ;
 ;  OpenRA is free software: you can redistribute it and/or modify
@@ -14,7 +14,6 @@
 ;  You should have received a copy of the GNU General Public License
 ;  along with OpenRA.  If not, see <http://www.gnu.org/licenses/>.
 
-
 !include "MUI2.nsh"
 !include "FileFunc.nsh"
 !include "WordFunc.nsh"
@@ -24,8 +23,20 @@ OutFile "OpenRA.Setup.exe"
 
 ManifestDPIAware true
 
-InstallDir "$PROGRAMFILES\OpenRA${SUFFIX}"
-InstallDirRegKey HKLM "Software\OpenRA${SUFFIX}" "InstallDir"
+Function .onInit
+	!ifndef USE_PROGRAMFILES32
+		SetRegView 64
+	!endif
+	ReadRegStr $INSTDIR HKLM "Software\OpenRA${SUFFIX}" "InstallDir"
+	StrCmp $INSTDIR "" unset done
+	unset:
+	!ifndef USE_PROGRAMFILES32
+		StrCpy $INSTDIR "$PROGRAMFILES64\OpenRA${SUFFIX}"
+	!else
+		StrCpy $INSTDIR "$PROGRAMFILES32\OpenRA${SUFFIX}"
+	!endif
+	done:
+FunctionEnd
 
 SetCompressor lzma
 RequestExecutionLevel admin
@@ -120,8 +131,7 @@ Section "Game" GAME
 	File "${SRCDIR}\SDL2-CS.dll"
 	File "${SRCDIR}\OpenAL-CS.dll"
 	File "${SRCDIR}\global mix database.dat"
-	File "${SRCDIR}\MaxMind.Db.dll"
-	File "${SRCDIR}\GeoLite2-Country.mmdb.gz"
+	File "${SRCDIR}\IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP"
 	File "${SRCDIR}\eluant.dll"
 	File "${SRCDIR}\rix0rrr.BeaconLib.dll"
 	File "${DEPSDIR}\soft_oal.dll"
@@ -238,9 +248,7 @@ Function ${UN}Clean
 	Delete $INSTDIR\TiberianDawn.ico
 	Delete $INSTDIR\Dune2000.ico
 	Delete "$INSTDIR\global mix database.dat"
-	Delete $INSTDIR\MaxMind.Db.dll
-	Delete $INSTDIR\GeoLite2-Country.mmdb.gz
-	Delete $INSTDIR\KopiLua.dll
+	Delete $INSTDIR\IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP
 	Delete $INSTDIR\soft_oal.dll
 	Delete $INSTDIR\SDL2.dll
 	Delete $INSTDIR\lua51.dll

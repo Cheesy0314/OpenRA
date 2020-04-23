@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -98,8 +98,8 @@ namespace OpenRA.Platforms.Default
 			if (height < 0)
 				height = 0;
 
-			var windowSize = window.WindowSize;
-			var windowScale = window.WindowScale;
+			var windowSize = window.EffectiveWindowSize;
+			var windowScale = window.EffectiveWindowScale;
 			var surfaceSize = window.SurfaceSize;
 
 			if (windowSize != surfaceSize)
@@ -226,9 +226,30 @@ namespace OpenRA.Platforms.Default
 					OpenGL.CheckGLError();
 					OpenGL.glBlendFunc(OpenGL.GL_DST_COLOR, OpenGL.GL_SRC_COLOR);
 					break;
+				case BlendMode.LowAdditive:
+					OpenGL.glEnable(OpenGL.GL_BLEND);
+					OpenGL.CheckGLError();
+					OpenGL.glBlendFunc(OpenGL.GL_DST_COLOR, OpenGL.GL_ONE);
+					break;
+				case BlendMode.Screen:
+					OpenGL.glEnable(OpenGL.GL_BLEND);
+					OpenGL.CheckGLError();
+					OpenGL.glBlendFunc(OpenGL.GL_SRC_COLOR, OpenGL.GL_ONE_MINUS_SRC_COLOR);
+					break;
+				case BlendMode.Translucent:
+					OpenGL.glEnable(OpenGL.GL_BLEND);
+					OpenGL.CheckGLError();
+					OpenGL.glBlendFunc(OpenGL.GL_DST_COLOR, OpenGL.GL_ONE_MINUS_DST_COLOR);
+					break;
 			}
 
 			OpenGL.CheckGLError();
+		}
+
+		public void SetVSyncEnabled(bool enabled)
+		{
+			VerifyThreadAffinity();
+			SDL.SDL_GL_SetSwapInterval(enabled ? 1 : 0);
 		}
 
 		public void Dispose()

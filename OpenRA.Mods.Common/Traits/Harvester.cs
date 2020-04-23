@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -41,9 +41,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("How many bales can it dump at once.")]
 		public readonly int BaleUnloadAmount = 1;
-
-		[Desc("How many squares to show the fill level.")]
-		public readonly int PipCount = 7;
 
 		public readonly int HarvestFacings = 0;
 
@@ -90,15 +87,16 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new Harvester(init.Self, this); }
 	}
 
-	public class Harvester : IIssueOrder, IResolveOrder, IPips, IOrderVoice,
+	public class Harvester : IIssueOrder, IResolveOrder, IOrderVoice,
 		ISpeedModifier, ISync, INotifyCreated
 	{
 		public readonly HarvesterInfo Info;
+		public readonly IReadOnlyDictionary<ResourceTypeInfo, int> Contents;
+
 		readonly Mobile mobile;
 		readonly ResourceLayer resLayer;
 		readonly ResourceClaimLayer claimLayer;
 		readonly Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
-		INotifyHarvesterAction[] notifyHarvesterAction;
 		ConditionManager conditionManager;
 		int conditionToken = ConditionManager.InvalidConditionToken;
 		HarvesterResourceMultiplier[] resourceMultipliers;
@@ -127,6 +125,8 @@ namespace OpenRA.Mods.Common.Traits
 		public Harvester(Actor self, HarvesterInfo info)
 		{
 			Info = info;
+			Contents = new ReadOnlyDictionary<ResourceTypeInfo, int>(contents);
+
 			mobile = self.Trait<Mobile>();
 			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
@@ -134,7 +134,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			notifyHarvesterAction = self.TraitsImplementing<INotifyHarvesterAction>().ToArray();
 			resourceMultipliers = self.TraitsImplementing<HarvesterResourceMultiplier>().ToArray();
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			UpdateCondition(self);
@@ -194,7 +193,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					// Too many harvesters clogs up the refinery's delivery location:
 					if (occupancy >= Info.MaxUnloadQueue)
-						return Constants.InvalidNode;
+						return PathGraph.CostForInvalidCell;
 
 					// Prefer refineries with less occupancy (multiplier is to offset distance cost):
 					return occupancy * Info.UnloadQueueCostModifier;
@@ -269,7 +268,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (cell.Layer != 0)
 				return false;
 
-			var resType = resLayer.GetResource(cell);
+			var resType = resLayer.GetResourceType(cell);
 			if (resType == null)
 				return false;
 
@@ -348,27 +347,6 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		PipType GetPipAt(int i)
-		{
-			var n = i * Info.Capacity / Info.PipCount;
-
-			foreach (var rt in contents)
-				if (n < rt.Value)
-					return rt.Key.PipColor;
-				else
-					n -= rt.Value;
-
-			return PipType.Transparent;
-		}
-
-		IEnumerable<PipType> IPips.GetPips(Actor self)
-		{
-			var numPips = Info.PipCount;
-
-			for (var i = 0; i < numPips; i++)
-				yield return GetPipAt(i);
-		}
-
 		int ISpeedModifier.GetSpeedModifier()
 		{
 			return 100 - (100 - Info.FullyLoadedSpeed) * contents.Values.Sum() / Info.Capacity;
@@ -379,7 +357,7 @@ namespace OpenRA.Mods.Common.Traits
 			public string OrderID { get { return "Harvest"; } }
 			public int OrderPriority { get { return 10; } }
 			public bool IsQueued { get; protected set; }
-			public bool TargetOverridesSelection(TargetModifiers modifiers) { return true; }
+			public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 
 			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 			{
@@ -395,7 +373,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!self.Owner.Shroud.IsExplored(location))
 					return false;
 
-				var res = self.World.WorldActor.Trait<ResourceLayer>().GetRenderedResource(location);
+				var res = self.World.WorldActor.Trait<ResourceRenderer>().GetRenderedResourceType(location);
 				var info = self.Info.TraitInfo<HarvesterInfo>();
 
 				if (res == null || !info.Resources.Contains(res.Info.Type))

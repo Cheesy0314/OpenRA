@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -20,7 +20,7 @@ namespace OpenRA.Traits
 	{
 		public static int SelectionPriority(this ActorInfo a, Modifiers modifiers)
 		{
-			var selectableInfo = a.TraitInfoOrDefault<SelectableInfo>();
+			var selectableInfo = a.TraitInfoOrDefault<ISelectableInfo>();
 			return selectableInfo != null ? BaseSelectionPriority(selectableInfo, modifiers) : int.MinValue;
 		}
 
@@ -28,7 +28,7 @@ namespace OpenRA.Traits
 
 		public static int SelectionPriority(this Actor a, Modifiers modifiers)
 		{
-			var info = a.Info.TraitInfo<SelectableInfo>();
+			var info = a.Info.TraitInfo<ISelectableInfo>();
 			var basePriority = BaseSelectionPriority(info, modifiers);
 
 			var viewer = (a.World.LocalPlayer == null || a.World.LocalPlayer.Spectating) ? a.World.RenderPlayer : a.World.LocalPlayer;
@@ -47,7 +47,7 @@ namespace OpenRA.Traits
 			}
 		}
 
-		static int BaseSelectionPriority(SelectableInfo info, Modifiers modifiers)
+		static int BaseSelectionPriority(ISelectableInfo info, Modifiers modifiers)
 		{
 			var priority = info.Priority;
 
@@ -73,17 +73,21 @@ namespace OpenRA.Traits
 			return actors.MaxByOrDefault(a => CalculateActorSelectionPriority(a.Info, a.MouseBounds, selectionPixel, modifiers));
 		}
 
-		static long CalculateActorSelectionPriority(ActorInfo info, Rectangle bounds, int2 selectionPixel, Modifiers modifiers)
+		static long CalculateActorSelectionPriority(ActorInfo info, Polygon bounds, int2 selectionPixel, Modifiers modifiers)
 		{
 			if (bounds.IsEmpty)
 				return info.SelectionPriority(modifiers);
 
+			// Assume that the center of the polygon is the same as the center of the bounding box
+			// This isn't necessarily true for arbitrary polygons, but is fine for the hexagonal and diamond
+			// shapes that are currently implemented
+			var br = bounds.BoundingRect;
 			var centerPixel = new int2(
-				bounds.Left + bounds.Size.Width / 2,
-				bounds.Top + bounds.Size.Height / 2);
+				br.Left + br.Size.Width / 2,
+				br.Top + br.Size.Height / 2);
 
 			var pixelDistance = (centerPixel - selectionPixel).Length;
-			return ((long)-pixelDistance << 32) + info.SelectionPriority(modifiers);
+			return info.SelectionPriority(modifiers) - (long)pixelDistance << 16;
 		}
 
 		static readonly Actor[] NoActors = { };

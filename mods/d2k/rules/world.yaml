@@ -110,7 +110,6 @@
 	ResourceType@Spice:
 		Type: Spice
 		Name: Spice
-		PipColor: green
 		ResourceType: 1
 		Palette: d2k
 		TerrainType: Spice
@@ -144,7 +143,9 @@ World:
 	DomainIndex:
 	WarheadDebugOverlay:
 	BuildableTerrainLayer:
-	D2kResourceLayer:
+	ResourceLayer:
+	D2kResourceRenderer:
+		RenderTypes: Spice
 	ResourceClaimLayer:
 	CustomTerrainDebugOverlay:
 	SmudgeLayer@Rock:
@@ -240,6 +241,7 @@ World:
 EditorWorld:
 	Inherits: ^BaseWorld
 	EditorActorLayer:
+	EditorCursorLayer:
 	D2kEditorResourceLayer:
 	EditorSelectionLayer:
 	LoadWidgetAtGameStart:

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -86,7 +86,10 @@ namespace OpenRA.Mods.Common.Traits
 		// initialized and used by CanEnterCell
 		Locomotor locomotor;
 
-		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
+		/// <summary>
+		/// Note: If the target <paramref name="cell"/> has any free subcell, the value of <paramref name="subCell"/> is ignored.
+		/// </summary>
+		public bool CanEnterCell(World world, Actor self, CPos cell, SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
 		{
 			// PERF: Avoid repeated trait queries on the hot path
 			if (locomotor == null)
@@ -96,7 +99,20 @@ namespace OpenRA.Mods.Common.Traits
 			if (locomotor.MovementCostForCell(cell) == short.MaxValue)
 				return false;
 
-			return locomotor.CanMoveFreelyInto(self, cell, check, ignoreActor);
+			return locomotor.CanMoveFreelyInto(self, cell, subCell, check, ignoreActor);
+		}
+
+		public bool CanStayInCell(World world, CPos cell)
+		{
+			// PERF: Avoid repeated trait queries on the hot path
+			if (locomotor == null)
+				locomotor = world.WorldActor.TraitsImplementing<Locomotor>()
+				   .SingleOrDefault(l => l.Info.Name == Locomotor);
+
+			if (cell.Layer == CustomMovementLayerType.Tunnel)
+				return false;
+
+			return locomotor.CanStayInCell(cell);
 		}
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any)
@@ -217,6 +233,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Locomotor Locomotor { get; private set; }
 
+		public IPathFinder Pathfinder { get; private set; }
+
 		#region IOccupySpace
 
 		[Sync]
@@ -228,6 +246,10 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (FromCell == ToCell)
 				return new[] { Pair.New(FromCell, FromSubCell) };
+
+			// HACK: Should be fixed properly, see https://github.com/OpenRA/OpenRA/pull/17292 for an explanation
+			if (Info.LocomotorInfo.SharesCell)
+				return new[] { Pair.New(ToCell, ToSubCell) };
 
 			return new[] { Pair.New(FromCell, FromSubCell), Pair.New(ToCell, ToSubCell) };
 		}
@@ -275,6 +297,7 @@ namespace OpenRA.Mods.Common.Traits
 			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
 			notifyFinishedMoving = self.TraitsImplementing<INotifyFinishedMoving>().ToArray();
 			moveWrappers = self.TraitsImplementing<IWrapMove>().ToArray();
+			Pathfinder = self.World.WorldActor.Trait<IPathFinder>();
 			Locomotor = self.World.WorldActor.TraitsImplementing<Locomotor>()
 				.Single(l => l.Info.Name == Info.Locomotor);
 
@@ -353,7 +376,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (CVec direction in CVec.Directions)
 			{
 				var p = ToCell + direction;
-				if (CanEnterCell(p))
+				if (CanEnterCell(p) && CanStayInCell(p))
 					availCells.Add(p);
 				else if (p != nextCell && p != ToCell)
 					notStupidCells.Add(p);
@@ -494,7 +517,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
 		{
-			return Info.CanEnterCell(self.World, self, cell, ignoreActor, check);
+			return Info.CanEnterCell(self.World, self, cell, ToSubCell, ignoreActor, check);
+		}
+
+		public bool CanStayInCell(CPos cell)
+		{
+			return Info.CanStayInCell(self.World, cell);
 		}
 
 		#endregion
@@ -532,7 +560,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!self.IsAtGroundLevel())
 				return;
 
-			var actors = self.World.ActorMap.GetActorsAt(ToCell).Where(a => a != self).ToList();
+			var actors = self.World.ActorMap.GetActorsAt(ToCell, ToSubCell).Where(a => a != self).ToList();
 			if (!AnyCrushables(actors))
 				return;
 
@@ -579,14 +607,10 @@ namespace OpenRA.Mods.Common.Traits
 			return inner;
 		}
 
-		public Activity MoveTo(CPos cell, int nearEnough, Color? targetLineColor = null)
+		public Activity MoveTo(CPos cell, int nearEnough = 0, Actor ignoreActor = null,
+			bool evaluateNearestMovableCell = false, Color? targetLineColor = null)
 		{
-			return WrapMove(new Move(self, cell, WDist.FromCells(nearEnough), targetLineColor: targetLineColor));
-		}
-
-		public Activity MoveTo(CPos cell, Actor ignoreActor, Color? targetLineColor = null)
-		{
-			return WrapMove(new Move(self, cell, WDist.Zero, ignoreActor, targetLineColor: targetLineColor));
+			return WrapMove(new Move(self, cell, WDist.FromCells(nearEnough), ignoreActor, evaluateNearestMovableCell, targetLineColor));
 		}
 
 		public Activity MoveWithinRange(Target target, WDist range,
@@ -612,7 +636,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new ReturnToCellActivity(self);
 		}
 
-		class ReturnToCellActivity : Activity
+		public class ReturnToCellActivity : Activity
 		{
 			readonly Mobile mobile;
 			readonly bool recalculateSubCell;
@@ -659,6 +683,16 @@ namespace OpenRA.Mods.Common.Traits
 
 				QueueChild(mobile.VisualMove(self, pos, self.World.Map.CenterOfSubCell(cell, subCell)));
 				return true;
+			}
+
+			public override void Cancel(Actor self, bool keepQueue = false)
+			{
+				// If we are forbidden from stopping in this cell, use evaluateNearestMovableCell
+				// to nudge us to the nearest cell that we can stop in.
+				if (!mobile.CanStayInCell(cell))
+					QueueChild(new Move(self, cell, WDist.Zero, null, true));
+
+				base.Cancel(self, keepQueue);
 			}
 		}
 
@@ -737,11 +771,14 @@ namespace OpenRA.Mods.Common.Traits
 			if (target.Layer != 0)
 				target = new CPos(target.X, target.Y);
 
-			if (CanEnterCell(target))
+			if (target == self.Location && CanStayInCell(target))
+				return target;
+
+			if (CanEnterCell(target, check: BlockedByActor.Immovable) && CanStayInCell(target))
 				return target;
 
 			foreach (var tile in self.World.Map.FindTilesInAnnulus(target, minRange, maxRange))
-				if (CanEnterCell(tile))
+				if (CanEnterCell(tile, check: BlockedByActor.Immovable) && CanStayInCell(tile))
 					return tile;
 
 			// Couldn't find a cell
@@ -829,7 +866,13 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyBecomingIdle.OnBecomingIdle(Actor self)
 		{
 			if (self.Location.Layer == 0)
+			{
+				// Make sure that units aren't left idling in a transit-only cell
+				// HACK: activities should be making sure that this can't happen in the first place!
+				if (!Locomotor.CanStayInCell(self.Location))
+					self.QueueActivity(MoveTo(self.Location, evaluateNearestMovableCell: true));
 				return;
+			}
 
 			var cml = self.World.WorldActor.TraitsImplementing<ICustomMovementLayer>()
 				.First(l => l.Index == self.Location.Layer);
@@ -915,10 +958,9 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// TODO: This should only cancel activities queued by this trait
-			if (order.OrderString == "Stop")
+			else if (order.OrderString == "Stop")
 				self.CancelActivity();
-
-			if (order.OrderString == "Scatter")
+			else if (order.OrderString == "Scatter")
 				Nudge(self);
 		}
 
@@ -956,8 +998,12 @@ namespace OpenRA.Mods.Common.Traits
 			readonly Mobile mobile;
 			readonly LocomotorInfo locomotorInfo;
 			readonly bool rejectMove;
-			public bool TargetOverridesSelection(TargetModifiers modifiers)
+			public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers)
 			{
+				// Always prioritise orders over selecting other peoples actors or own actors that are already selected
+				if (target.Type == TargetType.Actor && (target.Actor.Owner != self.Owner || self.World.Selection.Contains(target.Actor)))
+					return true;
+
 				return modifiers.HasModifier(TargetModifiers.ForceMove);
 			}
 

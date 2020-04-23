@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using OpenRA.Activities;
 using OpenRA.FileSystem;
+using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -64,9 +65,6 @@ namespace OpenRA.Traits
 		void InflictDamage(Actor self, Actor attacker, Damage damage, bool ignoreModifiers);
 		void Kill(Actor self, Actor attacker, BitSet<DamageType> damageTypes);
 	}
-
-	// depends on the order of pips in WorldRenderer.cs!
-	public enum PipType { Transparent, Green, Yellow, Red, Gray, Blue, Ammo, AmmoEmpty }
 
 	[Flags]
 	public enum Stance
@@ -122,42 +120,9 @@ namespace OpenRA.Traits
 		IEnumerable<Rectangle> ScreenBounds(Actor self, WorldRenderer wr);
 	}
 
-	// TODO: Replace Rectangle with an int2[] polygon
-	public interface IMouseBounds { Rectangle MouseoverBounds(Actor self, WorldRenderer wr); }
+	public interface IMouseBounds { Polygon MouseoverBounds(Actor self, WorldRenderer wr); }
 	public interface IMouseBoundsInfo : ITraitInfoInterface { }
 	public interface IAutoMouseBounds { Rectangle AutoMouseoverBounds(Actor self, WorldRenderer wr); }
-
-	// HACK: This provides a shim for legacy code until it can be rewritten
-	public interface IDecorationBounds { Rectangle DecorationBounds(Actor self, WorldRenderer wr); }
-	public interface IDecorationBoundsInfo : ITraitInfoInterface { }
-	public static class DecorationBoundsExtensions
-	{
-		public static Rectangle FirstNonEmptyBounds(this IEnumerable<IDecorationBounds> decorationBounds, Actor self, WorldRenderer wr)
-		{
-			// PERF: Avoid LINQ.
-			foreach (var decoration in decorationBounds)
-			{
-				var bounds = decoration.DecorationBounds(self, wr);
-				if (!bounds.IsEmpty)
-					return bounds;
-			}
-
-			return Rectangle.Empty;
-		}
-
-		public static Rectangle FirstNonEmptyBounds(this IDecorationBounds[] decorationBounds, Actor self, WorldRenderer wr)
-		{
-			// PERF: Avoid LINQ.
-			foreach (var decoration in decorationBounds)
-			{
-				var bounds = decoration.DecorationBounds(self, wr);
-				if (!bounds.IsEmpty)
-					return bounds;
-			}
-
-			return Rectangle.Empty;
-		}
-	}
 
 	public interface IIssueOrder
 	{
@@ -183,7 +148,7 @@ namespace OpenRA.Traits
 		int OrderPriority { get; }
 		bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor);
 		bool IsQueued { get; }
-		bool TargetOverridesSelection(TargetModifiers modifiers);
+		bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers);
 	}
 
 	public interface IResolveOrder { void ResolveOrder(Actor self, Order order); }
@@ -295,12 +260,14 @@ namespace OpenRA.Traits
 	public interface ILoadsPalettes { void LoadPalettes(WorldRenderer wr); }
 	public interface ILoadsPlayerPalettes { void LoadPlayerPalettes(WorldRenderer wr, string playerName, Color playerColor, bool replaceExisting); }
 	public interface IPaletteModifier { void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> b); }
-	public interface IPips { IEnumerable<PipType> GetPips(Actor self); }
 
 	[RequireExplicitImplementation]
 	public interface ISelectionBar { float GetValue(); Color GetColor(); bool DisplayWhenEmpty { get; } }
 
-	public interface ISelectionDecorations { void DrawRollover(Actor self, WorldRenderer worldRenderer); }
+	public interface ISelectionDecorations
+	{
+		IEnumerable<IRenderable> RenderSelectionAnnotations(Actor self, WorldRenderer worldRenderer, Color color);
+	}
 
 	public interface IMapPreviewSignatureInfo : ITraitInfoInterface
 	{
@@ -324,7 +291,7 @@ namespace OpenRA.Traits
 
 	public interface IPositionableInfo : IOccupySpaceInfo
 	{
-		bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All);
+		bool CanEnterCell(World world, Actor self, CPos cell, SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All);
 	}
 
 	public interface IPositionable : IOccupySpace
@@ -410,7 +377,7 @@ namespace OpenRA.Traits
 	public interface INotifyIdle { void TickIdle(Actor self); }
 
 	public interface IRenderAboveWorld { void RenderAboveWorld(Actor self, WorldRenderer wr); }
-	public interface IRenderShroud { void RenderShroud(Shroud shroud, WorldRenderer wr); }
+	public interface IRenderShroud { void RenderShroud(WorldRenderer wr); }
 
 	[RequireExplicitImplementation]
 	public interface IRenderTerrain { void RenderTerrain(WorldRenderer wr, Viewport viewport); }
@@ -439,6 +406,22 @@ namespace OpenRA.Traits
 		bool SpatiallyPartitionable { get; }
 	}
 
+	[Flags]
+	public enum SelectionPriorityModifiers
+	{
+		None = 0,
+		Ctrl = 1,
+		Alt = 2
+	}
+
+	[RequireExplicitImplementation]
+	public interface ISelectableInfo : ITraitInfoInterface
+	{
+		int Priority { get; }
+		SelectionPriorityModifiers PriorityModifiers { get; }
+		string Voice { get; }
+	}
+
 	public interface ISelection
 	{
 		int Hash { get; }
@@ -449,6 +432,8 @@ namespace OpenRA.Traits
 		bool Contains(Actor a);
 		void Combine(World world, IEnumerable<Actor> newSelection, bool isCombine, bool isClick);
 		void Clear();
+		bool RolloverContains(Actor a);
+		void SetRollover(IEnumerable<Actor> actors);
 		void DoControlGroup(World world, WorldRenderer worldRenderer, int group, Modifiers mods, int multiTapCount);
 		void AddToControlGroup(Actor a, int group);
 		void RemoveFromControlGroup(Actor a);
@@ -490,7 +475,7 @@ namespace OpenRA.Traits
 		int Delay { get; }
 		bool IsValidAgainst(Actor victim, Actor firedBy);
 		bool IsValidAgainst(FrozenActor victim, Actor firedBy);
-		void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers);
+		void DoImpact(Target target, WarheadArgs args);
 	}
 
 	public interface IRulesetLoaded<TInfo> { void RulesetLoaded(Ruleset rules, TInfo info); }

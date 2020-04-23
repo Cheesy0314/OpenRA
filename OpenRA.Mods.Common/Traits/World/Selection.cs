@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -28,6 +28,8 @@ namespace OpenRA.Mods.Common.Traits
 		public IEnumerable<Actor> Actors { get { return actors; } }
 
 		readonly HashSet<Actor> actors = new HashSet<Actor>();
+		IEnumerable<Actor> rolloverActors;
+
 		INotifySelection[] worldNotifySelection;
 
 		public Selection(SelectionInfo info) { }
@@ -123,13 +125,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Play the selection voice from one of the selected actors
 			// TODO: This probably should only be considering the newly selected actors
-			// TODO: Ship this into an INotifySelection trait to remove the engine dependency on Selectable
 			foreach (var actor in actors)
 			{
 				if (actor.Owner != world.LocalPlayer || !actor.IsInWorld)
 					continue;
 
-				var selectable = actor.Info.TraitInfoOrDefault<SelectableInfo>();
+				var selectable = actor.Info.TraitInfoOrDefault<ISelectableInfo>();
 				if (selectable == null || !actor.HasVoice(selectable.Voice))
 					continue;
 
@@ -142,6 +143,16 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			actors.Clear();
 			UpdateHash();
+		}
+
+		public void SetRollover(IEnumerable<Actor> rollover)
+		{
+			rolloverActors = rollover;
+		}
+
+		public bool RolloverContains(Actor a)
+		{
+			return rolloverActors != null && rolloverActors.Contains(a);
 		}
 
 		void ITick.Tick(Actor self)
@@ -229,7 +240,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (selectionNode != null)
 			{
 				var selected = FieldLoader.GetValue<uint[]>("Selection", selectionNode.Value.Value)
-					.Select(a => self.World.GetActorById(a));
+					.Select(a => self.World.GetActorById(a)).Where(a => a != null);
 				Combine(self.World, selected, false, false);
 			}
 
@@ -239,7 +250,7 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var n in groupsNode.Value.Nodes)
 				{
 					var group = FieldLoader.GetValue<uint[]>(n.Key, n.Value.Value)
-						.Select(a => self.World.GetActorById(a));
+						.Select(a => self.World.GetActorById(a)).Where(a => a != null);
 					controlGroups[int.Parse(n.Key)].AddRange(group);
 				}
 			}

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -314,7 +314,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
-	interface IWallConnector
+	public interface IWallConnector
 	{
 		bool AdjacentWallCanConnect(Actor self, CPos wallLocation, string wallType, out CVec facing);
 		void SetDirty();
@@ -412,7 +412,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IIssueDeployOrder
 	{
 		Order IssueDeployOrder(Actor self, bool queued);
-		bool CanIssueDeployOrder(Actor self);
+		bool CanIssueDeployOrder(Actor self, bool queued);
 	}
 
 	public enum ActorPreviewType { PlaceBuilding, ColorPicker, MapEditorSidebar }
@@ -425,8 +425,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface IMove
 	{
-		Activity MoveTo(CPos cell, int nearEnough, Color? targetLineColor = null);
-		Activity MoveTo(CPos cell, Actor ignoreActor, Color? targetLineColor = null);
+		Activity MoveTo(CPos cell, int nearEnough = 0, Actor ignoreActor = null,
+		 	bool evaluateNearestMovableCell = false, Color? targetLineColor = null);
 		Activity MoveWithinRange(Target target, WDist range,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null);
 		Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange,
@@ -635,5 +635,47 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyTimeLimit
 	{
 		void NotifyTimerExpired(Actor self);
+	}
+
+	[RequireExplicitImplementation]
+	public interface ISelectable
+	{
+		string Class { get; }
+	}
+
+	public interface IDecoration
+	{
+		DecorationPosition Position { get; }
+		bool RequiresSelection { get; }
+
+		bool Enabled { get; }
+
+		IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, int2 pos);
+	}
+
+	public enum DecorationPosition
+	{
+		Center,
+		TopLeft,
+		TopRight,
+		BottomLeft,
+		BottomRight,
+		Top
+	}
+
+	public static class DecorationExtensions
+	{
+		public static int2 CreateMargin(this DecorationPosition pos, int2 margin)
+		{
+			switch (pos)
+			{
+				case DecorationPosition.TopLeft: return margin;
+				case DecorationPosition.TopRight: return new int2(-margin.X, margin.Y);
+				case DecorationPosition.BottomLeft: return new int2(margin.X, -margin.Y);
+				case DecorationPosition.BottomRight: return -margin;
+				case DecorationPosition.Top: return new int2(0, margin.Y);
+				default: return int2.Zero;
+			}
+		}
 	}
 }
