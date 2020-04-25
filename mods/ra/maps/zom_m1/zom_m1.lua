@@ -6,6 +6,8 @@ AABase = {radar, SAM1, SAM2, SAM3, SAM4, SAM5, SAM6, AA1, AA2 }
 Beachhead = {Actor140,Actor141,Actor142,Actor143}
 MainBase = {Actor40,Actor41,Actor42,Actor43,Actor44,Actor45,Actor46,Actor47,Actor48,Actor49,Actor50,Actor51}
 FlareType = "flare"
+UsedPara = false
+UsedAir = false
 
 SendHelo = function()
 	Spain.MarkCompletedObjective(ClearAAPost)
@@ -47,6 +49,7 @@ SendReinforcements = function()
 	Camera.Position = EndPointLST.CenterPosition
 	Trigger.OnAllKilled(Beachhead, function()
 		GiveParatroopers()
+		GiveAirstrike()
 		Media.PlaySpeechNotification(Spain, "ReinforcementsArrived")
 		Reinforcements.ReinforceWithTransport(Spain, "lst", LandingForce, {StartPointLST.Location, EndPointLST.Location},nil)
 	end)
@@ -73,7 +76,6 @@ GiveAirstrike = function()
 end
 
 GiveParatroopers = function()
-	Para = Actor.Create("powerproxy.paratroopers", true, {Owner = Spain})
 end
 
 SendAirstrike = function(actor)

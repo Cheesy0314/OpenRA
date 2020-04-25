@@ -2,7 +2,6 @@ ScienceTeamUnits = {Scientist1,Scientist2,SciTeamLeader,SciLiason}
 TeamFound = false
 ticks = 1
 AlliedForces = {Actor154,Actor155,Actor156,Actor157,Actor158,Actor159,Actor160,Actor161,Actor162,Actor163,Actor164,Actor165}
-SovietForces = {"e4","e4", "e1r1"}
 Group = {"zombie","zombie","zombie"}
 Horde = {"zombie","zombie","zombie","zombie","zombie","zombie","zombie"}
 
@@ -19,7 +18,7 @@ SendWestHorde = function()
 end
 
 CreateSovietFireteam = function()
-	Reinforcements.Reinforce(Soviet, SovietForces, {SovBase.Location}, 25, function(actor)
+	Reinforcements.Reinforce(Soviet, {"e4","e4", "e1r1"}, {SovBase.Location}, 25, function(actor)
 		actor.AttackMove(ZedSpawn1.Location)
 	end)
 end
@@ -34,7 +33,7 @@ FoundScienceTeam = function()
 	SaveSciTeam = Spain.AddPrimaryObjective("Save Science Team")
         Trigger.OnAllKilled(ScienceTeamUnits, function() Lose() end)
 	Utils.Do(ScienceTeamUnits, function(unit) 
-		if not unit.IsDead() then
+		if not unit.IsDead then
 			unit.Owner = Spain
 		end
 	end)
@@ -48,9 +47,9 @@ FoundScienceTeam = function()
 	Trigger.AfterDelay(50, function()
 		Media.PlaySpeechNotification(Spain, "AlliedReinforcementsArrived")
 		Reinforcements.Reinforce(Germany, {"tran"}, {CPos.New(1,1), GermanLZ2.Location}, 25, function(evac)
-			eval.Move(GermanLZ1)
+			evac.Move(GermanLZ1.Location)
 			Trigger.OnPassengerEntered(evac, function(trans, pass) 
-				if  ScienceTeamUnits[pass] ~= nil then
+				if  pass == Scientist1 or pass == Scientist2 or pass == SciTeamLeader or pass == SciLiason then
 					Win()
 				end
 			end)
@@ -125,6 +124,11 @@ InitNeedful = function()
 		Media.PlaySpeechNotification(Spain, "SovietForcesFallen")
 		Spain.MarkFailedObjective(FindSovBase)
 	end)
+	Trigger.OnPlayerDiscovered(Soviet, function(disc, finder, actor)
+		if disc == Spain or finder == Spain or actor.Owner == Spain or actor.Owner == Soviet then
+		FoundSovBase()
+		end
+	end)
         Trigger.OnEnteredProximityTrigger(ScienceTeam.CenterPosition, WDist.FromCells(1), function(actor, trigger1)
                 if actor.Owner == Spain then
                         Trigger.RemoveProximityTrigger(trigger1)
@@ -145,7 +149,7 @@ WorldLoaded = function()
         Germany = Player.GetPlayer("Germany")
         BadGuy = Player.GetPlayer("BadGuy")
         Civilian = Player.GetPlayer("Civilians")
-	SovietForces = Player.GetPlayer("Soviet")
+	Soviet = Player.GetPlayer("Soviet")
         InitNeedful()
 	Camera.Position = WPos.New(10,10,0)
 	Trigger.AfterDelay(40, function()

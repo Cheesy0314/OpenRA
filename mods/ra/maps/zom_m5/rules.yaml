@@ -41,7 +41,7 @@ RMBO:
 	RenderSprites:
 		Image: GNRL
 	Tooltip:
-		Name: Commandeer
+		Name: Commander
 	Voiced:
 		VoiceSet: StavrosVoice
 	Buildable:

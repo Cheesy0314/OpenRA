@@ -1,12 +1,21 @@
 MapFormat: 11
+
 RequiresMod: ra
-Title: Svalbard Wars 2: Invasion
+
+Title: 2: Invasion
+
 Author: Cheesy0314
+
 Tileset: SNOW
+
 MapSize: 66,34
+
 Bounds: 1,1,64,32
+
 Visibility: MissionSelector
+
 Categories: Campaign
+
 Players:
 	PlayerReference@Neutral:
 		Name: Neutral

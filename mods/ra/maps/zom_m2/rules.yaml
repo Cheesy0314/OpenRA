@@ -1,6 +1,6 @@
 Player:
 	PlayerResources:
-		DefaultCash: 15000
+		DefaultCash: 8000
 	Shroud:
 		ExploredMapCheckboxEnabled: true
 		ExploredMapCheckboxLocked: true
@@ -139,8 +139,8 @@ OILNC:
 	CapturableProgressBar:
 	EngineerRepairable:
 	CashTrickler:
-		Interval: 375
-		Amount: 300
+		Interval: 500
+		Amount: 10
 	Tooltip:
 		Name: Oil Derrick
 	TooltipDescription@ally:
