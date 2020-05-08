@@ -100,6 +100,9 @@ HBOX:
 PBOX:
 	Buildable:
 		Prerequisites: ~disabled
+DD:
+	Health:
+		HP: 1000000
 
 OILNC:
 	Inherits: OILB

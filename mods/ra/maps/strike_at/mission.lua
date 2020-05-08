@@ -20,5 +20,6 @@ InitNeedful = function()
 end
 
 WorldLoaded = function()
-
+	Soviet = Player.GetPlayer("Soviet")
+	Reinforcements.Reinforce(Soviet, {'mcv', '1tnk' ,'1tnk'}, {CPos.New(23, 110) , CPos.New(23, 107)})
 end

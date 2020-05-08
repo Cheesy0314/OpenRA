@@ -90,6 +90,15 @@ Tick = function()
 		Escape()
 		SendAllZed()
 	end
+
+	if ticks % DateTime.Seconds(10) == 0 then
+	Utils.Do(Zombies.GetActorsByType("zombie"), function(a) 
+		if a.Idle then
+			a.AttackMove(AttackPoint)
+			a.Hunt()
+		end
+	end)
+	end
 end
 
 WorldLoaded = function()

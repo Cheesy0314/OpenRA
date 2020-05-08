@@ -27,6 +27,7 @@ SendNavy = function()
 	end)
 
 	Trigger.AfterDelay(100, function()
+		Media.DisplayMessage("We have enemy aircraft on radar!", "USS Porter Jr", Civilian.Color);
 		mig1 = Actor.Create("mig", true, {Owner = Zombies, Location = CPos.New(30,2)})
 		Trigger.OnAddedToWorld(mig1,function()
 			local dest = Civilian.GetActorsByType("dd")[1]
@@ -49,6 +50,26 @@ Tick = function()
 	if MissionStarted then
 		SendZombies()
 		ticks = ticks + 1
+		if ticks % DateTime.Minutes(2) == 0 then
+		        Trigger.AfterDelay(100, function()
+                Media.DisplayMessage("We have enemy aircraft on radar!", "USS Porter Jr", Civilian.Color);
+                mig1 = Actor.Create("mig", true, {Owner = Zombies, Location = CPos.New(1,16)})
+                Trigger.OnAddedToWorld(mig1,function()
+                        local dest = Civilian.GetActorsByTypes({"ca", "pt", "dd"})[1]
+                        Trigger.OnIdle(mig1, function() mig1.Attack(dest) end)
+                        Trigger.OnDamaged(mig1, function() mig1.Kill() end)
+                end)
+        end)
+
+        Trigger.AfterDelay(200, function()
+                mig2 = Actor.Create("mig", true, {Owner = Zombies, Location = CPos.New(1,16)})
+                Trigger.OnAddedToWorld(mig2,function()
+                        local dest = Civilian.GetActorsByTypes({"dd", "pt", "ca"})[2]
+                        Trigger.OnIdle(mig2, function() mig2.Attack(dest) end)
+                        Trigger.OnDamaged(mig2, function() mig2.Kill() end)
+                end)
+        end)
+	end
 	end
 end
 
@@ -133,13 +154,13 @@ SendZombies = function()
 			Trigger.AfterDelay(DateTime.Seconds(5), function()
 				Media.PlaySpeechNotification(Spain, "AlliedReinforcementsArrived")
 				SendAirstrike(Actor198)
-				SendAirstrike(Actor156) 
-				SendAirstrike(Actor157)
-				SendAirstrike(Actor158)
-				SendAirstrike(Actor159)
-				SendAirstrike(Actor160)
-				SendAirstrike(Actor161)
-				SendAirstrike(Actor162)
+				Trigger.AfterDelay(10, function() SendAirstrike(Actor156) end)
+				Trigger.AfterDelay(20, function() SendAirstrike(Actor157) end)
+				Trigger.AfterDelay(30, function() SendAirstrike(Actor158) end)
+				Trigger.AfterDelay(40, function() SendAirstrike(Actor159) end)
+				Trigger.AfterDelay(50, function() SendAirstrike(Actor160) end)
+				Trigger.AfterDelay(60, function() SendAirstrike(Actor161) end)
+				Trigger.AfterDelay(70, function() SendAirstrike(Actor162) end)
 
 			end)
 		end
@@ -232,13 +253,13 @@ WorldLoaded = function()
 	Civilian = Player.GetPlayer("Civilians")
 	InitNeedful()
 	Beach = Spain.AddPrimaryObjective("Secure beach, then build a forward base.")
+	Media.DisplayMessage("Invasion is commencing, secure your targets and secure that beachead!", "Mission Command", Civilian.Color)
 	Camera.Position = Actor10.CenterPosition
+	Trigger.AfterDelay(25, function() Media.DisplayMessage("Command, first wave making landfall.",  "Bravo-3", Civilian.Color) end)
 	Trigger.AfterDelay(DateTime.Seconds(2), function() Media.PlaySpeechNotification(Spain,"AlliedReinforcementsArrived")
 		firstWave = Reinforcements.ReinforceWithTransport(Civilian, "lst", {"2tnk","2tnk","jeep"}, {CPos.New(3,30), CPos.New(16,22)},nil)
-		Trigger.OnKilled(firstWave[1], function()
-			Media.DisplayMessage("Command, First wave ineffective. We do not hold the beach, repeat, we do not hold the beach.", "ATF Baker-3 Actual", Civilian.Color)
-		end)
 		Trigger.OnAllKilled(firstWave[2], function()
+				Media.DisplayMessage("Command, First wave ineffective. We do not hold the beach, repeat, we do not hold the beach.", "Bravo-3", Civilian.Color)
 			Media.PlaySpeechNotification(Spain,"AlliedForcesFallen")
 			Trigger.AfterDelay(85, function()
 				Media.PlaySpeechNotification(Spain,"AlliedReinforcementsWest")
