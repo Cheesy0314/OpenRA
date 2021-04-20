@@ -1,0 +1,17 @@
+AirstrikeNapalm:
+	Inherits: Napalm
+	ReloadDelay: 4
+	Range: 2c0
+	Burst: 2
+	BurstDelays: 2
+	-Projectile:
+	Projectile: GravityBomb
+		Image: BOMBLET
+		Shadow: true
+	Warhead@1Dam: SpreadDamage
+		Spread: 341
+		Damage: 30000
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Versus:
+			Wood: 35
+			Heavy: 80

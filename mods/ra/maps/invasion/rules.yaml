@@ -1,0 +1,10 @@
+World:
+	LuaScript:
+		Scripts: invasion.lua
+	MissionData: We are assualting across the Rhine river, the Allied dogs are entrenched here. They have captured some of our technology and fortified the beachhead.\n\nDestroy them and the base inland.
+		Briefing:
+		BackgroundVideo: prolog.vqa
+		BriefingVideo: soviet1.vqa
+		StartVideo: flare.vqa
+		WinVideo: snstrafe.vqa
+		LossVideo: sfrozen.vqa

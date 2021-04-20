@@ -1,0 +1,212 @@
+Player:
+	PlayerResources:
+		DefaultCash: 8000
+	Shroud:
+		ExploredMapCheckboxEnabled: true
+		ExploredMapCheckboxLocked: true
+		FogCheckboxLocked: true
+		FogCheckboxEnabled: false
+
+World:
+	MapBuildRadius:
+		AllyBuildRadiusCheckboxEnabled: true #can build in allies base
+		AllyBuildRadiusCheckboxLocked: true
+		BuildRadiusCheckboxEnabled: false #no build radius limitations
+		BuildRadiusCheckboxLocked: true
+	LuaScript:
+		Scripts: zomboids.lua
+	MissionData:
+		Briefing: --INCOMING SECURE TRANSMISSION--\n\nCommander, the invasion starts today. Intel reports unrest along the enemies lines and we will use that to our advantage. \n\nYour first objective is to establish a beachhead. I want our forces on the ground quick so we can prepare to make a push inland. Once you've cleared a path buld a forward base to lock down the area.\n\n We will have support from German Navy and Airforces. If all goes well we will be able to push inland within a few hours.\n\nGood luck Commander, the free world is counting on you.\n\n--END TRANSMISSION--\n
+
+PROC:
+	Buildable:
+		Prerequisites: ~disabled
+WEAP:
+	Buildable:
+		Prerequisites: ~disabled
+FIX:
+	Buildable:
+		Prerequisites: ~disabled
+SYRD:
+	Buildable:
+		Prerequisites: ~disabled
+DOME:
+	Buildable:
+		-Prerequisites:
+		Prerequisites: ~techlevel.low, ~tent
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+SPY:
+	Buildable:
+		Prerequisites: ~disabled
+SPY.England:
+	Buildable:
+		Prerequisites: ~disabled
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+APC:
+	Buildable:
+		Prerequisites: ~disabled
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+SPY:
+	Buildable:
+		Prerequisites: ~disabled
+SNIPER:
+	Buildable:
+		Prerequisites: ~disabled
+MGG:
+	Buildable:
+		Prerequisites: ~disabled
+1TNK:
+	Buildable:
+		Prerequisites: ~tent
+2TNK:
+	Buildable:
+		Prerequisites: ~disabled
+E3:
+	Buildable:
+		Prerequisites: ~tent
+E2:
+	Buildable:
+		Prerequisites: ~tent
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+E6:
+	Buildable:
+		Prerequisites: ~disabled
+ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+HBOX:
+	Buildable:
+		Prerequisites: ~disabled
+PBOX:
+	Buildable:
+		Prerequisites: ~disabled
+DD:
+	Health:
+		HP: 1000000
+
+OILNC:
+	Inherits: OILB
+	Huntable:
+	HitShape:
+		UseTargetableCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -512, -512
+			BottomRight: 512, 512
+	Health:
+		HP: 40000
+	Armor:
+		Type: Wood
+	Tooltip:
+		Name: Oil Derrick
+		GenericVisibility: None
+	FrozenUnderFog:
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, 630,-300,0, 420,512,0, -420,-512,0, -630,300,0
+	Selectable:
+		Priority: 0
+		Bounds: 48,48
+	OwnerLostAction:
+		Action: ChangeOwner
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	Health:
+		HP: 80000
+	RevealsShroud:
+		Range: 4c0
+	CaptureManager:
+	CapturableProgressBlink:
+	Capturable:
+		Types: building
+	CapturableProgressBar:
+	EngineerRepairable:
+	CashTrickler:
+		Interval: 500
+		Amount: 10
+	Tooltip:
+		Name: Oil Derrick
+	TooltipDescription@ally:
+		Description: Provides additional funds.
+		ValidStances: Ally
+	TooltipDescription@other:
+		Description: Capture to receive additional funds.
+		ValidStances: Neutral, Enemy
+	Explodes:
+		Weapon: BarrelExplode
+	GpsDot:
+		String: Oil
+	GivesCashOnCapture:
+		Amount: 100
+	RenderSprites:
+		Image: v19
+	SpawnActorOnDeath:
+		Actor: V19.Husk
+MIG:
+	Aircraft:
+		Speed: 300
+
+BADR.napalm:
+	Inherits: BADR.Bomber
+	Aircraft:
+		Speed: 600
+	AttackAircraft:
+		FacingTolerance: 20
+	Armament:
+		Weapon: AirstrikeNapalm
+		LocalOffset: 0,-640,0, 0,640,0
+		LocalYaw: -40, 24
+	SmokeTrailWhenDamaged:
+		Offset: -853,0,171
+		Interval: 2
+	Tooltip:
+		Name: Phantom
+	SpawnActorOnDeath:
+		Actor: MIG.Husk
+	Contrail@1:
+		Offset: -598,-683,0
+	Contrail@2:
+		Offset: -598,683,0
+	RenderSprites:
+		Image: mig
+	AmmoPool:
+		Ammo: 10
+
+powerproxy.napalmstrike:
+	AlwaysVisible:
+	AirstrikePower:
+		Icon: parabombs
+		Description: Parabombs (Single Use)
+		LongDesc: A Badger drops a load of parachuted bombs on your target.
+		OneShot: true
+		AllowMultiple: true
+		UnitType: badr.napalm
+		SelectTargetSpeechNotification: SelectTarget
+		QuantizedFacings: 8
+		DisplayBeacon: True
+		BeaconPoster: pbmbicon
+		CameraActor: camera
+		CameraRemoveDelay: 150
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles

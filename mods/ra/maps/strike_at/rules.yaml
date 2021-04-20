@@ -1,0 +1,157 @@
+Player:
+	PlayerResources:
+		DefaultCash: 5000
+	Shroud:
+		ExploredMapCheckboxEnabled: false
+		ExploredMapCheckboxLocked: true
+		FogCheckboxLocked: true
+		FogCheckboxEnabled: false
+
+World:
+	MapBuildRadius:
+		AllyBuildRadiusCheckboxEnabled: true #can build in allies base
+		AllyBuildRadiusCheckboxLocked: true
+		BuildRadiusCheckboxEnabled: false #no build radius limitations
+		BuildRadiusCheckboxLocked: true
+	LuaScript:
+		Scripts: mission.lua
+	MissionData:
+		Briefing: --TO COMMANDER S7--\n\nALLIED FORCES HAVE ENTERED THE BALTIC PENISULA IN AN EFFORT TO REPEL US FROM THE AREA.\n\nMISSION PARAMETERS:\n1) EVACUATE VIPS\n2) DESTROY ALLIED STAGING POST\n3) PROTECT UKRAINIAN FORCES\n\n--TRANSMISSION ENDED--
+AFLD:
+	Buildable:
+		Prerequisites: ~disabled
+OILNC:
+	Inherits: OILB
+	Huntable:
+	HitShape:
+		UseTargetableCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -512, -512
+			BottomRight: 512, 512
+	Health:
+		HP: 40000
+	Armor:
+		Type: Wood
+	Tooltip:
+		Name: Oil Derrick
+		GenericVisibility: None
+	FrozenUnderFog:
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, 630,-300,0, 420,512,0, -420,-512,0, -630,300,0
+	Selectable:
+		Priority: 0
+		Bounds: 48,48
+	OwnerLostAction:
+		Action: ChangeOwner
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	Health:
+		HP: 80000
+	RevealsShroud:
+		Range: 4c0
+	CaptureManager:
+	CapturableProgressBlink:
+	Capturable:
+		Types: building
+	CapturableProgressBar:
+	EngineerRepairable:
+	CashTrickler:
+		Interval: 375
+		Amount: 300
+	Tooltip:
+		Name: Oil Derrick
+	TooltipDescription@ally:
+		Description: Provides additional funds.
+		ValidStances: Ally
+	TooltipDescription@other:
+		Description: Capture to receive additional funds.
+		ValidStances: Neutral, Enemy
+	Explodes:
+		Weapon: BarrelExplode
+	GpsDot:
+		String: Oil
+	GivesCashOnCapture:
+		Amount: 100
+	RenderSprites:
+		Image: v19
+	SpawnActorOnDeath:
+		Actor: V19.Husk
+BADR.napalm:
+	Inherits: BADR.Bomber
+	Aircraft:
+		Speed: 500
+	AttackAircraft:
+		FacingTolerance: 20
+	Armament:
+		Weapon: AirstrikeNapalm
+		LocalOffset: 0,-640,0, 0,640,0
+		LocalYaw: -40, 24
+	SmokeTrailWhenDamaged:
+		Offset: -853,0,171
+		Interval: 2
+	Tooltip:
+		Name: Phantom
+	SpawnActorOnDeath:
+		Actor: MIG.Husk
+	Contrail@1:
+		Offset: -598,-683,0
+	Contrail@2:
+		Offset: -598,683,0
+	RenderSprites:
+		Image: mig
+	AmmoPool:
+		Ammo: 10
+powerproxy.napalmstrike:
+	AlwaysVisible:
+	AirstrikePower:
+		Icon: parabombs
+		Description: Napalm Strike
+		LongDesc: A fighter-bomber drops a load of napalm on your target.
+		OneShot: false
+		AllowMultiple: true
+		UnitType: badr.napalm
+		SelectTargetSpeechNotification: SelectTarget
+		QuantizedFacings: 8
+		DisplayBeacon: True
+		BeaconPoster: pbmbicon
+		CameraActor: camera
+		CameraRemoveDelay: 150
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles
+DOME.Soviet:
+	Inherits: DOME
+	Buildable:
+		Prerequisites: proc, ~techlevel.medium, ~structures.soviet
+		Description: Provides an overview\nof the battlefield.\nRequires power to operate.\nGive airstrike power
+	RenderSprites:
+		Image: dome
+	ProvidesPrerequisite@soviet:
+		Factions: soviet
+		Prerequisite: radar.soviet
+	AirstrikePower@napalm:
+		OrderName: SovietNapalm 
+		Prerequisites: radar.soviet
+		Icon: parabombs
+		ChargeInterval: 5000
+		Description: Napalm Strike
+		LongDesc: A fighter-bomber drops a load of napalm on your target.
+		SelectTargetSpeechNotification: SelectTarget
+		CameraActor: camera
+		CameraRemoveDelay: 150
+		UnitType: badr.napalm
+		QuantizedFacings: 8
+		DisplayBeacon: true
+		OneShot: false
+		AllowMultiple: true
+		BeaconPoster: pbmbicon
+		SquadSize: 3
+		SquadOffset: 1792,1792,0
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles
+		UseDirectionalTarget: True
+		DirectionArrowAnimation: paradirection
+		SupportPowerPaletteOrder: 40

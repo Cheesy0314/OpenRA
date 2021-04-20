@@ -1,0 +1,207 @@
+World:
+	MapBuildRadius:
+		AllyBuildRadiusCheckboxEnabled: true #can build in allies base
+		AllyBuildRadiusCheckboxLocked: true
+		BuildRadiusCheckboxEnabled: true #no build radius limitations
+		BuildRadiusCheckboxLocked: true
+	LuaScript:
+		Scripts: gdi01.lua
+	MissionData:
+		Briefing: Welcome Commander to the UN's newest special ops group, and congratulations on your selection.\nYour first mission will be to pacify some remaining rebels in the Greek penisula, this should be an easy task for someone as decorated as yourself.\n\nTake the beachhead first, then locate and destroy the rebel base.\n\nThat is all Commander, goodluck.
+
+Player:
+	PlayerResources:
+		DefaultCash: 5000
+
+E2:
+	Buildable:
+		Prerequisites: ~tent
+
+E3:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+SNIPER:
+	Buildable:
+		Prerequisites: ~atek
+	Tooltip:
+		Name: Sniper Commando
+		GenericName: Commando
+	Valued:
+		Cost: 1200
+	Demolition:
+		DetonationDelay: 45
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+1TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+2TNK:
+	Buildable:
+		Prerequisites: ~tent
+
+3TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+4TNK:
+	Buildable:
+		Prerequisites: ~disabled
+V2RL:
+	Buildable:
+		Prerequisites: dome, ~vehicles.allies
+ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+
+MNLY:
+	Buildable:
+		Prerequisites: ~disabled
+
+APC:
+	Buildable:
+		Prerequisites: tent, ~vehicles.allies
+
+MGG:
+	Buildable:
+		Prerequisites: ~disabled
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+TTNK:
+	Buildable:
+		Prerequisites: ~disabled
+CTNK:
+	Buildable:
+		Prerequisites: ~disabled
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+DTRK:
+	Buildable:
+		Prerequisites: ~disabled
+HIND:
+	Buildable:
+		Prerequisites: ~disabled
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+E2R1:
+	Inherits: E2
+	RenderSprites:
+		Image: E2
+	ProducibleWithLevel:
+		Prerequisites: techlevel.infonly
+		InitialLevels: 1
+	-Buildable:
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+PHANT:
+	Inherits: MIG
+	RenderSprites:
+		Image: mig
+	Buildable:
+		Prerequisites: ~disabled
+	Tooltip:
+		Name: Phantom II
+	Armament:
+		Weapon: TankBuster
+		LocalOffset: 0,-640,0, 0,640,0
+		LocalYaw: -40, 24
+		-PauseOnCondition:
+	Aircraft:
+		CruiseAltitude: 2900
+		InitialFacing: 192
+		TurnSpeed: 3
+		Speed: 350
+		RepulsionSpeed: 40
+		MaximumPitch: 56
+	Health:
+		HP: 200000
+	Armor:
+		Type: Heavy
+	-AmmoPool:
+
+PHANT.napalm:
+	Inherits: BADR.Bomber
+	Aircraft:
+		Speed: 300
+	AttackPlane:
+		FacingTolerance: 20
+	Armament:
+		Weapon: AirstrikeNapalm
+		LocalOffset: 0,-640,0, 0,640,0
+		LocalYaw: -40, 24
+	SmokeTrailWhenDamaged:
+		Offset: -853,0,171
+		Interval: 2
+	Aircraft:
+		CruiseAltitude: 3500
+		InitialFacing: 192
+		TurnSpeed: 6
+		Speed: 350
+		RepulsionSpeed: 40
+		MaximumPitch: 56
+	Tooltip:
+		Name: Phantom II Bomber
+	SpawnActorOnDeath:
+		Actor: MIG.Husk
+	Contrail@1:
+		Offset: -598,-683,0
+	Contrail@2:
+		Offset: -598,683,0
+	Health:
+		HP: 200000
+	Armor:
+		Type: Heavy
+	RenderSprites:
+		Image: mig
+	AmmoPool:
+		Ammo: 12
+
+powerproxy.napalmstrike:
+	AlwaysVisible:
+	AirstrikePower:
+		Icon: parabombs
+		Description: Napalm Strike (Single Use)
+		LongDesc: A fighter-bomber delivers a payload of napalm to designated position.
+		OneShot: true
+		AllowMultiple: true
+		UnitType: phant.napalm
+		SelectTargetSpeechNotification: SelectTarget
+		QuantizedFacings: 8
+		DisplayBeacon: True
+		BeaconPoster: pbmbicon
+		CameraActor: camera
+		CameraRemoveDelay: 150
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles
+		SquadSize: 3
+		SquadOffset: 1792,1792,0

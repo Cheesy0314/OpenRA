@@ -1,0 +1,73 @@
+TankBuster:
+	Inherits: ^AntiGroundMissile
+	ReloadDelay: 10
+	Range: 12c0
+	MinRange: 2c0
+	Report: missile7.aud
+	Burst: 2
+	BurstDelays: 4
+	Warhead@1Dam: SpreadDamage
+		Damage: 20000
+		Versus:
+			None: 200
+			Wood: 140
+			Light: 125
+			Heavy: 115
+			Concrete: 90
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+		InvalidTargets: Structure, Wall
+	Warhead@3Eff: CreateEffect
+		Explosions: napalm
+		ImpactSounds: firebl3.aud
+		ImpactActors: false
+	Projectile: Missile
+		Speed: 556
+		Inaccuracy: 112
+		CruiseAltitude: 2c0
+		RangeLimit: 14c510
+		TrailImage: smokey
+	Warhead@4EffWater: CreateEffect
+		Explosions: med_splash
+		ImpactSounds: splash9.aud
+		ValidTargets: Water, Underwater
+		InvalidTargets: Ship, Structure, Bridge
+
+TankBuster2:
+	Inherits: TankBuster
+	ReloadDelay: 100
+	Range: 4c0
+	-MinRange:
+
+AirstrikeNapalm:
+	Inherits: ParaBomb
+	Range: 3c0
+	Burst: 6
+	ReloadDelay: 1
+	-Projectile:
+	Projectile: GravityBomb
+		Image: BOMBLET
+		Shadow: true
+	Warhead@1Dam: SpreadDamage
+		Spread: 170
+		Damage: 200000
+		Versus:
+			None: 200
+			Wood: 5
+			Light: 185
+			Heavy: 10
+			Concrete: 0
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+		InvalidTargets: Structure, Wall
+	Warhead@3Eff: CreateEffect
+		Explosions: napalm
+		ImpactSounds: firebl3.aud
+		ImpactActors: false
+	Warhead@4EffWater: CreateEffect
+		Explosions: med_splash
+		ImpactSounds: splash9.aud
+		ValidTargets: Water, Underwater
+		InvalidTargets: Ship, Structure

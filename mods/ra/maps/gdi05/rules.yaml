@@ -1,0 +1,26 @@
+World:
+	LuaScript:
+		Scripts: gdi05.lua
+	MissionData:
+		Briefing: This is it Commander, we have been called on to end the crisis in Iraq.\n\nYour mission is to infiltrate this remote village and assassinate Saddam Hussein.\n\nBe careful, and do not get caught.
+
+POWR:
+	Power:
+		Amount: 10000
+        
+GNRL:
+	Tooltip:
+		Name: Saddam Hussein
+	Armor:
+		Type: Heavy
+	Health:
+		HP: 100000
+JEEP2:
+	Inherits: TRUK
+	RenderSprites:
+		Image: jeep
+
+5TNK:
+	Inherits: TRUK
+	RenderSprites:
+		Image: apc

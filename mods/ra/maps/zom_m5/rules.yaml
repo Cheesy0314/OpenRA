@@ -1,0 +1,144 @@
+Player:
+	PlayerResources:
+		DefaultCash: 0
+	Shroud:
+		ExploredMapCheckboxEnabled: true
+		ExploredMapCheckboxLocked: true
+		FogCheckboxLocked: true
+		FogCheckboxEnabled: false
+
+World:
+	MapBuildRadius:
+		AllyBuildRadiusCheckboxEnabled: true #can build in allies base
+		AllyBuildRadiusCheckboxLocked: true
+		BuildRadiusCheckboxEnabled: false #no build radius limitations
+		BuildRadiusCheckboxLocked: true
+	LuaScript:
+		Scripts: zomboids.lua
+	MissionData:
+		Briefing: --TRANSMISSION RECORDING--\n\nMission Command, the base has been overrun. We have fled through the constructed tunnels, but resistance has been heavy. I have lost most of the men with me, but I have managed to contact some local forces waiting near the exit. \n\nThe shambling dead are closing in, but I have vital information about the epidemic that I must return with.\n\nCommander G5, Coalition Forces\n\n--TRANSMISSION SENT--
+
+GDIF:
+	Inherits: E2
+	RenderSprites:
+		Image: E4 
+	Tooltip:
+		Name: GDI Zone Trooper
+		GenericName: Heavy Trooper
+	Buildable:
+		Prerequisites: ~disabled
+	Valued:
+		Cost: 100
+	Mobile:
+		Speed: 71
+	Health:
+		HP: 40000
+	Armor:
+		Type: Heavy
+		
+RMBO:
+	Inherits: ^Soldier
+	RenderSprites:
+		Image: GNRL
+	Tooltip:
+		Name: Commander
+	Voiced:
+		VoiceSet: StavrosVoice
+	Buildable:
+		Queue: Infantry
+		BuildAtProductionType: Soldier
+		BuildPaletteOrder: 120
+		Prerequisites: ~tent, atek
+		Description: The Commander (That's you). Armed with\Sniper rifle and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft\n  Special Ability: Destroy Building with C4
+	Valued:
+		Cost: 1200
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Mobile:
+		Speed: 71
+		Voice: Move
+	
+	Guard:
+		Voice: Move
+	RevealsShroud:
+		Range: 6c0
+	Demolition:
+		DetonationDelay: 45
+		Voice: Attack
+	Passenger:
+		PipType: Red
+		Voice: Move
+	AttackMove:
+		Voice: Attack
+	AttackFrontal:
+		Voice: Attack
+	Armament@PRIMARY:
+		Weapon: Raptor50cal
+	Armament@GARRISONED:
+		Name: garrisoned
+		Weapon: Raptor50Cal
+		MuzzleSequence: garrison-muzzle
+	WithInfantryBody:
+		DefaultAttackSequence: shoot
+		StandSequences: stand
+	ExternalCondition@PRODUCED:
+		Condition: produced
+	VoiceAnnouncement:
+		RequiresCondition: produced
+		Voice: Select
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+
+BADR.napalm:
+	Inherits: BADR.Bomber
+	Aircraft:
+		Speed: 300
+	AttackAircraft:
+		FacingTolerance: 20
+	Armament:
+		Weapon: AirstrikeNapalm
+		LocalOffset: 0,-640,0, 0,640,0
+		LocalYaw: -40, 24
+	SmokeTrailWhenDamaged:
+		Offset: -853,0,171
+		Interval: 2
+	Tooltip:
+		Name: Phantom
+	SpawnActorOnDeath:
+		Actor: MIG.Husk
+	Contrail@1:
+		Offset: -598,-683,0
+	Contrail@2:
+		Offset: -598,683,0
+	RenderSprites:
+		Image: mig
+	AmmoPool:
+		Ammo: 10
+
+powerproxy.napalmstrike:
+	AlwaysVisible:
+	AirstrikePower:
+		Icon: parabombs
+		Description: Parabombs (Single Use)
+		LongDesc: A Badger drops a load of parachuted bombs on your target.
+		OneShot: true
+		AllowMultiple: true
+		UnitType: badr.napalm
+		SelectTargetSpeechNotification: SelectTarget
+		QuantizedFacings: 8
+		DisplayBeacon: True
+		BeaconPoster: pbmbicon
+		CameraActor: camera
+		CameraRemoveDelay: 150
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles
+
+powerproxy.paras1:
+	Inherits: powerproxy.paratroopers
+	ParatroopersPower:
+		DropItems: RMBO,E1R1
+powerproxy.paras2:
+	Inherits: powerproxy.paratroopers
+	ParatroopersPower:
+		DropItems: JEEP,JEEP,1TNK,1TNK,JEEP
