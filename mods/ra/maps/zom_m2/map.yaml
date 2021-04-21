@@ -29,8 +29,8 @@ Players:
 	PlayerReference@Civilians:
 		Name: Civilians
 		NonCombatant: True
-		Color: F6D679
 		Faction: england
+		Color: F6D679
 		Allies: Spain, Germany
 		Enemies: BadGuy
 	PlayerReference@Germany:
@@ -47,12 +47,12 @@ Players:
 		Name: Spain
 		Playable: True
 		Required: True
+		LockFaction: True
+		Faction: allies
 		LockColor: True
 		Color: 518599
 		LockSpawn: True
 		LockTeam: True
-		Faction: allies
-		LockFaction: True
 		Allies: Germany, Civilians
 		Enemies: BadGuy
 	PlayerReference@BadGuy:
@@ -60,6 +60,7 @@ Players:
 		Faction: soviet
 		Color: 590505
 		Enemies: Spain, Germany, Civilians
+
 Actors:
 	Actor7: waypoint
 		Owner: Neutral
@@ -566,12 +567,19 @@ Actors:
 	Actor208: waypoint
 		Owner: Neutral
 		Location: 26,4
-	OilDerrick1: oilnc
+	OilDerrick1: oilbc
 		Owner: Neutral
 		Location: 40,3
-	OildDerrick2: oilnc
+	OildDerrick2: oilbc
 		Owner: Neutral
 		Location: 42,2
+	Actor209: v07
+		Owner: Neutral
+		Location: 56,25
+		Health: 18
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml
+
+Sequences: sequences.yaml
+
 Weapons: weapons.yaml

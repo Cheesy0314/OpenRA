@@ -1,3 +1,18 @@
+tnkd:
+	idle:
+		Facings: 32
+		UseClassicFacingFudge: True
+	muzzle: cann-muzzle
+		Length: 2
+		Facings: 16
+	icon: tnkdicon
+
+tnkd.destroyed:
+	idle: tnkd
+		Facings: 32
+		UseClassicFacingFudge: True
+
+
 cycl:
 	idle:
 		Length: 16

@@ -4,19 +4,15 @@ World:
 		AllyBuildRadiusCheckboxLocked: true
 		BuildRadiusCheckboxEnabled: true #no build radius limitations
 		BuildRadiusCheckboxLocked: true
-	LuaScript:
-		Scripts: gdi02.lua
-	MissionData:
-		Briefing: Goodwork in the Balkins, glad to see your command skills are still sharp.\n\n\nYour next mission is to netralize a small Soviet turned Mercenary force that has set up shop in the Russian Stepps.\n\nObjectives\n\n	  -Take your commando and move to the Southwest village and make contact with local operatives.\n	  -Once contact is made, and the situation assessed, we will send reinforcements for you.\n	  -Destroy all forces in the area\n\n\nKeep a lookout for anything odd, and use discretion. This situation remains secret as out existance is not public...\n\nThat is all commander. 
-
-Player:
-	PlayerResources:
-		DefaultCash: 5000
 	Shroud:
-		ExploredMapCheckboxEnabled: true
+		ExploredMapCheckboxEnabled: false
 		ExploredMapCheckboxLocked: true
 		FogCheckboxLocked: true
 		FogCheckboxEnabled: false
+	LuaScript:
+		Scripts: gdi04.lua
+	MissionData:
+		Briefing: A new threat has emerged in southern France and we need to act now.\n We're beginning an amphibious assault on the location, your forces will be tasked with securing objectives separate from the main landing force.\n\n  - Clear the LZ\n  -Rescue imprisioned allies\n  - Neutralize uranium processing facility\n\nGoodluck Commander.
 
 E2:
 	Buildable:
@@ -60,10 +56,10 @@ MECH:
 
 4TNK:
 	Buildable:
-		Prerequisites: ~fix
+		Prerequisites: ~disabled
 V2RL:
 	Buildable:
-		Prerequisites: ~disabled
+		Prerequisites: dome, ~vehicles.allies
 ARTY:
 	Buildable:
 		Prerequisites: ~disabled
@@ -108,13 +104,12 @@ PDOX:
 MSLO:
 	Buildable:
 		Prerequisites: ~disabled
-GAP:
+HPAD:
 	Buildable:
 		Prerequisites: ~disabled
-HELI:
+ATEK:
 	Buildable:
-		Prerequisites: hpad
-
+		Prerequisites: ~disabled
 E2R1:
 	Inherits: E2
 	RenderSprites:
@@ -124,9 +119,16 @@ E2R1:
 		InitialLevels: 1
 	-Buildable:
 
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
 PHANT.napalm:
-	Inherits: ^NeutralPlane
-	AttackBomber:
+	Inherits: BADR.Bomber
+	Aircraft:
+		Speed: 600
+	AttackAircraft:
+		FacingTolerance: 20
 	Armament:
 		Weapon: AirstrikeNapalm
 		LocalOffset: 0,-640,0, 0,640,0
@@ -134,44 +136,26 @@ PHANT.napalm:
 	SmokeTrailWhenDamaged:
 		Offset: -853,0,171
 		Interval: 2
-	Aircraft:
-		CruiseAltitude: 3500
-		InitialFacing: 192
-		TurnSpeed: 6
-		Speed: 350
-		RepulsionSpeed: 40
-		MaximumPitch: 56
 	Tooltip:
-		Name: Phantom II Bomber
+		Name: Phantom
 	SpawnActorOnDeath:
 		Actor: MIG.Husk
-	-Selectable:
-	-Voiced:
-	-EjectOnDeath:
-	RejectsOrders:
-	GivesExperience:
-		Experience: 1200
-	Interactable:
 	Contrail@1:
 		Offset: -598,-683,0
 	Contrail@2:
 		Offset: -598,683,0
-	Health:
-		HP: 200000
-	Armor:
-		Type: Heavy
 	RenderSprites:
 		Image: mig
 	AmmoPool:
-		Ammo: 6
-        
+		Ammo: 10
+
 powerproxy.napalmstrike:
 	AlwaysVisible:
 	AirstrikePower:
 		Icon: parabombs
-		Description: Napalm Strike
-		LongDesc: A fighter-bomber delivers a payload of napalm to designated position
-		OneShot: true
+		Description: Napalm Run
+		LongDesc: A strike fighter drops a load of napalm bombs on your target.
+		OneShot: false
 		AllowMultiple: true
 		UnitType: phant.napalm
 		SelectTargetSpeechNotification: SelectTarget
@@ -183,29 +167,3 @@ powerproxy.napalmstrike:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
-
-PHANT:
-	Inherits: MIG
-	RenderSprites:
-		Image: mig
-	Buildable:
-		Prerequisites: ~disabled
-	Tooltip:
-		Name: Phantom II
-	Armament:
-		Weapon: TankBuster
-		LocalOffset: 0,-640,0, 0,640,0
-		LocalYaw: -40, 24
-		-PauseOnCondition:
-	Aircraft:
-		CruiseAltitude: 2900
-		InitialFacing: 192
-		TurnSpeed: 6
-		Speed: 350
-		RepulsionSpeed: 40
-		MaximumPitch: 56
-	Health:
-		HP: 200000
-	Armor:
-		Type: Heavy
-	-AmmoPool:

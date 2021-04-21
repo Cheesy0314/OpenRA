@@ -541,3 +541,5 @@ Actors:
 Rules: ra|rules/campaign-rules.yaml, rules.yaml, ra|rules/campaign-tooltips.yaml
 
 Weapons: weapons.yaml
+
+Sequences: sequences.yaml

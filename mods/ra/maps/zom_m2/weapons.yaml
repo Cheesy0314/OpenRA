@@ -15,3 +15,10 @@ AirstrikeNapalm:
 		Versus:
 			Wood: 35
 			Heavy: 80
+
+130mm:
+	Inherits: 120mm
+	ReloadDelay: 70
+	-Burst:
+	Range: 6c256
+	Report: tnkdfire.aud

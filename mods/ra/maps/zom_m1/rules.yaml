@@ -138,7 +138,7 @@ RMBO:
 		DetonationDelay: 45
 		Voice: Attack
 	Passenger:
-		PipType: Red
+		CustomPipType: red
 		Voice: Move
 	AttackMove:
 		Voice: Attack
@@ -205,10 +205,8 @@ OILNC:
 		Name: Oil Derrick
 	TooltipDescription@ally:
 		Description: Provides additional funds.
-		ValidStances: Ally
 	TooltipDescription@other:
 		Description: Capture to receive additional funds.
-		ValidStances: Neutral, Enemy
 	Explodes:
 		Weapon: BarrelExplode
 	GpsDot:

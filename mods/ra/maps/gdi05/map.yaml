@@ -1042,3 +1042,5 @@ Actors:
 		SubCell: 3
 		Facing: 92
 Rules: rules.yaml, ra|rules/campaign-palettes.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-rules.yaml
+Weapons: weapons.yaml
+Sequences: sequences.yaml

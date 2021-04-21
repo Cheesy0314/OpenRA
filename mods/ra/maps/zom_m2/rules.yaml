@@ -104,9 +104,58 @@ DD:
 	Health:
 		HP: 1000000
 
-OILNC:
+TNKD:
+	Inherits: ^TrackedVehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 210
+		Prerequisites: fix, atek, ~vehicles.allies, ~techlevel.high
+		Description: Mobile anti-armor platform, sporting an big gun with long reload\n Strong vs Tanks, Vehicles\n Weak vs Infantry, Aircraft
+	Valued:
+		Cost: 975
+	Tooltip:
+		Name: Tank Destroyer
+		GenericName: Tank
+	Health:
+		HP: 67000
+	Armor:
+		Type: Heavy
+	Mobile:
+		TurnSpeed: 3
+		Speed: 71
+	RevealsShroud:
+		Range: 6c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
+	Armament:
+		Weapon: 130mm
+		LocalOffset: 720,0,90
+		MuzzleSequence: muzzle
+	AttackFrontal:
+	WithMuzzleOverlay:
+	SpawnActorOnDeath:
+		Actor: TNKD.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
+	ProducibleWithLevel:
+		Prerequisites: vehicles.upgraded
+
+TNKD.Husk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Tank Destroyer (Destroyed)
+	TransformOnCapture:
+		IntoActor: tnkd
+	InfiltrateForTransform:
+		IntoActor: tnkd
+	RenderSprites:
+		Image: tnkd.destroyed
+
+OILBC:
 	Inherits: OILB
-	Huntable:
 	HitShape:
 		UseTargetableCellsOffsets: true
 		Type: Rectangle
@@ -148,10 +197,8 @@ OILNC:
 		Name: Oil Derrick
 	TooltipDescription@ally:
 		Description: Provides additional funds.
-		ValidStances: Ally
 	TooltipDescription@other:
 		Description: Capture to receive additional funds.
-		ValidStances: Neutral, Enemy
 	Explodes:
 		Weapon: BarrelExplode
 	GpsDot:
@@ -164,7 +211,7 @@ OILNC:
 		Actor: V19.Husk
 MIG:
 	Aircraft:
-		Speed: 300
+		Speed: 100
 
 BADR.napalm:
 	Inherits: BADR.Bomber
@@ -210,3 +257,56 @@ powerproxy.napalmstrike:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+        
+RMBO:
+	Inherits: ^Soldier
+	RenderSprites:
+		Image: GNRL
+	Tooltip:
+		Name: Field Commander
+	Voiced:
+		VoiceSet: StavrosVoice
+	Buildable:
+		Queue: Infantry
+		BuildAtProductionType: Soldier
+		BuildPaletteOrder: 120
+		Prerequisites: ~disabled
+		Description: Commander in charge of current operations
+	Valued:
+		Cost: 1200
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Mobile:
+		Speed: 71
+		Voice: Move
+	Guard:
+		Voice: Move
+	RevealsShroud:
+		Range: 6c0
+	Demolition:
+		DetonationDelay: 45
+		Voice: Attack
+	Passenger:
+		CustomPipType: red
+		Voice: Move
+	AttackMove:
+		Voice: Attack
+	AttackFrontal:
+		Voice: Attack
+	Armament@PRIMARY:
+		Weapon: Pistol
+	Armament@GARRISONED:
+		Name: garrisoned
+		Weapon: Pistol
+		MuzzleSequence: garrison-muzzle
+	WithInfantryBody:
+		DefaultAttackSequence: shoot
+		StandSequences: stand
+	ExternalCondition@PRODUCED:
+		Condition: produced
+	VoiceAnnouncement:
+		RequiresCondition: produced
+		Voice: Select
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+

@@ -848,7 +848,7 @@ Actors:
 		Owner: Turkey
 		Location: 28,94
 	Actor267: boxes08
-		Owner: Turkey
+		Owner: Neutral
 		Location: 34,93
 	Actor268: brl3
 		Owner: Turkey
@@ -863,7 +863,7 @@ Actors:
 		Owner: Turkey
 		Location: 32,91
 	Actor272: ammobox1
-		Owner: Turkey
+		Owner: Neutral
 		Location: 31,95
 	Actor273: barl
 		Owner: Turkey
@@ -1155,3 +1155,4 @@ Actors:
 		TurretFacing: 92
 Rules: ra|rules/campaign-palettes.yaml, ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml
 Weapons: weapons.yaml
+Sequences: sequences.yaml

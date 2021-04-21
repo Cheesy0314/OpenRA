@@ -27,7 +27,7 @@ SendNavy = function()
 	end)
 
 	Trigger.AfterDelay(100, function()
-		Media.DisplayMessage("We have enemy aircraft on radar!", "USS Porter Jr", Civilian.Color);
+		Media.DisplayMessage("We have enemy aircraft on radar!", "FGS Heimdall", Civilian.Color);
 		mig1 = Actor.Create("mig", true, {Owner = Zombies, Location = CPos.New(30,2)})
 		Trigger.OnAddedToWorld(mig1,function()
 			local dest = Civilian.GetActorsByType("dd")[1]
@@ -52,7 +52,7 @@ Tick = function()
 		ticks = ticks + 1
 		if ticks % DateTime.Minutes(2) == 0 then
 		        Trigger.AfterDelay(100, function()
-                Media.DisplayMessage("We have enemy aircraft on radar!", "USS Porter Jr", Civilian.Color);
+                Media.DisplayMessage("We have enemy aircraft on radar!", "FGS Heimdall", Civilian.Color);
                 mig1 = Actor.Create("mig", true, {Owner = Zombies, Location = CPos.New(1,16)})
                 Trigger.OnAddedToWorld(mig1,function()
                         local dest = Civilian.GetActorsByTypes({"ca", "pt", "dd"})[1]
@@ -87,7 +87,7 @@ SendZombies = function()
  		if ticks == DateTime.Seconds(55) then
 			Media.DisplayMessage("Commander, mission parameters have changed... We are receiving odd reports from other landing sites. We are trying to make sense of the situation. Sit tight until we can figure out what is happening.", "Mission Command", Civilian.Color) 
 			Trigger.AfterDelay(1, function() Survive = Spain.AddPrimaryObjective("Defend beachhead") end)
-			Trigger.AfterDelay(3, function() Spain.MarkCompletedObjective(Defend) end)
+			Trigger.AfterDelay(4, function() Spain.MarkCompletedObjective(Defend) end)
 			
 		end
 	elseif (ticks > DateTime.Seconds(60) and ticks < DateTime.Seconds(121)) then
@@ -181,7 +181,8 @@ SendZombies = function()
 			MissionCompleted = true
 			Media.DisplayMessage("Good job holding the fort Commander, this area seems to be under control for now.","Mission Command", Civilian.Color)
 			Trigger.AfterDelay(DateTime.Seconds(10), function()
-				Spain.MarkCompletedObjective(Survive);
+				Spain.MarkCompletedObjective(Survive)
+				Spain.MarkCompletedObjective(Preserve)
 			end)
 		end
 	end
@@ -253,13 +254,14 @@ WorldLoaded = function()
 	Civilian = Player.GetPlayer("Civilians")
 	InitNeedful()
 	Beach = Spain.AddPrimaryObjective("Secure beach, then build a forward base.")
-	Media.DisplayMessage("Invasion is commencing, secure your targets and secure that beachead!", "Mission Command", Civilian.Color)
+	Media.DisplayMessage("Invasion is commencing, destroy enemy emplacements and secure that beachead!", "Mission Command", Civilian.Color)
 	Camera.Position = Actor10.CenterPosition
 	Trigger.AfterDelay(25, function() Media.DisplayMessage("Command, first wave making landfall.",  "Bravo-3", Civilian.Color) end)
 	Trigger.AfterDelay(DateTime.Seconds(2), function() Media.PlaySpeechNotification(Spain,"AlliedReinforcementsArrived")
-		firstWave = Reinforcements.ReinforceWithTransport(Civilian, "lst", {"2tnk","2tnk","jeep"}, {CPos.New(3,30), CPos.New(16,22)},nil)
+		firstWave = Reinforcements.ReinforceWithTransport(Civilian, "lst", {"2tnk","1tnk","1tnk","jeep","truk","truk","apc"}, {CPos.New(3,30), CPos.New(16,22)},nil)
+		Trigger.AfterDelay(DateTime.Seconds(7), function() Media.DisplayMessage("We're Getting slaughtered down here!", "Bravo-3 Actual", Civilian.Color) end)
 		Trigger.OnAllKilled(firstWave[2], function()
-				Media.DisplayMessage("Command, First wave ineffective. We do not hold the beach, repeat, we do not hold the beach.", "Bravo-3", Civilian.Color)
+				Media.DisplayMessage("Command, First wave ineffective. We do not hold the beach, repeat, we do not hold the-.", "Bravo-3", Civilian.Color)
 			Media.PlaySpeechNotification(Spain,"AlliedForcesFallen")
 			Trigger.AfterDelay(85, function()
 				Media.PlaySpeechNotification(Spain,"AlliedReinforcementsWest")
@@ -269,7 +271,7 @@ WorldLoaded = function()
 			Trigger.OnAllKilled(Zombies.GetActorsByType("gun"), function() 
 				Media.PlaySpeechNotification(Spain, "ReinforcementsArrived")
 				Media.DisplayMessage("Hotel-2, prepare to make landfall", "Lt Willits", Spain.Color)
-				local reinf = Reinforcements.ReinforceWithTransport(Spain, "lst", {"mcv", "jeep", "jeep", "truk", "truk"}, {CPos.New(3,30), CPos.New(16,22)},nil)
+				local reinf = Reinforcements.ReinforceWithTransport(Spain, "lst", {"mcv", "jeep", "jeep", "truk", "truk", "gnrl", "tnkd"}, {CPos.New(3,30), CPos.New(16,22)},nil)
 				Utils.Do(reinf[2], function(actor)
 					Trigger.OnAddedToWorld(actor, function(self) 
 						self.Owner = Spain  
@@ -282,6 +284,12 @@ WorldLoaded = function()
 								NextObj()
 							end)
 						else
+							if self.Type == "gnrl" then
+								Preserve = Spain.AddPrimaryObjective("Do not let the field commander die")
+								Trigger.OnKilled(self, function()
+									Spain.MarkFailedObjective(Preserve)
+								end)
+							end
 							self.Move(CPos.New(26, 12))
 						end
 					end)

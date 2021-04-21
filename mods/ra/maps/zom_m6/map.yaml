@@ -1,0 +1,30 @@
+MapFormat: 11
+
+RequiresMod: ra
+
+Title: 6: Rescue
+
+Author: Cheesy0314
+
+Tileset: SNOW
+
+MapSize: 130,130
+
+Bounds: 1,1,128,128
+
+Visibility: MissionSelector
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: england
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: england
+
+Actors:

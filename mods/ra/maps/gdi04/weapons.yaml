@@ -1,0 +1,55 @@
+TankBuster:
+	Inherits: ^AntiGroundMissile
+	ReloadDelay: 10
+	Range: 12c0
+	MinRange: 2c0
+	Report: missile7.aud
+	Burst: 2
+	BurstDelays: 4
+	Warhead@1Dam: SpreadDamage
+		Damage: 20000
+		Versus:
+			None: 200
+			Wood: 140 
+			Light: 125
+			Heavy: 115
+			Concrete: 90
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+		InvalidTargets: Structure, Wall
+	Warhead@3Eff: CreateEffect
+		Explosions: napalm
+		ImpactSounds: firebl3.aud
+		ImpactActors: false
+	Projectile: Missile
+		Speed: 556
+		Inaccuracy: 112
+		CruiseAltitude: 2c0
+		RangeLimit: 14c510
+		TrailImage: smokey
+	Warhead@4EffWater: CreateEffect
+		Explosions: med_splash
+		ImpactSounds: splash9.aud
+		ValidTargets: Water, Underwater
+		InvalidTargets: Ship, Structure, Bridge
+
+AirstrikeNapalm:
+	Inherits: ^FireWeapon
+	ReloadDelay: 20
+	Range: 4c512
+	Burst: 2
+	BurstDelays: 2
+	Projectile: Bullet
+		Image: BOMBLET
+		Speed: 90
+		Blockable: false
+	Warhead@1Dam: SpreadDamage
+		Spread: 170
+		Damage: 10000
+		Versus:
+			None: 110
+			Wood: 125
+			Light: 65
+			Heavy: 30
+			Concrete: 55
+	

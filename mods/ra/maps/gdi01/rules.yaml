@@ -121,7 +121,6 @@ E2R1:
 GAP:
 	Buildable:
 		Prerequisites: ~disabled
-
 PHANT:
 	Inherits: MIG
 	RenderSprites:
@@ -138,7 +137,7 @@ PHANT:
 	Aircraft:
 		CruiseAltitude: 2900
 		InitialFacing: 192
-		TurnSpeed: 3
+		TurnSpeed: 6
 		Speed: 350
 		RepulsionSpeed: 40
 		MaximumPitch: 56
@@ -147,12 +146,11 @@ PHANT:
 	Armor:
 		Type: Heavy
 	-AmmoPool:
-
 PHANT.napalm:
 	Inherits: BADR.Bomber
 	Aircraft:
-		Speed: 300
-	AttackPlane:
+		Speed: 600
+	AttackAircraft:
 		FacingTolerance: 20
 	Armament:
 		Weapon: AirstrikeNapalm
@@ -161,36 +159,25 @@ PHANT.napalm:
 	SmokeTrailWhenDamaged:
 		Offset: -853,0,171
 		Interval: 2
-	Aircraft:
-		CruiseAltitude: 3500
-		InitialFacing: 192
-		TurnSpeed: 6
-		Speed: 350
-		RepulsionSpeed: 40
-		MaximumPitch: 56
 	Tooltip:
-		Name: Phantom II Bomber
+		Name: Phantom
 	SpawnActorOnDeath:
 		Actor: MIG.Husk
 	Contrail@1:
 		Offset: -598,-683,0
 	Contrail@2:
 		Offset: -598,683,0
-	Health:
-		HP: 200000
-	Armor:
-		Type: Heavy
 	RenderSprites:
 		Image: mig
 	AmmoPool:
-		Ammo: 12
+		Ammo: 10
 
 powerproxy.napalmstrike:
 	AlwaysVisible:
 	AirstrikePower:
 		Icon: parabombs
-		Description: Napalm Strike (Single Use)
-		LongDesc: A fighter-bomber delivers a payload of napalm to designated position.
+		Description: Parabombs (Single Use)
+		LongDesc: A Badger drops a load of parachuted bombs on your target.
 		OneShot: true
 		AllowMultiple: true
 		UnitType: phant.napalm
@@ -203,5 +190,3 @@ powerproxy.napalmstrike:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
-		SquadSize: 3
-		SquadOffset: 1792,1792,0
